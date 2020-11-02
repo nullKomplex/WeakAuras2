@@ -336,7 +336,10 @@ function OptionsPrivate.AddTriggerMetaFunctions(options, data, triggernum)
       end
     end
   }
-  if (GetAddOnEnableState(UnitName("player"), "WeakAurasTemplates") ~= 0) then
+    local enabled = select(4, GetAddOnInfo("WeakAurasTemplates"))
+    
+  local enabled = select(4, GetAddOnInfo("WeakAurasTemplates"))
+  if(enabled ~= 0) then
     options.__applyTemplate = function()
       WeakAuras.OpenTriggerTemplate(data)
     end

@@ -1,6 +1,6 @@
 local WeakAuras = WeakAuras
 local L = WeakAuras.L
-local GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription, C_Timer, Spell = GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription, C_Timer, Spell
+local GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription, Spell = GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription, Spell
 
 -- The templates tables are created on demand
 local templates =
@@ -20,16 +20,6 @@ local templates =
       Troll = {},
       BloodElf = {},
       Goblin = {},
-      Nightborne = {},
-      LightforgedDraenei = {},
-      HighmountainTauren = {},
-      VoidElf = {},
-      ZandalariTroll = {},
-      KulTiran = {},
-      DarkIronDwarf = {},
-      Vulpera = {},
-      MagharOrc = {},
-      Mechagnome = {}
     },
     general = {
       title = L["General"],
@@ -40,21 +30,18 @@ local templates =
 
 local powerTypes =
   {
-    [0] = { name = POWER_TYPE_MANA, icon = "Interface\\Icons\\inv_elemental_mote_mana" },
+    [0] = { name = MANA, icon = "Interface\\Icons\\inv_elemental_mote_mana" },
     [1] = { name = POWER_TYPE_RED_POWER, icon = "Interface\\Icons\\spell_misc_emotionangry"},
     [2] = { name = POWER_TYPE_FOCUS, icon = "Interface\\Icons\\ability_hunter_focusfire"},
     [3] = { name = POWER_TYPE_ENERGY, icon = "Interface\\Icons\\spell_shadow_shadowworddominate"},
-    [4] = { name = COMBO_POINTS, icon = "Interface\\Icons\\inv_mace_2h_pvp410_c_01"},
+    [4] = { name = COMBAT_TEXT_SHOW_COMBO_POINTS_TEXT, icon = "Interface\\Icons\\inv_mace_2h_pvp410_c_01"},
     [6] = { name = RUNIC_POWER, icon = "Interface\\Icons\\inv_sword_62"},
     [7] = { name = SOUL_SHARDS_POWER, icon = "Interface\\Icons\\inv_misc_gem_amethyst_02"},
-    [8] = { name = POWER_TYPE_LUNAR_POWER, icon = "Interface\\Icons\\ability_druid_eclipseorange"},
+    [8] = { name = POWER_TYPE_SUN_POWER, icon = "Interface\\Icons\\ability_druid_eclipseorange"},
     [9] = { name = HOLY_POWER, icon = "Interface\\Icons\\achievement_bg_winsoa"},
-    [11] = {name = POWER_TYPE_MAELSTROM, icon = 135990},
+
     [12] = {name = CHI_POWER, icon = "Interface\\Icons\\ability_monk_healthsphere"},
-    [13] = {name = POWER_TYPE_INSANITY, icon = "Interface\\Icons\\spell_priest_shadoworbs"},
-    [16] = {name = POWER_TYPE_ARCANE_CHARGES, icon = "Interface\\Icons\\spell_arcane_arcane01"},
-    [17] = {name = POWER_TYPE_FURY_DEMONHUNTER, icon = 1344651},
-    [18] = {name = POWER_TYPE_PAIN, icon = 1247265},
+    [13] = {name = SHADOW_ORBS, icon = "Interface\\Icons\\spell_priest_shadoworbs"},
     [99] = {name = STAGGER, icon = "Interface\\Icons\\monk_stance_drunkenox"}
   }
 
@@ -5299,46 +5286,6 @@ tinsert(templates.race.Goblin, { spell = 69046, type = "ability" });
 -- Rocket Barrage
 tinsert(templates.race.Goblin, { spell = 69041, type = "ability" });
 
--- Arcane Pulse
-tinsert(templates.race.Nightborne, { spell = 260364, type = "ability" });
--- Cantrips
-tinsert(templates.race.Nightborne, { spell = 255661, type = "ability" });
--- Light's Judgment
-tinsert(templates.race.LightforgedDraenei, { spell = 255647, type = "ability" });
--- Forge of Light
-tinsert(templates.race.LightforgedDraenei, { spell = 259930, type = "ability" });
--- Bull Rush
-tinsert(templates.race.HighmountainTauren, { spell = 255654, type = "ability" });
---Spatial Rift
-tinsert(templates.race.VoidElf, { spell = 256948, type = "ability" });
--- Fireblood
-tinsert(templates.race.DarkIronDwarf, { spell = 265221, type = "ability" });
--- Mole Machine
-tinsert(templates.race.DarkIronDwarf, { spell = 265225, type = "ability" });
---Haymaker
-tinsert(templates.race.KulTiran, { spell = 287712, type = "ability", requiresTarget = true });
--- Brush it Off
-tinsert(templates.race.KulTiran, { spell = 291843, type = "buff"});
--- Hyper Organic Light Originator
-tinsert(templates.race.Mechagnome, { spell = 312924, type = "ability" });
--- Combat Anlysis
-tinsert(templates.race.Mechagnome, { spell = 313424, type = "buff" });
--- Recently Failed
-tinsert(templates.race.Mechagnome, { spell = 313015, type = "debuff" });
--- Ancestral Call
-tinsert(templates.race.MagharOrc, { spell = 274738, type = "ability" });
--- ZandalariTroll = {}
--- Pterrordax Swoop
-tinsert(templates.race.ZandalariTroll, { spell = 281954, type = "ability" });
--- Regenratin'
-tinsert(templates.race.ZandalariTroll, { spell = 291944, type = "ability" });
--- Embrace of the Loa
-tinsert(templates.race.ZandalariTroll, { spell = 292752, type = "ability" });
--- Vulpera = {}
--- Bag of Tricks
-tinsert(templates.race.Vulpera, { spell = 312411, type = "ability" });
--- Make Camp
-tinsert(templates.race.Vulpera, { spell = 312370, type = "ability" });
 
 ------------------------------
 -- Helper code for options
@@ -5539,35 +5486,6 @@ for regionType, regionData in pairs(WeakAuras.regionOptions) do
       end
     end
   end
-end
-
-if WeakAuras.IsClassic() then
-  templates.race.Draenei = nil
-  templates.race.Worgen = nil
-  templates.race.Pandaren = nil
-  templates.race.BloodElf = nil
-  templates.race.Goblin = nil
-  templates.race.Nightborne = nil
-  templates.race.LightforgedDraenei = nil
-  templates.race.HighmountainTauren = nil
-  templates.race.VoidElf = nil
-  templates.race.ZandalariTroll = nil
-  templates.race.KulTiran = nil
-  templates.race.DarkIronDwarf = nil
-  templates.race.Vulpera = nil
-  templates.race.MagharOrc = nil
-  templates.race.Mechagnome = nil
-  powerTypes[99] = nil
-  powerTypes[18] = nil
-  powerTypes[17] = nil
-  powerTypes[16] = nil
-  powerTypes[13] = nil
-  powerTypes[12] = nil
-  powerTypes[11] = nil
-  powerTypes[9] = nil
-  powerTypes[8] = nil
-  powerTypes[7] = nil
-  powerTypes[6] = nil
 end
 
 WeakAuras.triggerTemplates = templates;

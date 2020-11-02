@@ -1,6 +1,8 @@
 if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, Private = ...
 
+local Retail = LibStub("LibRetail")
+
 -- Animations
 local animations = {}
 local pending_controls = {}
@@ -73,18 +75,18 @@ local function UpdateAnimations()
     Private.ActivateAuraEnvironmentForRegion(anim.region)
     if(anim.translateFunc) then
       if (anim.region.SetOffsetAnim) then
-        local ok, x, y = xpcall(anim.translateFunc, errorHandler, progress, 0, 0, anim.dX, anim.dY);
+        local ok, x, y = Retail.xpcall(anim.translateFunc, errorHandler, progress, 0, 0, anim.dX, anim.dY);
         anim.region:SetOffsetAnim(x, y);
       else
         anim.region:ClearAllPoints();
-        local ok, x, y = xpcall(anim.translateFunc, errorHandler, progress, anim.startX, anim.startY, anim.dX, anim.dY);
+        local ok, x, y = Retail.xpcall(anim.translateFunc, errorHandler, progress, anim.startX, anim.startY, anim.dX, anim.dY);
         if (ok) then
           anim.region:SetPoint(anim.selfPoint, anim.anchor, anim.anchorPoint, x, y);
         end
       end
     end
     if(anim.alphaFunc) then
-      local ok, alpha = xpcall(anim.alphaFunc, errorHandler, progress, anim.startAlpha, anim.dAlpha);
+      local ok, alpha = Retail.xpcall(anim.alphaFunc, errorHandler, progress, anim.startAlpha, anim.dAlpha);
       if (ok) then
         if (anim.region.SetAnimAlpha) then
           anim.region:SetAnimAlpha(alpha);
@@ -94,7 +96,7 @@ local function UpdateAnimations()
       end
     end
     if(anim.scaleFunc) then
-      local ok, scaleX, scaleY = xpcall(anim.scaleFunc, errorHandler, progress, 1, 1, anim.scaleX, anim.scaleY);
+      local ok, scaleX, scaleY = Retail.xpcall(anim.scaleFunc, errorHandler, progress, 1, 1, anim.scaleX, anim.scaleY);
       if (ok) then
         if(anim.region.Scale) then
           anim.region:Scale(scaleX, scaleY);
@@ -105,7 +107,7 @@ local function UpdateAnimations()
       end
     end
     if(anim.rotateFunc and anim.region.Rotate) then
-      local ok, rotate = xpcall(anim.rotateFunc, errorHandler, progress, anim.startRotation, anim.rotate);
+      local ok, rotate = Retail.xpcall(anim.rotateFunc, errorHandler, progress, anim.startRotation, anim.rotate);
       if (ok) then
         anim.region:Rotate(rotate);
       end
@@ -113,7 +115,7 @@ local function UpdateAnimations()
     if(anim.colorFunc and anim.region.ColorAnim) then
       local startR, startG, startB, startA = anim.region:GetColor();
       startR, startG, startB, startA = startR or 1, startG or 1, startB or 1, startA or 1;
-      local ok, r, g, b, a = xpcall(anim.colorFunc, errorHandler, progress, startR, startG, startB, startA, anim.colorR, anim.colorG, anim.colorB, anim.colorA);
+      local ok, r, g, b, a = Retail.xpcall(anim.colorFunc, errorHandler, progress, startR, startG, startB, startA, anim.colorR, anim.colorG, anim.colorB, anim.colorA);
       if (ok) then
         anim.region:ColorAnim(r, g, b, a);
       end

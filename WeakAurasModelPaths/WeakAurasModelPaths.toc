@@ -1,9 +1,4 @@
-#@retail@
-## Interface: 90001
-#@end-retail@
-#@non-retail@
-# ## Interface: 11305
-#@end-non-retail@
+## Interface: 50400
 ## Title: WeakAuras Model Paths
 ## Author: The WeakAuras Team
 ## Version: @project-version@
@@ -18,9 +13,4 @@
 ## LoadOnDemand: 1
 ## Dependencies: WeakAuras, WeakAurasOptions
 
-#@retail@
 ModelPaths.lua
-#@end-retail@
-#@non-retail@
-# ModelPathsClassic.lua
-#@end-non-retail@

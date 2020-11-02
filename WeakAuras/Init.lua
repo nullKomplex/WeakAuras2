@@ -21,9 +21,6 @@ end
 --@end-debug@
 
 local intendedWoWProject = WOW_PROJECT_MAINLINE
---[===[@non-retail@
-intendedWoWProject = WOW_PROJECT_CLASSIC
---@end-non-retail@]===]
 
 WeakAuras.versionString = versionStringFromToc
 WeakAuras.buildTime = buildTime
@@ -31,7 +28,7 @@ WeakAuras.newFeatureString = "|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeat
 WeakAuras.BuildInfo = select(4, GetBuildInfo())
 
 function WeakAuras.IsClassic()
-  return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+  return false
 end
 
 function WeakAuras.IsCorrectVersion()

@@ -52,10 +52,10 @@ local function CorrectSpellName(input)
       local itemId = link:match("spell:(%d+)");
       return tonumber(itemId);
     elseif not WeakAuras.IsClassic() then
-      for tier = 1, MAX_TALENT_TIERS do
+      for tier = 1, MAX_NUM_TALENT_TIERS do
         for column = 1, NUM_TALENT_COLUMNS do
-          local _, _, _, _, _, spellId = GetTalentInfo(tier, column, 1)
-          local name = GetSpellInfo(spellId);
+          local name = WeakAuras.GetMoPTalentInfo(tier, column)
+          local spellId = WeakAuras.ExtractSpellId(spellId);
           if name == input then
             return spellId;
           end

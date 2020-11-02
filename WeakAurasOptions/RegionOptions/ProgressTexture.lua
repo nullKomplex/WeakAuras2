@@ -2,7 +2,7 @@ if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, OptionsPrivate = ...
 
 local L = WeakAuras.L;
-local GetAtlasInfo = WeakAuras.IsClassic() and GetAtlasInfo or C_Texture.GetAtlasInfo
+
 local function createOptions(id, data)
   local options = {
     __title = L["Progress Texture Settings"],
@@ -425,9 +425,9 @@ local function createThumbnail()
   local OrgSetTexture = foreground.SetTexture;
   -- WORKAROUND, setting the same texture with a different wrap mode does not change the wrap mode
   foreground.SetTexture = function(self, texture, horWrapMode, verWrapMode)
-    if (GetAtlasInfo(texture)) then
-      self:SetAtlas(texture);
-    else
+    -- if (GetAtlasInfo(texture)) then
+    --   self:SetAtlas(texture);
+    -- else
       local needToClear = (self.horWrapMode and self.horWrapMode ~= horWrapMode) or (self.verWrapMode and self.verWrapMode ~= verWrapMode);
       self.horWrapMode = horWrapMode;
       self.verWrapMode = verWrapMode;
@@ -435,7 +435,7 @@ local function createThumbnail()
         OrgSetTexture(self, nil);
       end
       OrgSetTexture(self, texture, horWrapMode, verWrapMode);
-    end
+    -- end
   end
   background.SetTexture = foreground.SetTexture;
 
@@ -774,7 +774,7 @@ local templates = {
       xOffset = 0,
       yOffset = 150,
       mirror = true,
-      foregroundTexture = "460830", -- "Textures\\SpellActivationOverlays\\Backlash"
+      foregroundTexture = "Textures\\SpellActivationOverlays\\Backlash",
       orientation = "HORIZONTAL",
       inverse = true,
     },

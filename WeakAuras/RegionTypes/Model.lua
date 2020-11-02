@@ -2,6 +2,8 @@ if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, Private = ...
 
 local SharedMedia = LibStub("LibSharedMedia-3.0");
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L;
 
 -- Default settings
@@ -103,8 +105,8 @@ local function CreateModel()
 end
 
 -- Keep the two model apis separate
-local poolOldApi = CreateObjectPool(CreateModel)
-local poolNewApi = CreateObjectPool(CreateModel)
+local poolOldApi = Retail.CreateObjectPool(CreateModel)
+local poolNewApi = Retail.CreateObjectPool(CreateModel)
 
 local function AcquireModel(region, data)
   local pool = data.api and poolNewApi or poolOldApi
@@ -120,7 +122,7 @@ local function AcquireModel(region, data)
   -- Adjust model
   WeakAuras.SetModel(model, data.model_path, data.model_fileId, data.modelIsUnit, data.modelDisplayInfo)
   model:SetPortraitZoom(data.portraitZoom and 1 or 0);
-  model:ClearTransform()
+  -- model:ClearTransform()
   if (data.api) then
     model:MakeCurrentCameraCustom()
     model:SetTransform(data.model_st_tx / 1000, data.model_st_ty / 1000, data.model_st_tz / 1000,

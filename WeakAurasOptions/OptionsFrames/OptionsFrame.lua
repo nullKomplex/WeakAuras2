@@ -523,7 +523,7 @@ function OptionsPrivate.CreateFrame()
   container.frame:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -17, 10)
   container.frame:SetPoint("TOPLEFT", frame, "TOPRIGHT", -63 - WeakAuras.normalWidth * 340, -14)
   container.frame:Show()
-  container.frame:SetClipsChildren(true)
+  -- container.frame:SetClipsChildren(true)
   container.titletext:Hide()
   -- Hide the border
   container.content:GetParent():SetBackdrop(nil)
@@ -542,8 +542,7 @@ function OptionsPrivate.CreateFrame()
 
   -- filter line
   local filterInput = CreateFrame("editbox", "WeakAurasFilterInput", frame, "SearchBoxTemplate")
-  filterInput:SetScript("OnTextChanged", function(self)
-    SearchBoxTemplate_OnTextChanged(self)
+  filterInput:SetScript("OnTextChanged", function(...)
     WeakAuras.SortDisplayButtons(filterInput:GetText())
   end)
   filterInput:SetHeight(15)
@@ -1034,7 +1033,8 @@ function OptionsPrivate.CreateFrame()
     containerScroll:SetLayout("flow")
     border:AddChild(containerScroll)
 
-    if GetAddOnEnableState(UnitName("player"), "WeakAurasTemplates") ~= 0 then
+    local enabled = select(4, GetAddOnInfo("WeakAurasTemplates"))
+    if(enabled ~= 0) then
       local simpleLabel = AceGUI:Create("Label")
       simpleLabel:SetFont(STANDARD_TEXT_FONT, 24, "OUTLINE")
       simpleLabel:SetColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)

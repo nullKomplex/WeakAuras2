@@ -9,6 +9,8 @@ Repository store type. This is a meta-archive of sorts.
   return anything on Commit/Close) to minimize performance impact of reading data.
 --]]
 
+local Retail = LibStub("LibRetail")
+
 local Archivist = select(2, ...).Archivist
 
 local subStoreMethods = {
@@ -63,7 +65,7 @@ local storeMethods = {
   Set = function(self, id, data)
     if data ~= nil and type(id) == "string" then
       if not self.stores[id] then
-        self.stores[id] = Mixin({}, subStoreMethods)
+        self.stores[id] = Retail.Mixin({}, subStoreMethods)
       end
       self.stores[id]:Set(data)
       return self.stores[id]
@@ -93,16 +95,16 @@ local prototype = {
     if type(store.stores) ~= "table" then
       store.stores = {}
     end
-    Mixin(store, storeMethods)
+    Retail.Mixin(store, storeMethods)
     store:Validate()
     return store, store
   end,
   Update = nil, -- This is the initial version! No need for Update yet.
   Open = function(self, image)
     local store = image
-    Mixin(store, storeMethods)
+    Retail.Mixin(store, storeMethods)
     for _, subStore in pairs(store.stores) do
-      Mixin(subStore, subStoreMethods)
+      Retail.Mixin(subStore, subStoreMethods)
     end
     store:Validate()
     return store

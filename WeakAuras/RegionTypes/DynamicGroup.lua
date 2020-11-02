@@ -3,6 +3,7 @@ local AddonName, Private = ...
 
 local WeakAuras = WeakAuras
 local SharedMedia = LibStub("LibSharedMedia-3.0")
+local Retail = LibStub("LibRetail")
 
 local default = {
   controlledChildren = {},
@@ -80,7 +81,7 @@ local controlPointFunctions = {
 
 local function createControlPoint(self)
   local controlPoint = CreateFrame("FRAME", nil, self.parent)
-  Mixin(controlPoint, controlPointFunctions)
+  Retail.Mixin(controlPoint, controlPointFunctions)
 
   controlPoint:SetWidth(16)
   controlPoint:SetHeight(16)
@@ -112,7 +113,7 @@ local function create(parent)
   local background = CreateFrame("frame", nil, region, BackdropTemplateMixin and "BackdropTemplate")
   region.background = background
   region.selfPoint = "TOPLEFT"
-  region.controlPoints = CreateObjectPool(createControlPoint, releaseControlPoint)
+  region.controlPoints = Retail.CreateObjectPool(createControlPoint, releaseControlPoint)
   region.controlPoints.parent = region
   WeakAuras.regionPrototype.create(region)
   region.suspended = 0
@@ -312,7 +313,7 @@ local sorters = {
     local sortFunc = WeakAuras.LoadFunction("return " .. sortStr, data.id, "custom sort") or noop
     return function(a, b)
       Private.ActivateAuraEnvironment(data.id)
-      local ok, result = xpcall(sortFunc, geterrorhandler(), a, b)
+      local ok, result = Retail.xpcall(sortFunc, geterrorhandler(), a, b)
       Private.ActivateAuraEnvironment()
       if ok then
         return result
@@ -391,7 +392,7 @@ local anchorers = {
     local anchorFunc = WeakAuras.LoadFunction("return " .. anchorStr, data.id, "custom frame anchor") or noop
     return function(frames, activeRegions)
       Private.ActivateAuraEnvironment(data.id)
-      xpcall(anchorFunc, geterrorhandler(), frames, activeRegions)
+      Retail.xpcall(anchorFunc, geterrorhandler(), frames, activeRegions)
       Private.ActivateAuraEnvironment()
     end
   end
@@ -753,7 +754,7 @@ local growers = {
     local growFunc = WeakAuras.LoadFunction("return " .. growStr, data.id, "custom grow") or noop
     return function(newPositions, activeRegions)
       Private.ActivateAuraEnvironment(data.id)
-      local ok = xpcall(growFunc, geterrorhandler(), newPositions, activeRegions)
+      local ok = Retail.xpcall(growFunc, geterrorhandler(), newPositions, activeRegions)
       Private.ActivateAuraEnvironment()
       if not ok then
         wipe(newPositions)
@@ -772,7 +773,7 @@ local nullErrorHandler = function()
 end
 
 local function SafeGetPos(region, func)
-  local ok, value1, value2 = xpcall(func, nullErrorHandler, region)
+  local ok, value1, value2 = Retail.xpcall(func, nullErrorHandler, region)
   if ok then
     return value1, value2
   end
@@ -936,7 +937,7 @@ local function modify(parent, region, data)
     if self.controlledChildren[childID] and self.controlledChildren[childID][cloneID] then
       return
     end
-    local dataIndex = tIndexOf(data.controlledChildren, childID)
+    local dataIndex = Retail.tIndexOf(data.controlledChildren, childID)
     if not dataIndex then return end
     local childData = WeakAuras.GetData(childID)
     local childRegion = WeakAuras.GetRegion(childID, cloneID)

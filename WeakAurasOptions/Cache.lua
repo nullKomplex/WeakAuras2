@@ -36,8 +36,8 @@ function spellCache.Build()
       id = id + 1
       local name, _, icon = GetSpellInfo(id)
 
-      if(icon == 136243) then -- 136243 is the a gear icon, we can ignore those spells
-        misses = 0;
+      if(icon == "Interface\\Icons\\Trade_engineering") then -- gear icon, we can ignore those spells
+        misses = 0
       elseif name and name ~= "" then
         cache[name] = cache[name] or {}
         cache[name].spells = cache[name].spells or {}

@@ -13,6 +13,7 @@ local InCombatLockdown = InCombatLockdown
 local CreateFrame, IsAddOnLoaded, LoadAddOn = CreateFrame, IsAddOnLoaded, LoadAddOn
 
 local AceGUI = LibStub("AceGUI-3.0")
+local Retail = LibStub("LibRetail")
 
 local WeakAuras = WeakAuras
 local L = WeakAuras.L
@@ -80,7 +81,7 @@ function OptionsPrivate.DuplicateAura(data, newParent)
     if newParent then
       index = #parentData.controlledChildren
     else
-      index = tIndexOf(parentData.controlledChildren, data.id)
+      index = Retail.tIndexOf(parentData.controlledChildren, data.id)
     end
     if(index) then
       tinsert(parentData.controlledChildren, index + 1, newData.id)

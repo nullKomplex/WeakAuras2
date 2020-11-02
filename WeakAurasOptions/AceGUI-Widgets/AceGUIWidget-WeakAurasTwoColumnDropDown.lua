@@ -2,6 +2,8 @@ if not WeakAuras.IsCorrectVersion() then return end
 
 local Type, Version = "WeakAurasTwoColumnDropdown", 3
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
+local Retail = LibStub and LibStub("LibRetail", true)
+
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 local function errorhandler(err)
@@ -10,7 +12,7 @@ end
 
 local function safecall(func, ...)
   if func then
-    return xpcall(func, errorhandler, ...)
+    return Retail.xpcall(func, errorhandler, ...)
   end
 end
 
@@ -87,7 +89,7 @@ local methods = {
         end
         table.sort(secondList)
 
-        local oldValueIndex = tIndexOf(secondList, oldValue)
+        local oldValueIndex = Retail.tIndexOf(secondList, oldValue)
         widget.userdata.secondList = secondList
         widget.secondDropDown:SetList(secondList)
         widget.firstDropdown:SetRelativeWidth(0.5)
@@ -105,7 +107,7 @@ local methods = {
         else
           local default = widget.secondDropDown.userdata.defaultSelection[displayName]
           if default then
-            local index = tIndexOf(secondList, default)
+            local index = Retail.tIndexOf(secondList, default)
             widget.secondDropDown:SetValue(index)
             local v = widget:GetValue()
             if (v) then
@@ -144,7 +146,7 @@ local methods = {
         self.firstDropdown:SetRelativeWidth(1)
         self.secondDropDown.userdata.hideMe = true
         self:DoLayout()
-        self.firstDropdown:SetValue(tIndexOf(self.userdata.firstList, displayName))
+        self.firstDropdown:SetValue(Retail.tIndexOf(self.userdata.firstList, displayName))
         return
       elseif type(treeValue) == "table" then
         for displayName2, key in pairs(treeValue) do
@@ -153,10 +155,10 @@ local methods = {
             self.secondDropDown:SetRelativeWidth(0.5)
             self.secondDropDown.userdata.hideMe = false
             self:DoLayout()
-            local index = tIndexOf(self.userdata.firstList, displayName);
+            local index = Retail.tIndexOf(self.userdata.firstList, displayName);
             self.firstDropdown:SetValue(index)
             self.firstDropdown:OnFirstDropdownValueChanged("", index)
-            self.secondDropDown:SetValue(tIndexOf(self.userdata.secondList, displayName2))
+            self.secondDropDown:SetValue(Retail.tIndexOf(self.userdata.secondList, displayName2))
             return
           end
         end

@@ -5,6 +5,9 @@ local WeakAuras = WeakAuras;
 local L = WeakAuras.L;
 
 local LSM = LibStub("LibSharedMedia-3.0");
+local LibBabbleRace = LibStub("LibBabble-Race-3.0");
+local LBR_Locale = LibBabbleRace:GetUnstrictLookupTable()
+local LBR_Base = LibBabbleRace:GetBaseLookupTable();
 
 local wipe, tinsert = wipe, tinsert
 local GetNumShapeshiftForms, GetShapeshiftFormInfo = GetNumShapeshiftForms, GetShapeshiftFormInfo
@@ -717,6 +720,11 @@ Private.actual_unit_types_cast = {
   member = L["Specific Unit"],
 }
 
+Private.eclipse_types = {
+  moon = L["Lunar"],
+  sun = L["Solar"]
+};
+
 Private.threat_unit_types = {
   target = L["Target"],
   focus = L["Focus"],
@@ -740,47 +748,34 @@ Private.unit_threat_situation_types = {
 }
 
 WeakAuras.class_types = {}
-for classID = 1, 20 do -- 20 is for GetNumClasses() but that function doesn't exists on Classic
-  local classInfo = C_CreatureInfo.GetClassInfo(classID)
-  if classInfo then
-    WeakAuras.class_types[classInfo.classFile] = WrapTextInColorCode(classInfo.className, WA_GetClassColor(classInfo.classFile))
-  end
-end
-
-
-WeakAuras.race_types = {}
+WeakAuras.class_color_types = {}
+local C_S_O, R_C_C, L_C_N_M, F_C_C_C = _G.CLASS_SORT_ORDER, _G.RAID_CLASS_COLORS, _G.LOCALIZED_CLASS_NAMES_MALE, _G.FONT_COLOR_CODE_CLOSE
 do
-  local unplayableRace = {
-    [12] = true,
-    [13] = true,
-    [14] = true,
-    [15] = true,
-    [16] = true,
-    [17] = true,
-    [18] = true,
-    [19] = true,
-    [20] = true,
-    [21] = true,
-    [23] = true,
-    [33] = true
-  }
-  local raceID = 1
-  local raceInfo = C_CreatureInfo.GetRaceInfo(raceID)
-  while raceInfo do
-    if not unplayableRace[raceID] then
-      WeakAuras.race_types[raceInfo.clientFileString] = raceInfo.raceName
-    end
-    raceID = raceID + 1
-    raceInfo = C_CreatureInfo.GetRaceInfo(raceID)
+  for i,eClass in ipairs(C_S_O) do
+    WeakAuras.class_color_types[eClass] = "|c"..R_C_C[eClass].colorStr
+    WeakAuras.class_types[eClass] = WeakAuras.class_color_types[eClass]..L_C_N_M[eClass]..F_C_C_C
   end
 end
 
-if not WeakAuras.IsClassic() then
-  Private.covenant_types = {}
-  for i = 1, 4 do
-    Private.covenant_types[i] = C_Covenants.GetCovenantData(i).name
-  end
+local function LBR(key)
+  return LBR_Locale[key] or LBR_Base[key]
 end
+
+WeakAuras.race_types = {
+  Pandaren = LBR("Pandaren"),
+  Worgen = LBR("Worgen"),
+  Draenei = LBR("Draenei"),
+  Dwarf = LBR("Dwarf"),
+  Gnome = LBR("Gnome"),
+  Human = LBR("Human"),
+  NightElf = LBR("Night Elf"),
+  Goblin = LBR("Goblin"),
+  BloodElf = LBR("Blood Elf"),
+  Orc = LBR("Orc"),
+  Tauren = LBR("Tauren"),
+  Troll = LBR("Troll"),
+  Scourge = LBR("Undead"),
+}
 
 Private.faction_group = {
   Alliance = L["Alliance"],
@@ -793,15 +788,13 @@ local function update_forms()
   wipe(Private.form_types);
   Private.form_types[0] = "0 - "..L["Humanoid"]
   for i = 1, GetNumShapeshiftForms() do
-    local _, _, _, id = GetShapeshiftFormInfo(i);
-    if(id) then
-      local name = GetSpellInfo(id);
-      if(name) then
-        Private.form_types[i] = i.." - "..name
-      end
+    local _, name = GetShapeshiftFormInfo(i);
+    if(name) then
+      Private.form_types[i] = i.." - "..name
     end
   end
 end
+
 local form_frame = CreateFrame("frame");
 form_frame:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
 form_frame:RegisterEvent("PLAYER_LOGIN")
@@ -982,7 +975,6 @@ Private.subevent_suffix_types = {
   _HEAL = L["Heal"],
   _ENERGIZE = L["Energize"],
   _DRAIN = L["Drain"],
-  _LEECH = L["Leech"],
   _INTERRUPT = L["Interrupt"],
   _DISPEL = L["Dispel"],
   _DISPEL_FAILED = L["Dispel Failed"],
@@ -1007,39 +999,36 @@ Private.subevent_suffix_types = {
 }
 
 Private.power_types = {
-  [0] = POWER_TYPE_MANA,
+  [0] = MANA,
   [1] = POWER_TYPE_RED_POWER,
   [2] = POWER_TYPE_FOCUS,
   [3] = POWER_TYPE_ENERGY,
-  [4] = COMBO_POINTS,
+  [4] = COMBAT_TEXT_SHOW_COMBO_POINTS_TEXT,
   [6] = RUNIC_POWER,
   [7] = SOUL_SHARDS_POWER,
-  [8] = POWER_TYPE_LUNAR_POWER,
+  [8] = POWER_TYPE_SUN_POWER,
   [9] = HOLY_POWER,
-  [11] = POWER_TYPE_MAELSTROM,
   [12] = CHI_POWER,
-  [13] = POWER_TYPE_INSANITY,
-  [16] = POWER_TYPE_ARCANE_CHARGES,
-  [17] = POWER_TYPE_FURY_DEMONHUNTER,
-  [18] = POWER_TYPE_PAIN
+  [13] = SHADOW_ORBS,
+  [14] = BURNING_EMBERS,
+  [15] = DEMONIC_FURY,
 }
 
 Private.power_types_with_stagger = {
-  [0] = POWER_TYPE_MANA,
+  [0] = MANA,
   [1] = POWER_TYPE_RED_POWER,
   [2] = POWER_TYPE_FOCUS,
   [3] = POWER_TYPE_ENERGY,
-  [4] = COMBO_POINTS,
+  [4] = COMBAT_TEXT_SHOW_COMBO_POINTS_TEXT,
   [6] = RUNIC_POWER,
   [7] = SOUL_SHARDS_POWER,
-  [8] = POWER_TYPE_LUNAR_POWER,
+  [8] = POWER_TYPE_SUN_POWER,
   [9] = HOLY_POWER,
   [11] = POWER_TYPE_MAELSTROM,
   [12] = CHI_POWER,
-  [13] = POWER_TYPE_INSANITY,
-  [16] = POWER_TYPE_ARCANE_CHARGES,
-  [17] = POWER_TYPE_FURY_DEMONHUNTER,
-  [18] = POWER_TYPE_PAIN,
+  [13] = SHADOW_ORBS,
+  [14] = BURNING_EMBERS,
+  [15] = DEMONIC_FURY,
   [99] = STAGGER
 }
 
@@ -1157,7 +1146,7 @@ if not WeakAuras.IsClassic() then
   local spec_frame = CreateFrame("frame");
   spec_frame:RegisterEvent("PLAYER_LOGIN")
   spec_frame:SetScript("OnEvent", update_specs);
-  local numTalents, numTiers, numColumns = MAX_TALENT_TIERS * NUM_TALENT_COLUMNS, MAX_TALENT_TIERS, NUM_TALENT_COLUMNS
+  local numTalents, numTiers, numColumns = MAX_NUM_TALENT_TIERS * NUM_TALENT_COLUMNS, MAX_NUM_TALENT_TIERS, NUM_TALENT_COLUMNS
   local talentId, tier, column = 1, 1, 1
   while talentId <= numTalents do
     while tier <= numTiers do
@@ -1188,124 +1177,123 @@ if not WeakAuras.IsClassic() then
 end
 
 -- GetTotemInfo() only works for the first 5 totems
-Private.totem_types = {};
-local totemString = L["Totem #%i"];
-for i = 1, 5 do
-  Private.totem_types[i] = totemString:format(i);
-end
+Private.totem_types = {
+  [1] = L["Fire"],
+  [2] = L["Earth"],
+  [3] = L["Water"],
+  [4] = L["Air"]
+};
 
 Private.texture_types = {
   ["Blizzard Alerts"] = {
-    ["1027131"]	= "Arcane Missiles 1",
-    ["1027132"]	= "Arcane Missiles 2",
-    ["1027133"]	= "Arcane Missiles 3",
-    ["450913"] 	= "Art of War",
-    ["801266"] 	= "Backlash_Green",
-    ["460830"] 	= "Backslash",
-    ["1030393"]	= "Bandits Guile",
-    ["510822"] 	= "Berserk",
-    ["511104"] 	= "Blood Boil",
-    ["449487"] 	= "Blood Surge",
-    ["449488"] 	= "Brain Freeze",
-    ["603338"] 	= "Dark Tiger",
-    ["461878"] 	= "Dark Transformation",
-    ["459313"] 	= "Daybreak",
-    ["511469"] 	= "Denounce",
-    ["2851787"] = "Demonic Core",
-    ["2888300"] = "Demonic Core Vertical",
-    ["1057288"]	= "Echo of the Elements",
-    ["450914"] 	= "Eclipse Moon",
-    ["450915"] 	= "Eclipse Sun",
-    ["450916"] 	= "Focus Fire",
-    ["449489"] 	= "Frozen Fingers",
-    ["467696"] 	= "Fulmination",
-    ["460831"] 	= "Fury of Stormrage",
-    ["450917"] 	= "Generic Arc 1",
-    ["450918"] 	= "Generic Arc 2",
-    ["450919"] 	= "Generic Arc 3",
-    ["450920"] 	= "Generic Arc 4",
-    ["450921"] 	= "Generic Arc 5",
-    ["450922"] 	= "Generic Arc 6",
-    ["450923"] 	= "Generic Top 1",
-    ["450924"] 	= "Generic Top 2",
-    ["450925"] 	= "Grand Crusader",
-    ["459314"] 	= "Hand of Light",
-    ["2851788"] = "High Tide",
-    ["449490"] 	= "Hot Streak",
-    ["801267"] 	= "Imp Empowerment Green",
-    ["449491"] 	= "Imp Empowerment",
-    ["457658"] 	= "Impact",
-    ["458740"] 	= "Killing Machine",
-    ["450926"] 	= "Lock and Load",
-    ["1028136"]	= "Maelstrom Weapon 1",
-    ["1028137"]	= "Maelstrom Weapon 2",
-    ["1028138"]	= "Maelstrom Weapon 3",
-    ["1028139"]	= "Maelstrom Weapon 4",
-    ["450927"] 	= "Maelstrom Weapon",
-    ["450928"] 	= "Master Marksman",
-    ["801268"] 	= "Molten Core Green",
-    ["458741"] 	= "Molten Core",
-    ["1001511"]	= "Monk Blackout Kick",
-    ["1028091"]	= "Monk Ox 2",
-    ["1028092"]	= "Monk Ox 3",
-    ["623950"] 	= "Monk Ox",
-    ["623951"] 	= "Monk Serpent",
-    ["1001512"]	= "Monk Tiger Palm",
-    ["623952"] 	= "Monk Tiger",
-    ["450929"] 	= "Nature's Grace",
-    ["511105"] 	= "Necropolis",
-    ["449492"] 	= "Nightfall",
-    ["510823"] 	= "Omen of Clarity (Feral)",
-    ["898423"] 	= "Predatory Swiftness",
-    ["962497"] 	= "Raging Blow",
-    ["450930"] 	= "Rime",
-    ["469752"] 	= "Serendipity",
-    ["656728"] 	= "Shadow Word Insanity",
-    ["627609"] 	= "Shadow of Death",
-    ["463452"] 	= "Shooting Stars",
-    ["450931"] 	= "Slice and Dice",
-    ["424570"] 	= "Spell Activation Overlay 0",
-    ["449493"] 	= "Sudden Death",
-    ["450932"] 	= "Sudden Doom",
-    ["592058"] 	= "Surge of Darkness",
-    ["450933"] 	= "Surge of Light",
-    ["449494"] 	= "Sword and Board",
-    ["1029138"]	= "Thrill of the Hunt 1",
-    ["1029139"]	= "Thrill of the Hunt 2",
-    ["1029140"]	= "Thrill of the Hunt 3",
-    ["774420"] 	= "Tooth and Claw",
-    ["627610"] 	= "Ultimatum",
-    ["603339"] 	= "White Tiger",
+    ["Textures\\SpellActivationOverlays\\Arcane_Missiles"] = "Arcane Missiles",
+    ["Textures\\SpellActivationOverlays\\Arcane_Missiles_1"] = "Arcane Missiles 1",
+    ["Textures\\SpellActivationOverlays\\Arcane_Missiles_2"] = "Arcane Missiles 2",
+    ["Textures\\SpellActivationOverlays\\Arcane_Missiles_3"] = "Arcane Missiles 3",
+    ["Textures\\SpellActivationOverlays\\Art_of_War"] = "Art of War",
+    ["Textures\\SpellActivationOverlays\\Backlash_Green"] = "Backlash_Green",
+    ["Textures\\SpellActivationOverlays\\Bandits_Guile"] = "Bandits Guile",
+    ["Textures\\SpellActivationOverlays\\Blood_Surge"] = "Blood Surge",
+    ["Textures\\SpellActivationOverlays\\Brain_Freeze"] = "Brain Freeze",
+    ["Textures\\SpellActivationOverlays\\Echo_of_the_Elements"] = "Echo of the Elements",
+    ["Textures\\SpellActivationOverlays\\Eclipse_Moon"] = "Eclipse Moon",
+    ["Textures\\SpellActivationOverlays\\Eclipse_Sun"] = "Eclipse Sun",
+    ["Textures\\SpellActivationOverlays\\Focus_Fire"] = "Focus Fire",
+    ["Textures\\SpellActivationOverlays\\Frozen_Fingers"] = "Frozen Fingers",
+    ["Textures\\SpellActivationOverlays\\GenericArc_01"] = "Generic Arc 1",
+    ["Textures\\SpellActivationOverlays\\GenericArc_02"] = "Generic Arc 2",
+    ["Textures\\SpellActivationOverlays\\GenericArc_03"] = "Generic Arc 3",
+    ["Textures\\SpellActivationOverlays\\GenericArc_04"] = "Generic Arc 4",
+    ["Textures\\SpellActivationOverlays\\GenericArc_05"] = "Generic Arc 5",
+    ["Textures\\SpellActivationOverlays\\GenericArc_06"] = "Generic Arc 6",
+    ["Textures\\SpellActivationOverlays\\GenericTop_01"] = "Generic Top 1",
+    ["Textures\\SpellActivationOverlays\\GenericTop_02"] = "Generic Top 2",
+    ["Textures\\SpellActivationOverlays\\Grand_Crusader"] = "Grand Crusader",
+    ["Textures\\SpellActivationOverlays\\Hot_Streak"] = "Hot Streak",
+    ["Textures\\SpellActivationOverlays\\Imp_Empowerment"] = "Imp Empowerment",
+    ["Textures\\SpellActivationOverlays\\Imp_Empowerment_Green"] = "Imp Empowerment Green",
+    ["Textures\\SpellActivationOverlays\\Impact"] = "Impact",
+    ["Textures\\SpellActivationOverlays\\Lock_and_Load"] = "Lock and Load",
+    ["Textures\\SpellActivationOverlays\\Maelstrom_Weapon"] = "Maelstrom Weapon",
+    ["Textures\\SpellActivationOverlays\\Maelstrom_Weapon_1"] = "Maelstrom Weapon 1",
+    ["Textures\\SpellActivationOverlays\\Maelstrom_Weapon_2"] = "Maelstrom Weapon 2",
+    ["Textures\\SpellActivationOverlays\\Maelstrom_Weapon_3"] = "Maelstrom Weapon 3",
+    ["Textures\\SpellActivationOverlays\\Maelstrom_Weapon_4"] = "Maelstrom Weapon 4",
+    ["Textures\\SpellActivationOverlays\\Master_Marksman"] = "Master Marksman",
+    ["Textures\\SpellActivationOverlays\\Monk_BlackoutKick"] = "Monk Blackout Kick",
+    ["Textures\\SpellActivationOverlays\\Natures_Grace"] = "Nature's Grace",
+    ["Textures\\SpellActivationOverlays\\Nightfall"] = "Nightfall",
+    ["Textures\\SpellActivationOverlays\\Predatory_Swiftness"] = "Predatory Swiftness",
+    ["Textures\\SpellActivationOverlays\\Raging_Blow"] = "Raging Blow",
+    ["Textures\\SpellActivationOverlays\\Rime"] = "Rime",
+    ["Textures\\SpellActivationOverlays\\Slice_and_Dice"] = "Slice and Dice",
+    ["Textures\\SpellActivationOverlays\\Sudden_Death"] = "Sudden Death",
+    ["Textures\\SpellActivationOverlays\\Sudden_Doom"] = "Sudden Doom",
+    ["Textures\\SpellActivationOverlays\\Surge_of_Light"] = "Surge of Light",
+    ["Textures\\SpellActivationOverlays\\Sword_and_Board"] = "Sword and Board",
+    ["Textures\\SpellActivationOverlays\\Thrill_of_the_Hunt_1"] = "Thrill of the Hunt 1",
+    ["Textures\\SpellActivationOverlays\\Thrill_of_the_Hunt_2"] = "Thrill of the Hunt 2",
+    ["Textures\\SpellActivationOverlays\\Thrill_of_the_Hunt_3"] = "Thrill of the Hunt 3",
+    ["Textures\\SpellActivationOverlays\\Tooth_and_Claw"] = "Tooth and Claw",
+    ["Textures\\SpellActivationOverlays\\Backlash"] = "Backslash",
+    ["Textures\\SpellActivationOverlays\\Berserk"] = "Berserk",
+    ["Textures\\SpellActivationOverlays\\Blood_Boil"] = "Blood Boil",
+    ["Textures\\SpellActivationOverlays\\Dark_Transformation"] = "Dark Transformation",
+    ["Textures\\SpellActivationOverlays\\Denounce"] = "Denounce",
+    ["Textures\\SpellActivationOverlays\\Feral_OmenOfClarity"] = "Omen of Clarity (Feral)",
+    ["Textures\\SpellActivationOverlays\\Fulmination"] = "Fulmination",
+    ["Textures\\SpellActivationOverlays\\Fury_of_Stormrage"] = "Fury of Stormrage",
+    ["Textures\\SpellActivationOverlays\\Hand_of_Light"] = "Hand of Light",
+    ["Textures\\SpellActivationOverlays\\Killing_Machine"] = "Killing Machine",
+    ["Textures\\SpellActivationOverlays\\Molten_Core"] = "Molten Core",
+    ["Textures\\SpellActivationOverlays\\Molten_Core_Green"] = "Molten Core Green",
+    ["Textures\\SpellActivationOverlays\\Necropolis"] = "Necropolis",
+    ["Textures\\SpellActivationOverlays\\Serendipity"] = "Serendipity",
+    ["Textures\\SpellActivationOverlays\\Shooting_Stars"] = "Shooting Stars",
+    ["Textures\\SpellActivationOverlays\\Dark_Tiger"] = "Dark Tiger",
+    ["Textures\\SpellActivationOverlays\\Daybreak"] = "Daybreak",
+    ["Textures\\SpellActivationOverlays\\Monk_Ox"] = "Monk Ox",
+    ["Textures\\SpellActivationOverlays\\Monk_Ox_2"] = "Monk Ox 2",
+    ["Textures\\SpellActivationOverlays\\Monk_Ox_3"] = "Monk Ox 3",
+    ["Textures\\SpellActivationOverlays\\Monk_Serpent"] = "Monk Serpent",
+    ["Textures\\SpellActivationOverlays\\Monk_Tiger"] = "Monk Tiger",
+    ["Textures\\SpellActivationOverlays\\Monk_TigerPalm"] = "Monk Tiger Palm",
+    ["Textures\\SpellActivationOverlays\\Shadow_of_Death"] = "Shadow of Death",
+    ["Textures\\SpellActivationOverlays\\Shadow_Word_Insanity"] = "Shadow Word Insanity",
+    ["Textures\\SpellActivationOverlays\\Surge_of_Darkness"] = "Surge of Darkness",
+    ["Textures\\SpellActivationOverlays\\Ultimatum"] = "Ultimatum",
+    ["Textures\\SpellActivationOverlays\\White_Tiger"] = "White Tiger",
+    ["Textures\\SpellActivationOverlays\\spellActivationOverlay_0"] = "Spell Activation Overlay 0"
   },
   ["Icons"] = {
-    ["166662"] = "Shield",
-    ["165558"] = "Paw",
-    ["166989"] = "Stun Whirl",
-    ["166036"] = "Rage",
-    ["165610"] = "Monkey",
-    ["165607"] = "Lion",
-    ["240925"] = "Holy Ruin",
-    ["166058"] = "Eyes",
-    ["166606"] = "Leaf",
-    ["166706"] = "Reticle",
-    ["166984"] = "Crossed Swords",
-    ["166418"] = "Inner Fire",
-    ["165608"] = "Cheetah",
-    ["240972"] = "Poison Skull",
-    ["166680"] = "Rampage",
-    ["165605"] = "Feathers",
-    ["166423"] = "Intellect",
-    ["165609"] = "Hawk",
-    ["240961"] = "Crescent",
-    ["166056"] = "Eye",
-    ["165611"] = "Snake",
-    ["241049"] = "Star",
-    ["166386"] = "Snowflake",
-    ["165612"] = "Wolf",
-    ["166948"] = "Spirit",
-    ["166954"] = "Bull",
-    ["166683"] = "Rapid Fire",
-    ["166125"] = "Fire",
+    ["Spells\\Agility_128"] = "Paw",
+    ["Spells\\ArrowFeather01"] = "Feathers",
+    ["Spells\\Aspect_Beast"] = "Lion",
+    ["Spells\\Aspect_Cheetah"] = "Cheetah",
+    ["Spells\\Aspect_Hawk"] = "Hawk",
+    ["Spells\\Aspect_Monkey"] = "Monkey",
+    ["Spells\\Aspect_Snake"] = "Snake",
+    ["Spells\\Aspect_Wolf"] = "Wolf",
+    ["Spells\\EndlessRage"] = "Rage",
+    ["Spells\\Eye"] = "Eye",
+    ["Spells\\Eyes"] = "Eyes",
+    ["Spells\\Fire_Rune_128"] = "Fire",
+    ["Spells\\HolyRuinProtect"] = "Holy Ruin",
+    ["Spells\\Intellect_128"] = "Intellect",
+    ["Spells\\MoonCrescentGlow2"] = "Crescent",
+    ["Spells\\Nature_Rune_128"] = "Leaf",
+    ["Spells\\PROTECT_128"] = "Shield",
+    ["Spells\\Ice_Rune_128"] = "Snowflake",
+    ["Spells\\PoisonSkull1"] = "Poison Skull",
+    ["Spells\\InnerFire_Rune_128"] = "Inner Fire",
+    ["Spells\\RapidFire_Rune_128"] = "Rapid Fire",
+    ["Spells\\Rampage"] = "Rampage",
+    ["Spells\\Reticle_128"] = "Reticle",
+    ["Spells\\Stamina_128"] = "Bull",
+    ["Spells\\Strength_128"] = "Crossed Swords",
+    ["Spells\\StunWhirl_reverse"] = "Stun Whirl",
+    ["Spells\\T_Star3"] = "Star",
+    ["Spells\\Spirit1"] = "Spirit",
     ["Interface\\AddOns\\WeakAuras\\Media\\Textures\\cancel-icon.tga"] = "Cancel Icon",
     ["Interface\\AddOns\\WeakAuras\\Media\\Textures\\cancel-mark.tga"] = "Cancel Mark",
     ["Interface\\AddOns\\WeakAuras\\Media\\Textures\\emoji.tga"] = "Emoji",
@@ -1316,32 +1304,32 @@ Private.texture_types = {
 
   },
   ["Runes"] = {
-    ["165630"] = "Ringed Aura Rune",
-    ["166341"] = "Holy Cross Rune",
-    ["166757"] = "Circular Frost Rune",
-    ["241005"] = "Dense Circular Rune",
-    ["165927"] = "Demon Rune",
-    ["241004"] = "Octagonal Skulls",
-    ["166753"] = "Heavy BC Rune",
-    ["165638"] = "Small Tri-Circle Aura Rune",
-    ["165639"] = "Sliced Aura Rune",
-    ["165885"] = "Death Rune",
-    ["166749"] = "Ringed Circular Rune",
-    ["165922"] = "Demonic Summon",
-    ["165928"] = "Demon Rune",
-    ["165633"] = "Tri-Circle Aura Rune",
-    ["165929"] = "Demon Rune",
-    ["165634"] = "Tri-Circle Ringed Aura Rune",
-    ["165635"] = "Spike-Ringed Aura Rune",
-    ["166750"] = "Sparse Circular Rune",
-    ["241003"] = "Dual Blades",
-    ["165631"] = "Square Aura Rune",
-    ["165881"] = "Dark Summon",
-    ["166340"] = "Holy Rune",
-    ["165640"] = "Oblong Aura Rune",
-    ["166748"] = "Filled Circular Rune",
-    ["166754"] = "Light BC Rune",
-    ["166979"] = "Star Rune",
+    ["Spells\\starrune"] = "Star Rune",
+    ["Spells\\RUNEBC1"] = "Heavy BC Rune",
+    ["Spells\\RuneBC2"] = "Light BC Rune",
+    ["Spells\\RUNEFROST"] = "Circular Frost Rune",
+    ["Spells\\Rune1d_White"] = "Dense Circular Rune",
+    ["Spells\\RUNE1D_GLOWLESS"] = "Sparse Circular Rune",
+    ["Spells\\Rune1d"] = "Ringed Circular Rune",
+    ["Spells\\Rune1c"] = "Filled Circular Rune",
+    ["Spells\\RogueRune1"] = "Dual Blades",
+    ["Spells\\RogueRune2"] = "Octagonal Skulls",
+    ["Spells\\HOLY_RUNE1"] = "Holy Rune",
+    ["Spells\\Holy_Rune_128"] = "Holy Cross Rune",
+    ["Spells\\DemonRune5backup"] = "Demon Rune",
+    ["Spells\\DemonRune6"] = "Demon Rune",
+    ["Spells\\DemonRune7"] = "Demon Rune",
+    ["Spells\\DemonicRuneSummon01"] = "Demonic Summon",
+    ["Spells\\Death_Rune"] = "Death Rune",
+    ["Spells\\DarkSummon"] = "Dark Summon",
+    ["Spells\\AuraRune256b"] = "Square Aura Rune",
+    ["Spells\\AURARUNE256"] = "Ringed Aura Rune",
+    ["Spells\\AURARUNE8"] = "Spike-Ringed Aura Rune",
+    ["Spells\\AuraRune7"] = "Tri-Circle Ringed Aura Rune",
+    ["Spells\\AuraRune5Green"] = "Tri-Circle Aura Rune",
+    ["Spells\\AURARUNE_C"] = "Oblong Aura Rune",
+    ["Spells\\AURARUNE_B"] = "Sliced Aura Rune",
+    ["Spells\\AURARUNE_A"] = "Small Tri-Circle Aura Rune"
   },
   ["PvP Emblems"] = {
     ["Interface\\PVPFrame\\PVP-Banner-Emblem-1"] = "Wheelchair",
@@ -1453,35 +1441,35 @@ Private.texture_types = {
     ["Interface\\PVPFrame\\Icons\\PVP-Banner-Emblem-101"] = "Eagle Face"
   },
   ["Beams"] = {
-    ["186198"] = "Lightning",
-    ["186187"] = "Red Drops Beam",
-    ["167096"] = "Gold Chain",
-    ["186205"] = "Mana Burn Beam",
-    ["186208"] = "Rope",
-    ["186185"] = "Purple Beam",
-    ["167099"] = "Red Fire Beam",
-    ["186214"] = "Soul Beam",
-    ["186189"] = "Drain Mana Lightning",
-    ["167103"] = "Red Vine",
-    ["186192"] = "Ethereal Ribbon",
-    ["186201"] = "Red Lightning",
-    ["241099"] = "Summon Gargoyle Beam",
-    ["167104"] = "Blue Water Beam",
-    ["167098"] = "Green Fire Beam",
-    ["186186"] = "Red Beam",
-    ["167101"] = "Grey Smoke Beam",
-    ["186194"] = "Purple Ghost Chain",
-    ["167102"] = "Green Vine",
-    ["369750"] = "Shadow Beam",
-    ["186195"] = "Heal Beam",
-    ["167100"] = "Brown Smoke Beam",
-    ["186202"] = "Mana Beam",
-    ["369749"] = "Straight Purple Beam",
-    ["241098"] = "Spirit Link Beam",
-    ["167105"] = "Green Water Beam",
-    ["167097"] = "Iron Chain",
-    ["186193"] = "Ghost Chain",
-    ["186211"] = "Shock Lightning",
+    ["Textures\\SPELLCHAINEFFECTS\\Beam_Purple"] = "Purple Beam",
+    ["Textures\\SPELLCHAINEFFECTS\\Beam_Red"] = "Red Beam",
+    ["Textures\\SPELLCHAINEFFECTS\\Beam_RedDrops"] = "Red Drops Beam",
+    ["Textures\\SPELLCHAINEFFECTS\\DrainManaLightning"] = "Drain Mana Lightning",
+    ["Textures\\SPELLCHAINEFFECTS\\Ethereal_Ribbon_Spell"] = "Ethereal Ribbon",
+    ["Textures\\SPELLCHAINEFFECTS\\Ghost1_Chain"] = "Ghost Chain",
+    ["Textures\\SPELLCHAINEFFECTS\\Ghost2purple_Chain"] = "Purple Ghost Chain",
+    ["Textures\\SPELLCHAINEFFECTS\\HealBeam"] = "Heal Beam",
+    ["Textures\\SPELLCHAINEFFECTS\\Lightning"] = "Lightning",
+    ["Textures\\SPELLCHAINEFFECTS\\LightningRed"] = "Red Lightning",
+    ["Textures\\SPELLCHAINEFFECTS\\ManaBeam"] = "Mana Beam",
+    ["Textures\\SPELLCHAINEFFECTS\\ManaBurnBeam"] = "Mana Burn Beam",
+    ["Textures\\SPELLCHAINEFFECTS\\RopeBeam"] = "Rope",
+    ["Textures\\SPELLCHAINEFFECTS\\ShockLightning"] = "Shock Lightning",
+    ["Textures\\SPELLCHAINEFFECTS\\SoulBeam"] = "Soul Beam",
+    ["Spells\\TEXTURES\\Beam_ChainGold"] = "Gold Chain",
+    ["Spells\\TEXTURES\\Beam_ChainIron"] = "Iron Chain",
+    ["Spells\\TEXTURES\\Beam_FireGreen"] = "Green Fire Beam",
+    ["Spells\\TEXTURES\\Beam_FireRed"] = "Red Fire Beam",
+    ["Spells\\TEXTURES\\Beam_Purple_02"] = "Straight Purple Beam",
+    ["Spells\\TEXTURES\\Beam_Shadow_01"] = "Shadow Beam",
+    ["Spells\\TEXTURES\\Beam_SmokeBrown"] = "Brown Smoke Beam",
+    ["Spells\\TEXTURES\\Beam_SmokeGrey"] = "Grey Smoke Beam",
+    ["Spells\\TEXTURES\\Beam_SpiritLink"] = "Spirit Link Beam",
+    ["Spells\\TEXTURES\\Beam_SummonGargoyle"] = "Summon Gargoyle Beam",
+    ["Spells\\TEXTURES\\Beam_VineGreen"] = "Green Vine",
+    ["Spells\\TEXTURES\\Beam_VineRed"] = "Red Vine",
+    ["Spells\\TEXTURES\\Beam_WaterBlue"] = "Blue Water Beam",
+    ["Spells\\TEXTURES\\Beam_WaterGreen"] = "Green Water Beam",
     ["Interface\\AddOns\\WeakAuras\\Media\\Textures\\rainbowbar"] = "Rainbow Bar",
     ["Interface\\AddOns\\WeakAuras\\Media\\Textures\\StripedTexture"] = "Striped Bar",
     ["Interface\\AddOns\\WeakAuras\\Media\\Textures\\stripe-bar.tga"] = "Striped Bar 2",
@@ -1523,7 +1511,7 @@ Private.texture_types = {
     ["Interface\\AddOns\\WeakAuras\\Media\\Textures\\Square_AlphaGradient.tga"] = "Square Alpha Gradient",
   },
   ["Sparks"] = {
-    ["130877"] = "Blizzard Spark",
+    ["Interface\\CastingBar\\UI-CastingBar-Spark"] = "Blizzard Spark",
     ["Insanity-Spark"] = "Blizzard Insanity Spark",
     ["XPBarAnim-OrangeSpark"] = "Blizzard XPBar Spark",
     ["GarrMission_EncounterBar-Spark"] = "Blizzard Garrison Mission Encounter Spark",
@@ -1546,30 +1534,6 @@ local BuildInfo = select(4, GetBuildInfo())
 if BuildInfo <= 80100 then -- 8.1.5
   Private.texture_types.Sparks["worldstate-capturebar-spark-green"] = "Capture Bar Green Spark"
   Private.texture_types.Sparks["worldstate-capturebar-spark-yellow"] = "Capture Bar Yellow Spark"
-end
-if WeakAuras.IsClassic() then -- Classic
-  Private.texture_types["Blizzard Alerts"] = nil
-  do
-    local beams = Private.texture_types["Beams"]
-    local beams_ids = {167096, 167097, 167098, 167099, 167100, 167101, 167102, 167103, 167104, 167105, 186192, 186193, 186194, 241098, 241099, 369749, 369750}
-    for _, v in ipairs(beams_ids) do
-      beams[tostring(v)] = nil
-    end
-  end
-  do
-    local icons = Private.texture_types["Icons"]
-    local icons_ids = {165605, 166036, 166680, 166948, 166989, 240925, 240961, 240972, 241049}
-    for _, v in ipairs(icons_ids) do
-      icons[tostring(v)] = nil
-    end
-  end
-  do
-    local runes = Private.texture_types["Runes"]
-    local runes_ids = {165633, 165885, 165922, 166340, 166753, 166754, 241003, 241004, 241005}
-    for _, v in ipairs(runes_ids) do
-      runes[tostring(v)] = nil
-    end
-  end
 end
 
 local PowerAurasPath = "Interface\\Addons\\WeakAuras\\PowerAurasMedia\\Auras\\"
@@ -1951,24 +1915,16 @@ Private.difficulty_types = {
   none = L["None"],
   normal = PLAYER_DIFFICULTY1,
   heroic = PLAYER_DIFFICULTY2,
-  mythic = PLAYER_DIFFICULTY6,
-  timewalking = PLAYER_DIFFICULTY_TIMEWALKER,
   lfr = PLAYER_DIFFICULTY3,
+  flex = PLAYER_DIFFICULTY4,
   challenge = PLAYER_DIFFICULTY5
 }
 
-if WeakAuras.IsClassic() then
-  Private.raid_role_types = {
-    MAINTANK = "|TInterface\\GroupFrame\\UI-Group-maintankIcon:16:16|t "..MAINTANK,
-    MAINASSIST = "|TInterface\\GroupFrame\\UI-Group-mainassistIcon:16:16|t "..MAINASSIST
-  }
-else
-  Private.role_types = {
-    TANK = INLINE_TANK_ICON.." "..TANK,
-    DAMAGER = INLINE_DAMAGER_ICON.." "..DAMAGER,
-    HEALER = INLINE_HEALER_ICON.." "..HEALER
-  }
-end
+Private.role_types = {
+  TANK = INLINE_TANK_ICON.." "..TANK,
+  DAMAGER = INLINE_DAMAGER_ICON.." "..DAMAGER,
+  HEALER = INLINE_HEALER_ICON.." "..HEALER
+}
 
 Private.classification_types = {
   worldboss = L["World Boss"],
@@ -2319,22 +2275,6 @@ Private.absorb_modes = {
   OVERLAY_FROM_START = L["Attach to Start"],
   OVERLAY_FROM_END = L["Attach to End"]
 }
-
-Private.mythic_plus_affixes = {}
-
-local mythic_plus_ignorelist = {
-  [1] = true,
-  [15] = true
-}
-
-if not WeakAuras.IsClassic() then
-  for i = 1, 255 do
-    local r = not mythic_plus_ignorelist[i] and C_ChallengeMode.GetAffixInfo(i)
-    if r then
-      Private.mythic_plus_affixes[i] = r
-    end
-  end
-end
 
 Private.update_categories = {
   {
@@ -2839,28 +2779,28 @@ Private.reset_ranged_swing_spells = {
 }
 
 
-Private.item_weapon_types = {}
+-- Private.item_weapon_types = {}
 
-local skippedWeaponTypes = {}
-skippedWeaponTypes[11] = true -- Bear Claws
-skippedWeaponTypes[12] = true -- Cat Claws
-skippedWeaponTypes[14] = true -- Misc
-skippedWeaponTypes[17] = true -- Spears
-if WeakAuras.IsClassic() then
-  skippedWeaponTypes[9] = true -- Glaives
-else
-  skippedWeaponTypes[16] = true -- Thrown
-end
+-- local skippedWeaponTypes = {}
+-- skippedWeaponTypes[11] = true -- Bear Claws
+-- skippedWeaponTypes[12] = true -- Cat Claws
+-- skippedWeaponTypes[14] = true -- Misc
+-- skippedWeaponTypes[17] = true -- Spears
+-- if WeakAuras.IsClassic() then
+--   skippedWeaponTypes[9] = true -- Glaives
+-- else
+--   skippedWeaponTypes[16] = true -- Thrown
+-- end
 
-for i = 0, 20 do
-  if not skippedWeaponTypes[i] then
-    Private.item_weapon_types[2 * 256 + i] = GetItemSubClassInfo(2, i)
-  end
-end
+-- for i = 0, 20 do
+--   if not skippedWeaponTypes[i] then
+--     Private.item_weapon_types[2 * 256 + i] = GetItemSubClassInfo(2, i)
+--   end
+-- end
 
--- Shields
-Private.item_weapon_types[4 * 256 + 6] = GetItemSubClassInfo(4, 6)
-WeakAuras.item_weapon_types = Private.item_weapon_types
+-- -- Shields
+-- Private.item_weapon_types[4 * 256 + 6] = GetItemSubClassInfo(4, 6)
+-- WeakAuras.item_weapon_types = Private.item_weapon_types
 
 WeakAuras.StopMotion = {}
 WeakAuras.StopMotion.texture_types = {

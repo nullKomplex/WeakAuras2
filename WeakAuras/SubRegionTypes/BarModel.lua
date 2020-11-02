@@ -2,6 +2,8 @@ if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, Private = ...
 
 local SharedMedia = LibStub("LibSharedMedia-3.0");
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L;
 
 Private.barmodels = {}
@@ -83,8 +85,8 @@ local function CreateModel()
 end
 
 -- Keep the two model apis separate
-local poolOldApi = CreateObjectPool(CreateModel)
-local poolNewApi = CreateObjectPool(CreateModel)
+local poolOldApi = Retail.CreateObjectPool(CreateModel)
+local poolNewApi = Retail.CreateObjectPool(CreateModel)
 
 
 local function AcquireModel(region, data)
@@ -189,7 +191,7 @@ local funcs = {
 
 local function create()
   local subRegion = CreateFrame("FRAME", nil, UIParent)
-  subRegion:SetClipsChildren(true)
+  -- subRegion:SetClipsChildren(true)
 
   for k, v in pairs(funcs) do
     subRegion[k] = v

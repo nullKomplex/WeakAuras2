@@ -1207,7 +1207,7 @@ local function PrepareMatchData(unit, filter)
     local time = GetTime()
     local index = 1
     while true do
-      local name, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId = UnitAura(unit, index, filter)
+      local name, _, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId = UnitAura(unit, index, filter)
       if not name then
         break
       end
@@ -1315,7 +1315,7 @@ local function ScanUnitWithFilter(matchDataChanged, time, unit, filter,
 
   if UnitExistsFixed(unit) then
     while true do
-      local name, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId = UnitAura(unit, index, filter)
+      local name, _, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId = UnitAura(unit, index, filter)
       if not name then
         break
       end
@@ -2942,7 +2942,7 @@ end
 local function AugmentMatchDataMulti(matchData, unit, filter, sourceGUID, nameKey, spellKey)
   local index = 1
   while true do
-    local name, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId = UnitAura(unit, index, filter)
+    local name, _, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId = UnitAura(unit, index, filter)
     if not name then
       return false
     end
@@ -3032,7 +3032,7 @@ end
 local function CheckAurasMulti(base, unit, filter)
   local index = 1
   while true do
-    local name, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId = UnitAura(unit, index, filter)
+    local name, _, icon, stacks, debuffClass, duration, expirationTime, unitCaster, isStealable, _, spellId = UnitAura(unit, index, filter)
     if not name then
       return false
     end
@@ -3101,7 +3101,7 @@ end
 function BuffTrigger.HandleMultiEvent(frame, event, ...)
   Private.StartProfileSystem("bufftrigger2 - multi")
   if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-    CombatLog(CombatLogGetCurrentEventInfo())
+    CombatLog(...)
   elseif event == "UNIT_TARGET" then
     TrackUid(...)
   elseif event == "PLAYER_TARGET_CHANGED" then

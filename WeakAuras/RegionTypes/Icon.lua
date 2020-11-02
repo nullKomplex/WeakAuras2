@@ -201,8 +201,8 @@ local function create(parent, data)
   end
 
   local icon = region:CreateTexture(nil, "BACKGROUND");
-  icon:SetSnapToPixelGrid(false)
-  icon:SetTexelSnappingBias(0)
+  -- icon:SetSnapToPixelGrid(false)
+  -- icon:SetTexelSnappingBias(0)
   if MSQ then
     icon:SetAllPoints(button);
     button:SetScript("OnSizeChanged", region.UpdateInnerOuterSize);
@@ -230,7 +230,7 @@ local function create(parent, data)
   local cooldown = CreateFrame("COOLDOWN", "WeakAurasCooldown"..frameId, region, "CooldownFrameTemplate");
   region.cooldown = cooldown;
   cooldown:SetAllPoints(icon);
-  cooldown:SetDrawBling(false)
+  -- cooldown:SetDrawBling(false)
   cooldown.SetDrawSwipeOrg = cooldown.SetDrawSwipe
   cooldown.SetDrawSwipe = function() end
 
@@ -356,7 +356,7 @@ local function modify(parent, region, data)
   end
 
   cooldown:SetReverse(not data.inverse);
-  cooldown:SetHideCountdownNumbers(data.cooldownTextDisabled);
+  -- cooldown:SetHideCountdownNumbers(data.cooldownTextDisabled);
   if OmniCC and OmniCC.Cooldown and OmniCC.Cooldown.SetNoCooldownCount then
     OmniCC.Cooldown.SetNoCooldownCount(cooldown, data.cooldownTextDisabled)
   end
@@ -441,12 +441,12 @@ local function modify(parent, region, data)
 
   function region:SetCooldownSwipe(cooldownSwipe)
     region.cooldownSwipe = cooldownSwipe;
-    cooldown:SetDrawSwipeOrg(cooldownSwipe);
+    -- cooldown:SetDrawSwipeOrg(cooldownSwipe);
   end
 
   function region:SetCooldownEdge(cooldownEdge)
     region.cooldownEdge = cooldownEdge;
-    cooldown:SetDrawEdge(cooldownEdge);
+    -- cooldown:SetDrawEdge(cooldownEdge);
   end
 
   region:SetCooldownSwipe(data.cooldownSwipe)
@@ -489,7 +489,7 @@ local function modify(parent, region, data)
       if (cooldown.duration and cooldown.duration > 0.01) then
         cooldown:Show();
         cooldown:SetCooldown(cooldown.expirationTime - cooldown.duration, cooldown.duration);
-        cooldown:Resume()
+        -- cooldown:Resume()
       end
     end
 
@@ -516,7 +516,7 @@ local function modify(parent, region, data)
         end
 
         region:SetTime(max - adjustMin, expirationTime - adjustMin, state.inverse);
-        cooldown:Resume()
+        -- cooldown:Resume()
       elseif state.progressType == "static" then
         local value = state.value or 0;
         local total = state.total or 0;
@@ -526,7 +526,7 @@ local function modify(parent, region, data)
         local adjustMin = region.adjustedMin or region.adjustedMinRel or 0;
         local max = region.adjustedMax or region.adjustedMaxRel or total;
         region:SetValue(value - adjustMin, max - adjustMin);
-        cooldown:Pause()
+        -- cooldown:Pause()
       else
         region:SetTime(0, math.huge)
       end

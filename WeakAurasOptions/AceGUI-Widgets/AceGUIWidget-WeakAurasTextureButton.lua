@@ -2,8 +2,9 @@ if not WeakAuras.IsCorrectVersion() then return end
 
 local Type, Version = "WeakAurasTextureButton", 23
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
+local Retail = LibStub and LibStub("LibRetail", true)
+
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
-local GetAtlasInfo = WeakAuras.IsClassic() and GetAtlasInfo or C_Texture.GetAtlasInfo
 
 local function Hide_Tooltip()
   GameTooltip:Hide();
@@ -31,11 +32,11 @@ local methods = {
     self.texture:SetTexture();
   end,
   ["SetTexture"] = function(self, texturePath, name)
-    if (GetAtlasInfo(texturePath)) then
-      self.texture:SetAtlas(texturePath);
-    else
+    -- if (GetAtlasInfo(texturePath)) then
+      -- self.texture:SetAtlas(texturePath);
+    -- else
       self.texture:SetTexture(texturePath, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE");
-    end
+    -- end
     self.texture.path = texturePath;
     self.texture.name = name;
   end,
@@ -94,7 +95,7 @@ local function Constructor()
   local name = "WeakAurasTextureButton"..AceGUI:GetNextWidgetNum(Type);
   local button = CreateFrame("BUTTON", name, UIParent, "OptionsListButtonTemplate");
   if BackdropTemplateMixin then
-    Mixin(button, BackdropTemplateMixin)
+    Retail.Mixin(button, BackdropTemplateMixin)
   end
   button:SetHeight(128);
   button:SetWidth(128);

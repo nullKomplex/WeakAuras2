@@ -1,6 +1,8 @@
 if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, Private = ...
 
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L
 local timer = WeakAuras.timer
 
@@ -130,7 +132,7 @@ function WeakAuras.scheduleConditionCheck(time, uid, cloneId)
 end
 
 function WeakAuras.CallCustomConditionTest(uid, testFunctionNumber, ...)
-  local ok, result = xpcall(WeakAuras.conditionHelpers[uid].customTestFunctions[testFunctionNumber], geterrorhandler(), ...)
+  local ok, result = Retail.xpcall(WeakAuras.conditionHelpers[uid].customTestFunctions[testFunctionNumber], geterrorhandler(), ...)
   if (ok) then
     return result
   end

@@ -1,6 +1,8 @@
 if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, OptionsPrivate = ...
 
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L;
 
 local function GetCustomTriggerOptions(data, triggernum)
@@ -428,20 +430,20 @@ local function GetGenericTriggerOptions(data, triggernum)
   }
 
   if (triggerType == "custom") then
-    Mixin(options, GetCustomTriggerOptions(data, triggernum, trigger));
+    Retail.Mixin(options, GetCustomTriggerOptions(data, triggernum, trigger));
   elseif (triggerType == "status" or triggerType == "event") then
     local prototypeOptions;
     local trigger, untrigger = data.triggers[triggernum].trigger, data.triggers[triggernum].untrigger;
     if(OptionsPrivate.Private.event_prototypes[trigger.event]) then
       prototypeOptions = OptionsPrivate.ConstructOptions(OptionsPrivate.Private.event_prototypes[trigger.event], data, 10, triggernum);
       if (trigger.event == "Combat Log") then
-        Mixin(prototypeOptions, combatLogOptions);
+        Retail.Mixin(prototypeOptions, combatLogOptions);
       end
     else
       print("|cFF8800FFWeakAuras|r: No prototype for", trigger.event);
     end
     if (prototypeOptions) then
-      Mixin(options, prototypeOptions);
+      Retail.Mixin(options, prototypeOptions);
     end
   end
 

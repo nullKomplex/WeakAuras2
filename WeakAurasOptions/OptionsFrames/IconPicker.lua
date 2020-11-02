@@ -27,7 +27,7 @@ local function ConstructIconPicker(frame)
 
   local scroll = AceGUI:Create("ScrollFrame");
   scroll:SetLayout("flow");
-  scroll.frame:SetClipsChildren(true);
+  -- scroll.frame:SetClipsChildren(true);
   group:AddChild(scroll);
 
   local function iconPickerFill(subname, doSort)

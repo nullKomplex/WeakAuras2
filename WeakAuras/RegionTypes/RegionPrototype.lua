@@ -1,9 +1,10 @@
 if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, Private = ...
 
+local Retail = LibStub("LibRetail")
+
 local WeakAuras = WeakAuras;
 local L = WeakAuras.L;
-local GetAtlasInfo = WeakAuras.IsClassic() and GetAtlasInfo or C_Texture.GetAtlasInfo
 
 WeakAuras.regionPrototype = {};
 
@@ -25,7 +26,7 @@ local SubRegionEventSystem =
   end,
 
   RemoveSubscriber = function(self, event, subRegion)
-    tremove(self.events[event], tIndexOf(self.events[event], subRegion))
+    tremove(self.events[event], Retail.tIndexOf(self.events[event], subRegion))
   end,
 
   Notify = function(self, event, ...)
@@ -286,7 +287,7 @@ end
 local function RunCode(self, func)
   if func and not WeakAuras.IsOptionsOpen() then
     Private.ActivateAuraEnvironment(self.id, self.cloneId, self.state, self.states);
-    xpcall(func, geterrorhandler());
+    Retail.xpcall(func, geterrorhandler());
     Private.ActivateAuraEnvironment(nil);
   end
 end
@@ -307,7 +308,7 @@ local function UpdatePosition(self)
   local yOffset = self.yOffset + (self.yOffsetAnim or 0) + (self.yOffsetRelative or 0)
   self:RealClearAllPoints();
 
-  xpcall(self.SetPoint, geterrorhandler(), self, self.anchorPoint, self.relativeTo, self.relativePoint, xOffset, yOffset);
+  Retail.xpcall(self.SetPoint, geterrorhandler(), self, self.anchorPoint, self.relativeTo, self.relativePoint, xOffset, yOffset);
 end
 
 local function ResetPosition(self)
@@ -895,9 +896,9 @@ function WeakAuras.regionPrototype.AddExpandFunction(data, region, cloneId, pare
 end
 
 function WeakAuras.SetTextureOrAtlas(texture, path, wrapModeH, wrapModeV)
-  if type(path) == "string" and GetAtlasInfo(path) then
-    texture:SetAtlas(path);
-  else
+  -- if type(path) == "string" then
+  -- --   texture:SetAtlas(path);
+  -- else
     local needToClear = true
     if (texture.wrapModeH and texture.wrapModeH ~= wrapModeH) or (texture.wrapModeV and texture.wrapModeV ~= wrapModeV) then
       needToClear = true
@@ -908,5 +909,5 @@ function WeakAuras.SetTextureOrAtlas(texture, path, wrapModeH, wrapModeV)
       texture:SetTexture(nil)
     end
     texture:SetTexture(path, wrapModeH, wrapModeV);
-  end
+  -- end
 end

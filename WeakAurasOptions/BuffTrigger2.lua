@@ -654,14 +654,6 @@ local function GetBuffTriggerOptions(data, triggernum)
         or not WeakAuras.IsClassic()
       end
     },
-    raid_role = {
-      type = "multiselect",
-      width = WeakAuras.normalWidth,
-      name = L["Raid Role"],
-      values = OptionsPrivate.Private.raid_role_types,
-      hidden = function() return not (trigger.type == "aura2" and (trigger.unit == "group" or trigger.unit == "raid" or trigger.unit == "party") and trigger.useRaidRole) end,
-      order = 67.2
-    },
     raid_roleSpace = {
       type = "description",
       name = "",

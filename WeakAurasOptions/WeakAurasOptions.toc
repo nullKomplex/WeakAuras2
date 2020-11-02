@@ -1,9 +1,4 @@
-#@retail@
-## Interface: 90001
-#@end-retail@
-#@non-retail@
-# ## Interface: 11305
-#@end-non-retail@
+## Interface: 50400
 ## Title: WeakAuras Options
 ## Author: The WeakAuras Team
 ## Version: @project-version@
@@ -71,8 +66,6 @@ OptionsFrames\TexturePicker.lua
 # -- misc Frames
 OptionsFrames\MoverSizer.lua
 OptionsFrames\FrameChooser.lua
-
-Legendaries.lua
 
 AceGUI-Widgets\AceGUIWidget-WeakAurasExpand.lua
 AceGUI-Widgets\AceGUIWidget-WeakAurasExpandSmall.lua

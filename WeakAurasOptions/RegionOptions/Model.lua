@@ -263,7 +263,7 @@ local function modifyThumbnail(parent, region, data)
         rad(data.model_st_rx), rad(data.model_st_ry), rad(data.model_st_rz),
         data.model_st_us / 1000);
     else
-      model:ClearTransform();
+      -- model:ClearTransform();
       model:SetPosition(data.model_z, data.model_x, data.model_y);
       model:SetFacing(rad(data.rotation));
     end

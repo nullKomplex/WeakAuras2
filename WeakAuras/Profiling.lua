@@ -1,6 +1,8 @@
 if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, Private = ...
 
+local Retail = LibStub("LibRetail")
+
 local WeakAuras = WeakAuras
 local L = WeakAuras.L
 local prettyPrint = WeakAuras.prettyPrint
@@ -480,14 +482,14 @@ function RealTimeProfilingWindow:GetBar(name)
   else
     local bar = CreateFrame("FRAME", nil, self.barsFrame)
     self.bars[name] = bar
-    Mixin(bar, SmoothStatusBarMixin)
+    Retail.Mixin(bar, Retail.SmoothStatusBarMixin)
     bar.name = name
     bar.parent = self
     bar:SetSize(self.width, self.barHeight)
 
     local fg = bar:CreateTexture(nil, "ARTWORK")
-    fg:SetSnapToPixelGrid(false)
-    fg:SetTexelSnappingBias(0)
+    -- fg:SetSnapToPixelGrid(false)
+    -- fg:SetTexelSnappingBias(0)
     fg:SetTexture(texture)
     fg:SetDrawLayer("ARTWORK", 0)
     fg:ClearAllPoints()
@@ -497,8 +499,8 @@ function RealTimeProfilingWindow:GetBar(name)
     bar.fg = fg
 
     local bg = bar:CreateTexture(nil, "ARTWORK")
-    bg:SetSnapToPixelGrid(false)
-    bg:SetTexelSnappingBias(0)
+    -- bg:SetSnapToPixelGrid(false)
+    -- bg:SetTexelSnappingBias(0)
     bg:SetTexture(texture)
     bg:SetDrawLayer("ARTWORK", -1)
     bg:SetAllPoints()
@@ -546,11 +548,11 @@ function RealTimeProfilingWindow:GetBar(name)
         self:ClearAllPoints()
         self:SetPoint("TOPLEFT", self.parent.barsFrame, "TOPLEFT", 0, - (pos - 1) * self.parent.barHeight)
         if pos % 2 == 0 then
-          bar.fg:SetColorTexture(0.7, 0.7, 0.7, 0.7)
-          bar.bg:SetColorTexture(0, 0, 0, 0.2)
+          bar.fg:SetTexture(0.7, 0.7, 0.7, 0.7)
+          bar.bg:SetTexture(0, 0, 0, 0.2)
         else
-          bar.fg:SetColorTexture(0.5, 0.5, 0.5, 0.7)
-          bar.bg:SetColorTexture(0, 0, 0, 0.4)
+          bar.fg:SetTexture(0.5, 0.5, 0.5, 0.7)
+          bar.bg:SetTexture(0, 0, 0, 0.4)
         end
         self:Show()
       end

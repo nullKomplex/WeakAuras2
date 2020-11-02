@@ -8,6 +8,7 @@ local pairs = pairs
 local IsShiftKeyDown, CreateFrame =  IsShiftKeyDown, CreateFrame
 
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
+local Retail = LibStub("LibRetail")
 
 local WeakAuras = WeakAuras
 
@@ -107,23 +108,23 @@ local function ConstructMover(frame)
   right:GetPushedTexture():SetRotation(-math.pi/2)
   right:SetScript("OnClick", function() moveOnePxl("right") end)
 
-  local lineX = frame:CreateLine(nil, "OVERLAY", 7)
-  lineX:SetThickness(2)
-  lineX:SetColorTexture(1,1,0)
-  lineX:SetStartPoint("BOTTOMLEFT", UIParent)
-  lineX:SetEndPoint("BOTTOMRIGHT", UIParent)
-  lineX:Hide()
-  lineX:SetIgnoreParentAlpha(true)
+  -- local lineX = frame:CreateLine(nil, "OVERLAY", 7)
+  -- lineX:SetThickness(2)
+  -- lineX:SetTexture(1,1,0)
+  -- lineX:SetStartPoint("BOTTOMLEFT", UIParent)
+  -- lineX:SetEndPoint("BOTTOMRIGHT", UIParent)
+  -- lineX:Hide()
+  -- lineX:SetIgnoreParentAlpha(true)
 
-  local lineY = frame:CreateLine(nil, "OVERLAY", 7)
-  lineY:SetThickness(2)
-  lineY:SetColorTexture(1,1,0)
-  lineY:SetStartPoint("TOPLEFT", UIParent)
-  lineY:SetEndPoint("BOTTOMLEFT", UIParent)
-  lineY:SetIgnoreParentAlpha(true)
-  lineY:Hide()
+  -- local lineY = frame:CreateLine(nil, "OVERLAY", 7)
+  -- lineY:SetThickness(2)
+  -- lineY:SetTexture(1,1,0)
+  -- lineY:SetStartPoint("TOPLEFT", UIParent)
+  -- lineY:SetEndPoint("BOTTOMLEFT", UIParent)
+  -- lineY:SetIgnoreParentAlpha(true)
+  -- lineY:Hide()
 
-  return lineX, lineY
+  -- return lineX, lineY
 end
 
 local function ConstructSizer(frame)
@@ -389,7 +390,8 @@ local function ConstructMoverSizer(parent)
   frame.top, frame.topright, frame.right, frame.bottomright, frame.bottom, frame.bottomleft, frame.left, frame.topleft
   = ConstructSizer(frame)
 
-  frame.lineX, frame.lineY = ConstructMover(frame)
+  -- frame.lineX, frame.lineY = ConstructMover(frame)
+  ConstructMover(frame)
 
   frame.top.Clear()
   frame.topright.Clear()
@@ -492,7 +494,7 @@ local function ConstructMoverSizer(parent)
     frame:ScaleCorners(region:GetWidth(), region:GetHeight())
     local regionStrata = region:GetFrameStrata()
     if regionStrata then
-      local strata = math.min(tIndexOf(OptionsPrivate.Private.frame_strata_types, regionStrata) + 1, 9)
+      local strata = math.min(Retail.tIndexOf(OptionsPrivate.Private.frame_strata_types, regionStrata) + 1, 9)
       frame:SetFrameStrata(OptionsPrivate.Private.frame_strata_types[strata])
       mover:SetFrameStrata(OptionsPrivate.Private.frame_strata_types[strata])
     end
@@ -617,8 +619,8 @@ local function ConstructMoverSizer(parent)
       WeakAuras.FillOptions()
       OptionsPrivate.Private.Animate("display", data.uid, "main", data.animation.main, WeakAuras.regions[data.id].region, false, nil, true)
       -- hide alignment lines
-      frame.lineY:Hide()
-      frame.lineX:Hide()
+      -- frame.lineY:Hide()
+      -- frame.lineX:Hide()
     end
 
     if data.parent and db.displays[data.parent] and db.displays[data.parent].regionType == "dynamicgroup" then
@@ -737,8 +739,8 @@ local function ConstructMoverSizer(parent)
         WeakAuras.FillOptions()
         OptionsPrivate.Private.Animate("display", data.uid, "main", data.animation.main, WeakAuras.regions[data.id].region, false, nil, true)
         -- hide alignment lines
-        frame.lineY:Hide()
-        frame.lineX:Hide()
+        -- frame.lineY:Hide()
+        -- frame.lineX:Hide()
         mover.sizePoint = nil
       end
 
@@ -828,8 +830,8 @@ local function ConstructMoverSizer(parent)
       self.alignCurrentAlpha = self.alignCurrentAlpha or self:GetAlpha()
       local newAlpha = (self.alignCurrentAlpha < self.alignGoalAlpha) and self.alignCurrentAlpha + (elaps * 4) or self.alignCurrentAlpha - (elaps * 4)
       newAlpha = (newAlpha > 1 and 1) or (newAlpha < 0.1 and 0.1) or newAlpha
-      frame.lineX:SetAlpha(newAlpha)
-      frame.lineY:SetAlpha(newAlpha)
+      -- frame.lineX:SetAlpha(newAlpha)
+      -- frame.lineY:SetAlpha(newAlpha)
       self.alignCurrentAlpha = newAlpha
     end
 
@@ -915,9 +917,9 @@ local function ConstructMoverSizer(parent)
               ctrlDown and centerX >= v - 5 and centerX <= v + 5
             )
             then
-              frame.lineY:SetStartPoint("TOPLEFT", UIParent, v, 0)
-              frame.lineY:SetEndPoint("BOTTOMLEFT", UIParent, v, 0)
-              frame.lineY:Show()
+              -- frame.lineY:SetStartPoint("TOPLEFT", UIParent, v, 0)
+              -- frame.lineY:SetEndPoint("BOTTOMLEFT", UIParent, v, 0)
+              -- frame.lineY:Show()
               mover.alignXFrom = ctrlDown and "CENTER"
                 or (reverse and ((right >= v - 5 and right <= v + 5) and "RIGHT" or "LEFT")) -- right side first
                 or (not reverse and ((left >= v - 5 and left <= v + 5) and "LEFT" or "RIGHT")) -- left side first
@@ -929,7 +931,7 @@ local function ConstructMoverSizer(parent)
           if not foundX then
             mover.alignXFrom = nil
             mover.alignXOf = nil
-            frame.lineY:Hide()
+            -- frame.lineY:Hide()
           end
         end
         if mover.lastY ~= selfY then
@@ -947,9 +949,9 @@ local function ConstructMoverSizer(parent)
               ctrlDown and centerY >= v - 5 and centerY <= v + 5
             )
             then
-              frame.lineX:SetStartPoint("BOTTOMLEFT", UIParent, 0, v)
-              frame.lineX:SetEndPoint("BOTTOMRIGHT", UIParent, 0, v)
-              frame.lineX:Show()
+              -- frame.lineX:SetStartPoint("BOTTOMLEFT", UIParent, 0, v)
+              -- frame.lineX:SetEndPoint("BOTTOMRIGHT", UIParent, 0, v)
+              -- frame.lineX:Show()
               mover.alignYFrom = (ctrlDown and "CENTER" or (top >= v - 5 and top <= v + 5) and "TOP" or "BOTTOM")
                 or (reverse and ((top >= v - 5 and top <= v + 5) and "TOP" or "BOTTOM")) -- top side first
                 or (not reverse and ((bottom >= v - 5 and bottom <= v + 5) and "BOTTOM" or "TOP")) -- bottom side first
@@ -961,7 +963,7 @@ local function ConstructMoverSizer(parent)
           if not foundY then
             mover.alignYFrom = nil
             mover.alignYOf = nil
-            frame.lineX:Hide()
+            -- frame.lineX:Hide()
           end
         end
         mover.lastX, mover.lastY = selfX, selfY

@@ -162,7 +162,7 @@ local function ConstructTextEditor(frame)
     editor.editBox:SetFont(fontPath, 12)
   end
   group:AddChild(editor)
-  editor.frame:SetClipsChildren(true)
+  -- editor.frame:SetClipsChildren(true)
 
   -- The indention lib overrides GetText, but for the line number
   -- display we ned the original, so save it here.

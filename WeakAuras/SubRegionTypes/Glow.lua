@@ -128,7 +128,10 @@ local properties = {
 }
 
 local function glowStart(self, frame, color)
-
+  if not self.glowStart then
+    return
+  end
+  
   if frame:GetWidth() < 1 or frame:GetHeight() < 1 then
     self.glowStop(frame)
     return

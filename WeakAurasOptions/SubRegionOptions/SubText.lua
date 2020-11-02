@@ -2,6 +2,8 @@ if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, OptionsPrivate = ...
 
 local SharedMedia = LibStub("LibSharedMedia-3.0")
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L
 
 local screenWidth, screenHeight = math.ceil(GetScreenWidth() / 20) * 20, math.ceil(GetScreenHeight() / 20) * 20
@@ -298,7 +300,7 @@ local function createOptions(parentData, data, index, subIndex)
     anchors = {}
     for index, childId in ipairs(parentData.controlledChildren) do
       local childData = WeakAuras.GetData(childId)
-      Mixin(anchors, OptionsPrivate.Private.GetAnchorsForData(childData, "point"))
+      Retail.Mixin(anchors, OptionsPrivate.Private.GetAnchorsForData(childData, "point"))
     end
   else
      anchors = OptionsPrivate.Private.GetAnchorsForData(parentData, "point")

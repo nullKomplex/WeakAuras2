@@ -114,7 +114,7 @@ local function ConstructTexturePicker(frame)
   local scroll = AceGUI:Create("ScrollFrame");
   scroll:SetWidth(540);
   scroll:SetLayout("flow");
-  scroll.frame:SetClipsChildren(true);
+  -- scroll.frame:SetClipsChildren(true);
   dropdown:AddChild(scroll);
 
   local function texturePickerGroupSelected(widget, event, uniquevalue)

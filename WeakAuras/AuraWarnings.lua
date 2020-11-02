@@ -48,8 +48,8 @@ local severityLevel = {
 
 local icons = {
   info = [[Interface/friendsframe/informationicon.blp]],
-  warning = [[Interface/buttons/adventureguidemicrobuttonalert.blp]],
-  error =  [[Interface/DialogFrame/UI-Dialog-Icon-AlertNew]]
+  warning = [[Interface/friendsframe/informationicon.blp]],
+  error =  [[Interface/friendsframe/informationicon.blp]]
 }
 
 local titles = {

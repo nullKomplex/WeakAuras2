@@ -452,7 +452,7 @@ local function subTypesFor(item, regionType)
     target = function()
       local thumbnail = createThumbnail();
       local t1 = thumbnail:CreateTexture(nil, "ARTWORK");
-      t1:SetTexture(134376);
+      t1:SetTexture("Interface\\Icons\\Inv_misc_pocketwatch_01");
       t1:SetAllPoints(thumbnail);
 
       thumbnail.elapsed = 0;
@@ -473,7 +473,7 @@ local function subTypesFor(item, regionType)
     glow = function()
       local thumbnail = createThumbnail();
       local t1 = thumbnail:CreateTexture(nil, "ARTWORK");
-      t1:SetTexture(134376);
+      t1:SetTexture("Interface\\Icons\\Inv_misc_pocketwatch_01");
       t1:SetAllPoints(thumbnail);
       WeakAuras.ShowOverlayGlow(thumbnail); -- where to call HideOverlayGlow() ?
       return thumbnail;
@@ -481,7 +481,7 @@ local function subTypesFor(item, regionType)
     charges = function()
       local thumbnail = createThumbnail();
       local t1 = thumbnail:CreateTexture(nil, "ARTWORK");
-      t1:SetTexture(134376);
+      t1:SetTexture("Interface\\Icons\\Inv_misc_pocketwatch_01");
       t1:SetAllPoints(thumbnail);
       local t2 = thumbnail:CreateFontString(nil, "ARTWORK");
       t2:SetFont(STANDARD_TEXT_FONT, 14, "OUTLINE");
@@ -1141,7 +1141,7 @@ function WeakAuras.CreateTemplateView(frame)
 
   local newViewScroll = AceGUI:Create("ScrollFrame");
   newViewScroll:SetLayout("flow");
-  newViewScroll.frame:SetClipsChildren(true);
+  -- newViewScroll.frame:SetClipsChildren(true);
   newView:AddChild(newViewScroll);
 
   local function createNewId(prefix)

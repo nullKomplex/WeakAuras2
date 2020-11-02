@@ -40,6 +40,8 @@ local versionString = WeakAuras.versionString;
 local regionOptions = WeakAuras.regionOptions;
 local regionTypes = WeakAuras.regionTypes;
 
+local Retail = LibStub("LibRetail")
+
 -- Local functions
 local decodeB64, GenerateUniqueID
 local CompressDisplay, ShowTooltip, TableToString, StringToTable
@@ -879,8 +881,10 @@ function Private.RefreshTooltipButtons()
       end
     end
   end
-  local importWidth = importButton.Text:GetStringWidth()
-  importButton:SetWidth(importWidth + 30)
+  if (importButton.Text) then
+    local importWidth = importButton.Text:GetStringWidth()
+    importButton:SetWidth(importWidth + 30)
+  end
 end
 buttonAnchor:SetScript("OnEvent", Private.RefreshTooltipButtons)
 
@@ -1138,7 +1142,7 @@ local function scamCheck(codes, data)
   end
 end
 
-local ignoredForDiffChecking = CreateFromMixins(Private.internal_fields, Private.non_transmissable_fields)
+local ignoredForDiffChecking = Retail.CreateFromMixins(Private.internal_fields, Private.non_transmissable_fields)
 local function recurseDiff(ours, theirs)
   local diff, seen, same = {}, {}, true
   for key, ourVal in pairs(ours) do

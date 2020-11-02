@@ -25,7 +25,7 @@ local function ConstructImportExport(frame)
   local input = AceGUI:Create("MultiLineEditBox");
   input:SetWidth(400);
   input.button:Hide();
-  input.frame:SetClipsChildren(true);
+  -- input.frame:SetClipsChildren(true);
   group:AddChild(input);
 
   local close = CreateFrame("Button", nil, group.frame, "UIPanelButtonTemplate");

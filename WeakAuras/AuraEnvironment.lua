@@ -5,6 +5,8 @@ local WeakAuras = WeakAuras
 local L = WeakAuras.L
 local prettyPrint = WeakAuras.prettyPrint
 
+local Retail = LibStub("LibRetail")
+
 local LCD
 if WeakAuras.IsClassic() then
   LCD = LibStub("LibClassicDurations")
@@ -18,26 +20,11 @@ local WA_GetUnitAura = function(unit, spell, filter)
       filter = filter.."|HELPFUL"
   end
   for i = 1, 255 do
-    local name, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, i, filter)
+    local name, _, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, i, filter)
     if not name then return end
     if spell == spellId or spell == name then
       return UnitAura(unit, i, filter)
     end
-  end
-end
-
-if WeakAuras.IsClassic() then
-  local WA_GetUnitAuraBase = WA_GetUnitAura
-  WA_GetUnitAura = function(unit, spell, filter)
-    local name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = WA_GetUnitAuraBase(unit, spell, filter)
-    if spellId then
-      local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, source, name)
-      if duration == 0 and durationNew then
-          duration = durationNew
-          expirationTime = expirationTimeNew
-      end
-    end
-    return name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod
   end
 end
 
@@ -286,7 +273,7 @@ function Private.ActivateAuraEnvironment(id, cloneId, state, states, onlyConfig)
       if(actions and actions.do_custom and actions.custom) then
         local func = Private.customActionsFunctions[id]["init"]
         if func then
-          xpcall(func, geterrorhandler())
+          Retail.xpcall(func, geterrorhandler())
         end
       end
     end

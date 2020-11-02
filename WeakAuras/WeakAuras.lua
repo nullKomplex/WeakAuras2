@@ -29,6 +29,8 @@ local prettyPrint = WeakAuras.prettyPrint
 WeakAurasTimers = setmetatable({}, {__tostring=function() return "WeakAuras" end})
 LibStub("AceTimer-3.0"):Embed(WeakAurasTimers)
 
+local Retail = LibStub("LibRetail")
+
 Private.maxTimerDuration = 604800; -- A week, in seconds
 local maxUpTime = 4294967; -- 2^32 / 1000
 
@@ -387,7 +389,7 @@ function WeakAuras.RegisterSubRegionType(name, displayName, supportFunction, cre
   elseif(subRegionTypes[name]) then
     error("Improper arguments to WeakAuras.RegisterSubRegionType - region type \""..name.."\" already defined", 2);
   else
-    local pool = CreateObjectPool(createFunction)
+    local pool = Retail.CreateObjectPool(createFunction)
 
     subRegionTypes[name] = {
       displayName = displayName,
@@ -441,7 +443,7 @@ function WeakAuras.RegisterRegionOptions(name, createFunction, icon, displayName
 
     local acquireThumbnail, releaseThumbnail
     if createThumbnail and modifyThumbnail then
-      local thumbnailPool = CreateObjectPool(createThumbnail)
+      local thumbnailPool = Retail.CreateObjectPool(createThumbnail)
       acquireThumbnail = function(parent, data)
         local thumbnail, newObject = thumbnailPool:Acquire()
         thumbnail:Show()
@@ -733,63 +735,16 @@ local function CreateTalentCache()
 
   Private.talent_types_specific[player_class] = Private.talent_types_specific[player_class] or {};
 
-  if WeakAuras.IsClassic() then
-    for tab = 1, GetNumTalentTabs() do
-      for num_talent = 1, GetNumTalents(tab) do
-        local talentName, talentIcon = GetTalentInfo(tab, num_talent);
-        local talentId = (tab - 1)*20+num_talent
-        if (talentName and talentIcon) then
-          Private.talent_types_specific[player_class][talentId] = "|T"..talentIcon..":0|t "..talentName
-        end
-      end
-   end
-  else
-    local spec = GetSpecialization()
-    Private.talent_types_specific[player_class][spec] = Private.talent_types_specific[player_class][spec] or {};
-
-    for tier = 1, MAX_TALENT_TIERS do
-      for column = 1, NUM_TALENT_COLUMNS do
-        -- Get name and icon info for the current talent of the current class and save it
-        local _, talentName, talentIcon = GetTalentInfo(tier, column, 1)
-        local talentId = (tier-1)*3+column
-        -- Get the icon and name from the talent cache and record it in the table that will be used by WeakAurasOptions
-        if (talentName and talentIcon) then
-          Private.talent_types_specific[player_class][spec][talentId] = "|T"..talentIcon..":0|t "..talentName
-        end
+  for tier = 1, MAX_NUM_TALENT_TIERS do
+    for column = 1, NUM_TALENT_COLUMNS do
+      -- Get name and icon info for the current talent of the current class and save it
+      local talentName, talentIcon = WeakAuras.GetMoPTalentInfo(tier, column)
+      local talentId = (tier-1)*3+column
+      -- Get the icon and name from the talent cache and record it in the table that will be used by WeakAurasOptions
+      if (talentName and talentIcon) then
+        Private.talent_types_specific[player_class][talentId] = "|T"..talentIcon..":0|t "..talentName
       end
     end
-  end
-end
-
-local pvpTalentsInitialized = false;
-local function CreatePvPTalentCache()
-  if (pvpTalentsInitialized) then return end;
-  local _, player_class = UnitClass("player")
-  local spec = GetSpecialization()
-
-  if (not player_class or not spec) then
-    return;
-  end
-
-  Private.pvp_talent_types_specific[player_class] = Private.pvp_talent_types_specific[player_class] or {};
-  Private.pvp_talent_types_specific[player_class][spec] = Private.pvp_talent_types_specific[player_class][spec] or {};
-
-  local function formatTalent(talentId)
-    local _, name, icon = GetPvpTalentInfoByID(talentId);
-    return "|T"..icon..":0|t "..name
-  end
-
-  local slotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo(1);
-  if (slotInfo) then
-
-    Private.pvp_talent_types_specific[player_class][spec] = {};
-
-    local pvpSpecTalents = slotInfo.availableTalentIDs;
-    for i, talentId in ipairs(pvpSpecTalents) do
-      Private.pvp_talent_types_specific[player_class][spec][i] = formatTalent(talentId);
-    end
-
-    pvpTalentsInitialized = true;
   end
 end
 
@@ -1074,7 +1029,6 @@ loadedFrame:RegisterEvent("LOADING_SCREEN_ENABLED");
 loadedFrame:RegisterEvent("LOADING_SCREEN_DISABLED");
 if not WeakAuras.IsClassic() then
   loadedFrame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
-  loadedFrame:RegisterEvent("PLAYER_PVP_TALENT_UPDATE");
 else
   loadedFrame:RegisterEvent("CHARACTER_POINTS_CHANGED");
   loadedFrame:RegisterEvent("SPELLS_CHANGED");
@@ -1152,8 +1106,6 @@ loadedFrame:SetScript("OnEvent", function(self, event, addon)
         Private.UpdateCurrentInstanceType();
         Private.InitializeEncounterAndZoneLists()
       end
-    elseif(event == "PLAYER_PVP_TALENT_UPDATE") then
-      callback = CreatePvPTalentCache;
     elseif(event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "CHARACTER_POINTS_CHANGED" or event == "SPELLS_CHANGED") then
       callback = CreateTalentCache;
     elseif(event == "PLAYER_REGEN_ENABLED") then
@@ -1390,10 +1342,8 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
   end
 
   local player, realm, zone = UnitName("player"), GetRealmName(), GetRealZoneText()
-  local spec, specId, covenant, role, raidRole = false, false, false, false, false
+  local spec, specId, role, raidRole = false, false, false, false
   local inPetBattle, vehicle, vehicleUi = false, false, false
-  local zoneId = C_Map.GetBestMapForUnit("player")
-  local zonegroupId = zoneId and C_Map.GetMapGroupID(zoneId)
   local _, race = UnitRace("player")
   local faction = UnitFactionGroup("player")
   local _, class = UnitClass("player")
@@ -1412,7 +1362,6 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
     spec = GetSpecialization()
     specId = GetSpecializationInfo(spec)
     role = select(5, GetSpecializationInfo(spec))
-    covenant = C_Covenants.GetActiveCovenantID()
     inPetBattle = C_PetBattles.IsInBattle()
     vehicle = UnitInVehicle('player') or UnitOnTaxi('player')
     vehicleUi = UnitHasVehicleUI('player') or HasOverrideActionBar() or HasVehicleActionBar()
@@ -1434,13 +1383,6 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
 
   local group = WeakAuras.GroupType()
 
-  local affixes, warmodeActive, effectiveLevel = 0, false, 0
-  if not WeakAuras.IsClassic() then
-    effectiveLevel = UnitEffectiveLevel("player")
-    affixes = C_ChallengeMode.IsChallengeModeActive() and select(2, C_ChallengeMode.GetActiveKeystoneInfo())
-    warmodeActive = C_PvP.IsWarModeDesired();
-  end
-
   local changed = 0;
   local shouldBeLoaded, couldBeLoaded;
   wipe(toLoad);
@@ -1451,13 +1393,9 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
     if (data and not data.controlledChildren) then
       local loadFunc = loadFuncs[id];
       local loadOpt = loadFuncsForOptions[id];
-      if WeakAuras.IsClassic() then
-        shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, vehicle, group, player, realm, class, race, faction, playerLevel, zone, encounter_id, size, raidRole);
-        couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, vehicle, group, player, realm, class, race, faction, playerLevel, zone, encounter_id, size, raidRole);
-      else
-        shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, warmodeActive, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, covenant, race, faction, playerLevel, effectiveLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, role, affixes);
-        couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, warmodeActive, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, covenant, race, faction, playerLevel, effectiveLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, role, affixes);
-      end
+
+      shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, encounter_id, size, difficulty, role);
+      couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, encounter_id, size, difficulty, role);
 
       if(shouldBeLoaded and not loaded[id]) then
         changed = changed + 1;
@@ -1523,7 +1461,6 @@ loadFrame:RegisterEvent("ENCOUNTER_END");
 
 if not WeakAuras.IsClassic() then
   loadFrame:RegisterEvent("PLAYER_TALENT_UPDATE");
-  loadFrame:RegisterEvent("PLAYER_PVP_TALENT_UPDATE");
   loadFrame:RegisterEvent("PLAYER_DIFFICULTY_CHANGED");
   loadFrame:RegisterEvent("PET_BATTLE_OPENING_START");
   loadFrame:RegisterEvent("PET_BATTLE_CLOSE");
@@ -1532,7 +1469,6 @@ if not WeakAuras.IsClassic() then
   loadFrame:RegisterEvent("UPDATE_OVERRIDE_ACTIONBAR");
   loadFrame:RegisterEvent("CHALLENGE_MODE_COMPLETED")
   loadFrame:RegisterEvent("CHALLENGE_MODE_START")
-  loadFrame:RegisterEvent("COVENANT_CHOSEN")
 else
   loadFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
 end
@@ -1564,16 +1500,6 @@ function Private.RegisterLoadEvents()
     Private.ScanForLoads(nil, ...)
     Private.StopProfileSystem("load");
   end);
-
-  C_Timer.NewTicker(0.5, function()
-    Private.StartProfileSystem("load");
-    local zoneId = C_Map.GetBestMapForUnit("player");
-    if loadFrame.zoneId ~= zoneId then
-      Private.ScanForLoads(nil, "ZONE_CHANGED")
-      loadFrame.zoneId = zoneId;
-    end
-    Private.StopProfileSystem("load");
-  end)
 
   unitLoadFrame:SetScript("OnEvent", function(frame, e, arg1, ...)
     Private.StartProfileSystem("load");
@@ -2138,7 +2064,7 @@ local function RepairDatabase(loginAfter)
     -- set db version to current code version
     db.dbVersion = WeakAuras.InternalVersion()
     -- reinstall snapshots from history
-    local newDB = Mixin({}, db.displays)
+    local newDB = Retail.Mixin({}, db.displays)
     coroutine.yield()
     for id, data in pairs(db.displays) do
       local snapshot = Private.GetMigrationSnapshot(data.uid)
@@ -2789,7 +2715,7 @@ function WeakAuras.Add(data, takeSnapshot, simpleChange)
   if takeSnapshot then
     Private.SetMigrationSnapshot(data.uid, snapshot)
   end
-  local ok = xpcall(WeakAuras.PreAdd, geterrorhandler(), data)
+  local ok = Retail.xpcall(WeakAuras.PreAdd, geterrorhandler(), data)
   if ok then
     pAdd(data, simpleChange)
   end
@@ -3228,7 +3154,7 @@ function Private.PerformActions(data, when, region)
     local func = Private.customActionsFunctions[data.id][when]
     if func then
       Private.ActivateAuraEnvironment(region.id, region.cloneId, region.state, region.states);
-      xpcall(func, geterrorhandler());
+      Retail.xpcall(func, geterrorhandler());
       Private.ActivateAuraEnvironment(nil);
     end
   end
@@ -3884,7 +3810,7 @@ local function evaluateTriggerStateTriggers(id)
     result = true;
   else
     if (triggerState[id].disjunctive == "custom" and triggerState[id].triggerLogicFunc) then
-      local ok, returnValue = xpcall(triggerState[id].triggerLogicFunc, geterrorhandler(), triggerState[id].triggers);
+      local ok, returnValue = Retail.xpcall(triggerState[id].triggerLogicFunc, geterrorhandler(), triggerState[id].triggers);
       result = ok and returnValue;
     end
   end
@@ -4067,7 +3993,7 @@ function Private.RunCustomTextFunc(region, customFunc)
     end
   end
 
-  local custom = {select(2, xpcall(customFunc, geterrorhandler(), expirationTime or math.huge, duration or 0, progress, dur, name, icon, stacks))}
+  local custom = {select(2, Retail.xpcall(customFunc, geterrorhandler(), expirationTime or math.huge, duration or 0, progress, dur, name, icon, stacks))}
   Private.ActivateAuraEnvironment(nil)
 
   return custom
@@ -4938,7 +4864,7 @@ local function GetAnchorFrame(data, region, parent)
     Private.StartProfileSystem("custom region anchor")
     Private.StartProfileAura(region.id)
     Private.ActivateAuraEnvironment(region.id, region.cloneId, region.state)
-    local ok, frame = xpcall(region.customAnchorFunc, geterrorhandler())
+    local ok, frame = Retail.xpcall(region.customAnchorFunc, geterrorhandler())
     Private.ActivateAuraEnvironment()
     Private.StopProfileSystem("custom region anchor")
     Private.StopProfileAura(region.id)
@@ -4972,7 +4898,7 @@ function Private.AnchorFrame(data, region, parent)
       local errorhandler = function(text)
         geterrorhandler()(L["'ERROR: Anchoring %s': \n"]:format(data.id) .. text)
       end
-      xpcall(region.SetParent, errorhandler, region, anchorParent);
+      Retail.xpcall(region.SetParent, errorhandler, region, anchorParent);
     else
       region:SetParent(parent or frame);
     end
@@ -5199,4 +5125,20 @@ end
 
 function WeakAuras.IsAuraLoaded(id)
   return Private.loaded[id]
+end
+
+-- Custom and ported functions
+function WeakAuras.ExtractSpellId(spellName)
+  local link = GetSpellLink(spellName);
+  if link then
+    local number = link:match("spell:(%d+)");
+    return tonumber(number);
+  end
+
+  return nil;
+end
+
+function WeakAuras.GetMoPTalentInfo(tier, column)
+  local talentId = (tier-1)*3+column;
+  return GetTalentInfo(talentId);
 end

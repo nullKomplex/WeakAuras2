@@ -178,7 +178,7 @@ local funcs = {
       self.texture:SetVertexColor(r, g, b, a or 1)
       self:UpdateTickDesaturated()
     else
-      self.texture:SetColorTexture(r, g, b, a or 1)
+      self.texture:SetTexture(r, g, b, a or 1)
     end
   end,
   SetTickPlacementMode = function(self, placement_mode)

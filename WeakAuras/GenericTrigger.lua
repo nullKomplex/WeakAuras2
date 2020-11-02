@@ -59,13 +59,14 @@ local AddonName, Private = ...
 local tinsert, tconcat, wipe = table.insert, table.concat, wipe
 local tostring, pairs, type = tostring, pairs, type
 local error, setmetatable = error, setmetatable
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo;
 
 -- WoW APIs
 local IsPlayerMoving = IsPlayerMoving
 
 WeakAurasAceEvents = setmetatable({}, {__tostring=function() return "WeakAuras" end});
 LibStub("AceEvent-3.0"):Embed(WeakAurasAceEvents);
+local Retail = LibStub("LibRetail")
+
 local aceEvents = WeakAurasAceEvents
 
 local WeakAuras = WeakAuras;
@@ -355,7 +356,7 @@ local function RunOverlayFuncs(event, state)
   for i, overlayFunc in ipairs(event.overlayFuncs) do
     state.additionalProgress[i] = state.additionalProgress[i] or {};
     local additionalProgress = state.additionalProgress[i];
-    local ok, a, b, c = xpcall(overlayFunc, geterrorhandler(), event.trigger, state);
+    local ok, a, b, c = Retail.xpcall(overlayFunc, geterrorhandler(), event.trigger, state);
     if (not ok) then
       additionalProgress.min = nil;
       additionalProgress.max = nil;
@@ -402,7 +403,7 @@ local function callFunctionForActivateEvent(func, trigger, fallback, errorHandle
   if not func then
     return fallback
   end
-  local ok, value = xpcall(func, errorHandler, trigger)
+  local ok, value = Retail.xpcall(func, errorHandler, trigger)
   return ok and value or fallback
 end
 
@@ -435,7 +436,7 @@ function Private.ActivateEvent(id, triggernum, data, state, errorHandler)
     state.inverse = nil;
     state.autoHide = autoHide;
   elseif (data.durationFunc) then
-    local ok, arg1, arg2, arg3, inverse = xpcall(data.durationFunc, errorHandler, data.trigger);
+    local ok, arg1, arg2, arg3, inverse = Retail.xpcall(data.durationFunc, errorHandler, data.trigger);
     arg1 = ok and type(arg1) == "number" and arg1 or 0;
     arg2 = ok and type(arg2) == "number" and arg2 or 0;
 
@@ -541,12 +542,12 @@ local function RunTriggerFunc(allStates, data, id, triggernum, event, arg1, arg2
   if(data.triggerFunc) then
     local untriggerCheck = false;
     if (data.statesParameter == "full") then
-      local ok, returnValue = xpcall(data.triggerFunc, errorHandler, allStates, event, arg1, arg2, ...);
+      local ok, returnValue = Retail.xpcall(data.triggerFunc, errorHandler, allStates, event, arg1, arg2, ...);
       if (ok and returnValue) then
         updateTriggerState = true;
       end
     elseif (data.statesParameter == "all") then
-      local ok, returnValue = xpcall(data.triggerFunc, errorHandler, allStates, event, arg1, arg2, ...);
+      local ok, returnValue = Retail.xpcall(data.triggerFunc, errorHandler, allStates, event, arg1, arg2, ...);
       if( (ok and returnValue) or optionsEvent) then
         for id, state in pairs(allStates) do
           if (state.changed) then
@@ -577,7 +578,7 @@ local function RunTriggerFunc(allStates, data, id, triggernum, event, arg1, arg2
         end
         allStates[cloneId] = allStates[cloneId] or {};
         local state = allStates[cloneId];
-        local ok, returnValue = xpcall(data.triggerFunc, errorHandler, state, event, unit, arg1, arg2, ...);
+        local ok, returnValue = Retail.xpcall(data.triggerFunc, errorHandler, state, event, unit, arg1, arg2, ...);
         if (ok and returnValue) or optionsEvent then
           if(Private.ActivateEvent(id, triggernum, data, state, errorHandler)) then
             updateTriggerState = true;
@@ -589,7 +590,7 @@ local function RunTriggerFunc(allStates, data, id, triggernum, event, arg1, arg2
     elseif (data.statesParameter == "one") then
       allStates[""] = allStates[""] or {};
       local state = allStates[""];
-      local ok, returnValue = xpcall(data.triggerFunc, errorHandler, state, event, arg1, arg2, ...);
+      local ok, returnValue = Retail.xpcall(data.triggerFunc, errorHandler, state, event, arg1, arg2, ...);
       if (ok and returnValue) or optionsEvent then
         if(Private.ActivateEvent(id, triggernum, data, state, errorHandler)) then
           updateTriggerState = true;
@@ -598,7 +599,7 @@ local function RunTriggerFunc(allStates, data, id, triggernum, event, arg1, arg2
         untriggerCheck = true;
       end
     else
-      local ok, returnValue = xpcall(data.triggerFunc, errorHandler, event, arg1, arg2, ...);
+      local ok, returnValue = Retail.xpcall(data.triggerFunc, errorHandler, event, arg1, arg2, ...);
       if (ok and returnValue) or optionsEvent then
         allStates[""] = allStates[""] or {};
         local state = allStates[""];
@@ -612,7 +613,7 @@ local function RunTriggerFunc(allStates, data, id, triggernum, event, arg1, arg2
     if (untriggerCheck and not optionsEvent) then
       if (data.statesParameter == "all") then
         if data.untriggerFunc then
-          local ok, returnValue = xpcall(data.untriggerFunc, errorHandler, allStates, event, arg1, arg2, ...);
+          local ok, returnValue = Retail.xpcall(data.untriggerFunc, errorHandler, allStates, event, arg1, arg2, ...);
           if ok and returnValue then
             for id, state in pairs(allStates) do
               if (state.changed) then
@@ -629,7 +630,7 @@ local function RunTriggerFunc(allStates, data, id, triggernum, event, arg1, arg2
             local cloneId = Private.multiUnitUnits[data.trigger.unit] and arg1 or ""
             local state = allStates[cloneId]
             if state then
-              local ok, returnValue =  xpcall(data.untriggerFunc, errorHandler, state, event, arg1, arg2, ...);
+              local ok, returnValue =  Retail.xpcall(data.untriggerFunc, errorHandler, state, event, arg1, arg2, ...);
               if ok and returnValue then
                 if (Private.EndEvent(id, triggernum, nil, state)) then
                   updateTriggerState = true;
@@ -642,7 +643,7 @@ local function RunTriggerFunc(allStates, data, id, triggernum, event, arg1, arg2
         allStates[""] = allStates[""] or {};
         local state = allStates[""];
         if data.untriggerFunc then
-          local ok, returnValue = xpcall(data.untriggerFunc, errorHandler, state, event, arg1, arg2, ...);
+          local ok, returnValue = Retail.xpcall(data.untriggerFunc, errorHandler, state, event, arg1, arg2, ...);
           if (ok and returnValue) then
             if (Private.EndEvent(id, triggernum, nil, state)) then
               updateTriggerState = true;
@@ -651,7 +652,7 @@ local function RunTriggerFunc(allStates, data, id, triggernum, event, arg1, arg2
         end
       else
         if data.untriggerFunc then
-          local ok, returnValue = xpcall(data.untriggerFunc, errorHandler, event, arg1, arg2, ...);
+          local ok, returnValue = Retail.xpcall(data.untriggerFunc, errorHandler, event, arg1, arg2, ...);
           if ok and returnValue then
             allStates[""] = allStates[""] or {};
             local state = allStates[""];
@@ -675,21 +676,19 @@ function WeakAuras.ScanEvents(event, arg1, arg2, ...)
     return
   end
   if(event == "COMBAT_LOG_EVENT_UNFILTERED") then
-    local arg1, arg2 = CombatLogGetCurrentEventInfo();
-
     event_list = event_list[arg2];
     if (not event_list) then
       Private.StopProfileSystem("generictrigger " .. orgEvent )
       return;
     end
-    WeakAuras.ScanEventsInternal(event_list, event, CombatLogGetCurrentEventInfo());
+    WeakAuras.ScanEventsInternal(event_list, event, arg1, arg2, ...);
 
   elseif (event == "COMBAT_LOG_EVENT_UNFILTERED_CUSTOM") then
     -- This reverts the COMBAT_LOG_EVENT_UNFILTERED_CUSTOM workaround so that custom triggers that check the event argument will work as expected
     if(event == "COMBAT_LOG_EVENT_UNFILTERED_CUSTOM") then
       event = "COMBAT_LOG_EVENT_UNFILTERED";
     end
-    WeakAuras.ScanEventsInternal(event_list, event, CombatLogGetCurrentEventInfo());
+    WeakAuras.ScanEventsInternal(event_list, event, arg1, arg2, ...);
   else
     WeakAuras.ScanEventsInternal(event_list, event, arg1, arg2, ...);
   end
@@ -832,10 +831,10 @@ function HandleEvent(frame, event, arg1, arg2, ...)
 
   if not(WeakAuras.IsPaused()) then
     if(event == "COMBAT_LOG_EVENT_UNFILTERED") then
-      WeakAuras.ScanEvents(event);
+      WeakAuras.ScanEvents(event, arg1, arg2, ...);
       -- This triggers the scanning of "hacked" COMBAT_LOG_EVENT_UNFILTERED events that were renamed in order to circumvent
       -- the "proper" COMBAT_LOG_EVENT_UNFILTERED checks
-      WeakAuras.ScanEvents("COMBAT_LOG_EVENT_UNFILTERED_CUSTOM");
+      WeakAuras.ScanEvents("COMBAT_LOG_EVENT_UNFILTERED_CUSTOM", arg1, arg2, ...);
     else
       WeakAuras.ScanEvents(event, arg1, arg2, ...);
     end
@@ -1071,7 +1070,7 @@ function GenericTrigger.LoadDisplays(toLoad, loadEvent, ...)
   end
 
   for event in pairs(eventsToRegister) do
-    xpcall(frame.RegisterEvent, trueFunction, frame, event)
+    Retail.xpcall(frame.RegisterEvent, trueFunction, frame, event)
     genericTriggerRegisteredEvents[event] = true;
   end
 
@@ -1082,7 +1081,7 @@ function GenericTrigger.LoadDisplays(toLoad, loadEvent, ...)
         frame.unitFrames[unit].unit = unit
         frame.unitFrames[unit]:SetScript("OnEvent", HandleUnitEvent);
       end
-      xpcall(frame.unitFrames[unit].RegisterUnitEvent, trueFunction, frame.unitFrames[unit], event, unit)
+      Retail.xpcall(frame.unitFrames[unit].RegisterUnitEvent, trueFunction, frame.unitFrames[unit], event, unit)
       genericTriggerRegisteredUnitEvents[unit] = genericTriggerRegisteredUnitEvents[unit] or {};
       genericTriggerRegisteredUnitEvents[unit][event] = true;
     end
@@ -1445,13 +1444,8 @@ local combatLogUpgrade = {
 local oldPowerTriggers = {
   ["Combo Points"] = 4,
   ["Holy Power"] = 9,
-  ["Insanity"] = 13,
   ["Chi Power"] = 12,
   ["Astral Power"] = 8,
-  ["Maelstrom"] =  11,
-  ["Arcane Charges"] = 16,
-  ["Fury"] = 17,
-  ["Pain"] = 18,
   ["Shards"] = 7,
 }
 
@@ -1656,7 +1650,7 @@ do
       swingTimerFrame:SetScript("OnEvent",
         function(_, event, ...)
           if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-            swingTimerCLEUCheck(CombatLogGetCurrentEventInfo())
+            swingTimerCLEUCheck(...)
           else
             swingTimerCheck(event, ...)
           end
@@ -1853,7 +1847,6 @@ do
     if not WeakAuras.IsClassic() then
       cdReadyFrame:RegisterEvent("RUNE_POWER_UPDATE");
       cdReadyFrame:RegisterEvent("PLAYER_TALENT_UPDATE");
-      cdReadyFrame:RegisterEvent("PLAYER_PVP_TALENT_UPDATE");
     else
       cdReadyFrame:RegisterEvent("CHARACTER_POINTS_CHANGED");
     end
@@ -1871,14 +1864,13 @@ do
       if not WeakAuras.IsPaused() then
         if(event == "SPELL_UPDATE_COOLDOWN" or event == "SPELL_UPDATE_CHARGES"
           or event == "RUNE_POWER_UPDATE" or event == "ACTIONBAR_UPDATE_COOLDOWN"
-          or event == "PLAYER_TALENT_UPDATE" or event == "PLAYER_PVP_TALENT_UPDATE"
-          or event == "CHARACTER_POINTS_CHANGED") then
+          or event == "PLAYER_TALENT_UPDATE" or event == "CHARACTER_POINTS_CHANGED") then
           Private.CheckCooldownReady();
         elseif(event == "SPELLS_CHANGED") then
           Private.CheckSpellKnown();
           Private.CheckCooldownReady();
         elseif(event == "UNIT_SPELLCAST_SENT") then
-          local unit, guid, castGUID, name = ...;
+          local unit, name = ...;
           if(unit == "player") then
             name = GetSpellInfo(name);
             if(gcdSpellName ~= name) then
@@ -3046,10 +3038,10 @@ do
   local mh = GetInventorySlotInfo("MainHandSlot")
   local oh = GetInventorySlotInfo("SecondaryHandSlot")
 
-  local mh_name, mh_shortenedName, mh_exp, mh_dur, mh_charges, mh_EnchantID;
+  local mh_name, mh_shortenedName, mh_exp, mh_dur, mh_charges;
   local mh_icon = GetInventoryItemTexture("player", mh) or "Interface\\Icons\\INV_Misc_QuestionMark"
 
-  local oh_name, oh_shortenedName, oh_exp, oh_dur, oh_charges, oh_EnchantID;
+  local oh_name, oh_shortenedName, oh_exp, oh_dur, oh_charges;
   local oh_icon = GetInventoryItemTexture("player", oh) or "Interface\\Icons\\INV_Misc_QuestionMark"
 
   local tenchFrame = nil
@@ -3084,7 +3076,7 @@ do
       local function tenchUpdate()
         Private.StartProfileSystem("generictrigger");
         local _, mh_rem, oh_rem
-        _, mh_rem, mh_charges, mh_EnchantID, _, oh_rem, oh_charges, oh_EnchantID = GetWeaponEnchantInfo();
+        _, mh_rem, mh_charges, _, oh_rem, oh_charges = GetWeaponEnchantInfo();
         local time = GetTime();
         local mh_exp_new = mh_rem and (time + (mh_rem / 1000));
         local oh_exp_new = oh_rem and (time + (oh_rem / 1000));
@@ -3097,6 +3089,7 @@ do
             mh_name, mh_shortenedName = "None", "None"
           end
           mh_icon = GetInventoryItemTexture("player", mh)
+          WeakAuras.ScanEvents("MAINHAND_TENCH_UPDATE");
         end
         if(math.abs((oh_exp or 0) - (oh_exp_new or 0)) > 1) then
           oh_exp = oh_exp_new;
@@ -3107,8 +3100,8 @@ do
             oh_name, oh_shortenedName = "None", "None"
           end
           oh_icon = GetInventoryItemTexture("player", oh)
+          WeakAuras.ScanEvents("OFFHAND_TENCH_UPDATE");
         end
-        WeakAuras.ScanEvents("TENCH_UPDATE");
         Private.StopProfileSystem("generictrigger");
       end
 
@@ -3125,11 +3118,11 @@ do
   end
 
   function WeakAuras.GetMHTenchInfo()
-    return mh_exp, mh_dur, mh_name, mh_shortenedName, mh_icon, mh_charges, mh_EnchantID;
+    return mh_exp, mh_dur, mh_name, mh_shortenedName, mh_icon, mh_charges;
   end
 
   function WeakAuras.GetOHTenchInfo()
-    return oh_exp, oh_dur, oh_name, oh_shortenedName, oh_icon, oh_charges, oh_EnchantID;
+    return oh_exp, oh_dur, oh_name, oh_shortenedName, oh_icon, oh_charges;
   end
 end
 
@@ -3689,26 +3682,26 @@ function GenericTrigger.CreateFallbackState(data, triggernum, state)
   Private.ActivateAuraEnvironment(data.id, "", state);
   local firstTrigger = data.triggers[1].trigger
   if (event.nameFunc) then
-    local ok, name = xpcall(event.nameFunc, geterrorhandler(), firstTrigger);
+    local ok, name = Retail.xpcall(event.nameFunc, geterrorhandler(), firstTrigger);
     state.name = ok and name or nil;
   end
   if (event.iconFunc) then
-    local ok, icon = xpcall(event.iconFunc, geterrorhandler(), firstTrigger);
+    local ok, icon = Retail.xpcall(event.iconFunc, geterrorhandler(), firstTrigger);
     state.icon = ok and icon or nil;
   end
 
   if (event.textureFunc ) then
-    local ok, texture = xpcall(event.textureFunc, geterrorhandler(), firstTrigger);
+    local ok, texture = Retail.xpcall(event.textureFunc, geterrorhandler(), firstTrigger);
     state.texture = ok and texture or nil;
   end
 
   if (event.stacksFunc) then
-    local ok, stacks = xpcall(event.stacksFunc, geterrorhandler(), firstTrigger);
+    local ok, stacks = Retail.xpcall(event.stacksFunc, geterrorhandler(), firstTrigger);
     state.stacks = ok and stacks or nil;
   end
 
   if (event.durationFunc) then
-    local ok, arg1, arg2, arg3, inverse = xpcall(event.durationFunc, geterrorhandler(), firstTrigger);
+    local ok, arg1, arg2, arg3, inverse = Retail.xpcall(event.durationFunc, geterrorhandler(), firstTrigger);
     if (not ok) then
       state.progressType = "timed";
       state.duration = 0;
@@ -3831,11 +3824,11 @@ WeakAuras.CheckForItemBonusId = function(id)
   return false
 end
 
-WeakAuras.GetItemSubClassInfo = function(i)
-  local subClassId = i % 256
-  local classId = (i - subClassId) / 256
-  return GetItemSubClassInfo(classId, subClassId)
-end
+-- WeakAuras.GetItemSubClassInfo = function(i)
+--   local subClassId = i % 256
+--   local classId = (i - subClassId) / 256
+--   return GetItemSubClassInfo(classId, subClassId)
+-- end
 
 
 WeakAuras.RegisterTriggerSystem({"event", "status", "custom"}, GenericTrigger);

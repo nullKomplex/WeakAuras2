@@ -2,6 +2,8 @@ if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, Private = ...
 
 local SharedMedia = LibStub("LibSharedMedia-3.0");
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L;
 
 -- Default settings
@@ -305,8 +307,8 @@ local barPrototype = {
       for index, additionalBar in ipairs(self.additionalBars) do
         if (not self.extraTextures[index]) then
           local extraTexture = self:CreateTexture(nil, "ARTWORK");
-          extraTexture:SetSnapToPixelGrid(false)
-          extraTexture:SetTexelSnappingBias(0)
+          -- extraTexture:SetSnapToPixelGrid(false)
+          -- extraTexture:SetTexelSnappingBias(0)
           extraTexture:SetTexture(self:GetStatusBarTexture(), extraTextureWrapMode, extraTextureWrapMode);
           extraTexture:SetDrawLayer("ARTWORK", min(index, 7));
           self.extraTextures[index] = extraTexture;
@@ -949,18 +951,18 @@ local function create(parent)
 
   -- Create statusbar (inherit prototype)
   local bar = CreateFrame("FRAME", nil, region);
-  Mixin(bar, SmoothStatusBarMixin);
+  Retail.Mixin(bar, Retail.SmoothStatusBarMixin);
   local fg = bar:CreateTexture(nil, "ARTWORK");
-  fg:SetSnapToPixelGrid(false)
-  fg:SetTexelSnappingBias(0)
+  -- fg:SetSnapToPixelGrid(false)
+  -- fg:SetTexelSnappingBias(0)
   local bg = bar:CreateTexture(nil, "ARTWORK");
-  bg:SetSnapToPixelGrid(false)
-  bg:SetTexelSnappingBias(0)
+  -- bg:SetSnapToPixelGrid(false)
+  -- bg:SetTexelSnappingBias(0)
   bg:SetAllPoints();
   local fgFrame = CreateFrame("FRAME", nil, bar)
   local spark = bar:CreateTexture(nil, "ARTWORK");
-  spark:SetSnapToPixelGrid(false)
-  spark:SetTexelSnappingBias(0)
+  -- spark:SetSnapToPixelGrid(false)
+  -- spark:SetTexelSnappingBias(0)
   fg:SetDrawLayer("ARTWORK", 0);
   bg:SetDrawLayer("ARTWORK", -1);
   spark:SetDrawLayer("ARTWORK", 7);
@@ -980,8 +982,8 @@ local function create(parent)
   local iconFrame = CreateFrame("FRAME", nil, region);
   region.iconFrame = iconFrame;
   local icon = iconFrame:CreateTexture(nil, "OVERLAY");
-  icon:SetSnapToPixelGrid(false)
-  icon:SetTexelSnappingBias(0)
+  -- icon:SetSnapToPixelGrid(false)
+  -- icon:SetTexelSnappingBias(0)
   region.icon = icon;
   icon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark");
 

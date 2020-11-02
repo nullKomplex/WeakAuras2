@@ -1,8 +1,9 @@
 if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, Private = ...
 
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L;
-local GetAtlasInfo = WeakAuras.IsClassic() and GetAtlasInfo or C_Texture.GetAtlasInfo
 
 local defaultFont = WeakAuras.defaultFont
 local defaultFontSize = WeakAuras.defaultFontSize
@@ -479,8 +480,8 @@ local function createSpinner(parent, layer, drawlayer)
 
   for i = 1, 3 do
     local texture = parent:CreateTexture(nil, layer);
-    texture:SetSnapToPixelGrid(false)
-    texture:SetTexelSnappingBias(0)
+    -- texture:SetSnapToPixelGrid(false)
+    -- texture:SetTexelSnappingBias(0)
     texture:SetDrawLayer(layer, drawlayer);
     texture:SetAllPoints(parent);
     spinner.textures[i] = texture;
@@ -687,8 +688,8 @@ local textureFunctions = {
 
 local function createTexture(region, layer, drawlayer)
   local texture = region:CreateTexture(nil, layer);
-  texture:SetSnapToPixelGrid(false)
-  texture:SetTexelSnappingBias(0)
+  -- texture:SetSnapToPixelGrid(false)
+  -- texture:SetTexelSnappingBias(0)
   texture:SetDrawLayer(layer, drawlayer);
 
   for k, v in pairs(textureFunctions) do
@@ -977,10 +978,10 @@ local function create(parent)
 
   region.values = {};
 
-  -- Use a dummy object for the SmoothStatusBarMixin, because our SetValue
+  -- Use a dummy object for the Retail.SmoothStatusBarMixin, because our SetValue
   -- is used for a different purpose
   region.smoothProgress = {};
-  Mixin(region.smoothProgress, SmoothStatusBarMixin);
+  Retail.Mixin(region.smoothProgress, Retail.SmoothStatusBarMixin);
   region.smoothProgress.SetValue = function(self, progress)
     region:SetValueOnTexture(progress);
     region:UpdateAdditionalProgress();
