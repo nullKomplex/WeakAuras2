@@ -4940,22 +4940,12 @@ function WeakAuras.FindUnusedId(prefix)
 end
 
 function WeakAuras.SetModel(frame, model_path, model_fileId, isUnit, isDisplayInfo)
-  if WeakAuras.IsClassic() then
-    if isDisplayInfo then
-      pcall(frame.SetDisplayInfo, frame, tonumber(model_path))
-    elseif isUnit then
-      pcall(frame.SetUnit, frame, model_path)
-    else
-      pcall(frame.SetModel, frame, model_path)
-    end
+  if isDisplayInfo then
+    pcall(frame.SetDisplayInfo, frame, tonumber(model_path))
+  elseif isUnit then
+    pcall(frame.SetUnit, frame, model_path)
   else
-    if isDisplayInfo then
-      pcall(frame.SetDisplayInfo, frame, tonumber(model_fileId))
-    elseif isUnit then
-      pcall(frame.SetUnit, frame, model_fileId)
-    else
-      pcall(frame.SetModel, frame, tonumber(model_fileId))
-    end
+    pcall(frame.SetModel, frame, model_path)
   end
 end
 
@@ -4996,6 +4986,10 @@ local textSymbols = {
 function WeakAuras.ReplaceRaidMarkerSymbols(txt)
   local start = 1
 
+  if not txt or txt == "" then
+    return ""
+  end
+  
   while true do
     local firstChar = txt:find("{", start, true)
     if not firstChar then

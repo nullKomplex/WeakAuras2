@@ -2308,6 +2308,11 @@ local specialCasesForMerge = {
 
 local function mergeOptions(mergedOptions, data, options, config, prepath, parent)
   local nextInsert = 1
+
+  if not options then
+    return
+  end
+
   for i = 1, #options do
     local path = CopyTable(prepath)
     local option = options[i]

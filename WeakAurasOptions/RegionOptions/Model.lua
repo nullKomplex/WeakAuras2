@@ -281,7 +281,7 @@ end
 
 local function createIcon()
   local data = {
-    model_path = "spells/arcanepower_state_chest.m2", -- arthas is not a thing on classic
+    model_path = "Creature/Arthaslichking/arthaslichking.m2",
     model_fileId = "122968", -- Creature/Arthaslichking/arthaslichking.m2
     modelIsUnit = false,
     model_x = 0,

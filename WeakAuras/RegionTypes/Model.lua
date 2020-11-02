@@ -8,7 +8,7 @@ local L = WeakAuras.L;
 
 -- Default settings
 local default = {
-  model_path = "spells/arcanepower_state_chest.m2", -- arthas is not a thing on classic
+  model_path = "Creature/Arthaslichking/arthaslichking.m2",
   model_fileId = "122968", -- Creature/Arthaslichking/arthaslichking.m2
   modelIsUnit = false,
   api = false, -- false ==> SetPosition + SetFacing; true ==> SetTransform
@@ -116,7 +116,7 @@ local function AcquireModel(region, data)
   model:ClearAllPoints()
   model:SetAllPoints(region)
   model:SetParent(region)
-  model:SetKeepModelOnHide(true)
+  -- model:SetKeepModelOnHide(true)
   model:Show()
 
   -- Adjust model
@@ -135,12 +135,7 @@ local function AcquireModel(region, data)
   if data.modelIsUnit then
     model:RegisterEvent("UNIT_MODEL_CHANGED");
 
-    local unit
-    if WeakAuras.IsClassic() then
-      unit = data.model_path
-    else
-      unit = data.model_fileId
-    end
+    local unit = data.model_path
 
     if (unit == "target") then
       model:RegisterEvent("PLAYER_TARGET_CHANGED");
@@ -180,7 +175,7 @@ local function AcquireModel(region, data)
 end
 
 local function ReleaseModel(model)
-  model:SetKeepModelOnHide(false)
+  -- model:SetKeepModelOnHide(false)
   model:Hide()
   model:UnregisterEvent("UNIT_MODEL_CHANGED");
   model:UnregisterEvent("PLAYER_TARGET_CHANGED");

@@ -51,7 +51,7 @@ local properties = {
 
 local function PreShow(self)
   local data = self.data
-  self:SetKeepModelOnHide(true)
+  -- self:SetKeepModelOnHide(true)
   self:Show()
 
   -- Adjust model
@@ -104,7 +104,7 @@ local function AcquireModel(region, data)
     model:SetAllPoints(region.parent)
   end
   model:SetParent(region)
-  model:SetKeepModelOnHide(true)
+  -- model:SetKeepModelOnHide(true)
   model:Show()
 
   -- Adjust model
@@ -132,7 +132,7 @@ local function AcquireModel(region, data)
 end
 
 local function ReleaseModel(model)
-  model:SetKeepModelOnHide(false)
+  -- model:SetKeepModelOnHide(false)
   model:Hide()
   local pool = model.api and poolNewApi or poolOldApi
   pool:Release(model)
