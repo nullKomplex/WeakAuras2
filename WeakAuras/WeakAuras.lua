@@ -26,6 +26,8 @@ local L = WeakAuras.L
 local versionString = WeakAuras.versionString
 local prettyPrint = WeakAuras.prettyPrint
 
+local round = function(x) return floor(x + 0.5) end
+
 WeakAurasTimers = setmetatable({}, {__tostring=function() return "WeakAuras" end})
 LibStub("AceTimer-3.0"):Embed(WeakAurasTimers)
 
@@ -2377,7 +2379,7 @@ local function validateUserConfig(data, options, config)
         else
           if option.type == "number" and option.step then
             local min = option.min or 0
-            config[key] = option.step * Round((value - min)/option.step) + min
+            config[key] = option.step * Retail.Round((value - min)/option.step) + min
           end
         end
       elseif option.type == "select" then
@@ -4625,8 +4627,8 @@ function Private.ensurePRDFrame()
       local clampedZeroBasedScale = Saturate(zeroBasedScale);
       local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"));
       local baseNamePlateWidth = NamePlateDriverFrame.baseNamePlateWidth;
-      prdWidth = baseNamePlateWidth * horizontalScale * Lerp(1.1, 1.0, clampedZeroBasedScale) - 24;
-      prdHeight = 4 * namePlateVerticalScale * Lerp(1.2, 1.0, clampedZeroBasedScale) * 2  + 1;
+      prdWidth = baseNamePlateWidth * horizontalScale * Retail.Lerp(1.1, 1.0, clampedZeroBasedScale) - 24;
+      prdHeight = 4 * namePlateVerticalScale * Retail.Lerp(1.2, 1.0, clampedZeroBasedScale) * 2  + 1;
       personalRessourceDisplayFrame:SetScale(1 / UIParent:GetEffectiveScale());
       personalRessourceDisplayFrame.texture:SetTexture("Interface\\AddOns\\WeakAuras\\Media\\Textures\\PRDFrame");
     end

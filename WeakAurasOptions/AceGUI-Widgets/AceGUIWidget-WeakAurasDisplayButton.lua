@@ -995,9 +995,11 @@ local methods = {
       self:DisableGroup();
       self.callbacks.UpdateExpandButton();
       self:SetOnExpandCollapse(function() WeakAuras.SortDisplayButtons(nil, true) end);
-    else
-      self:SetViewRegion(WeakAuras.regions[data.id].region);
-      self:EnableGroup();
+    else 
+      if WeakAuras.regions[data.id] then
+        self:SetViewRegion(WeakAuras.regions[data.id].region);
+        self:EnableGroup();
+      end
     end
     self:SetNormalTooltip();
     self.frame:SetScript("OnClick", self.callbacks.OnClickNormal);

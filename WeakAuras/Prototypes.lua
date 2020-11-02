@@ -799,9 +799,14 @@ function WeakAuras.IsSpellKnownForLoad(spell, exact)
 end
 
 function WeakAuras.IsSpellKnown(spell, pet)
+  if not spell or spell == 0 then
+    return false
+  end
+
   if (pet) then
     return IsSpellKnown(spell, pet);
   end
+
   return IsPlayerSpell(spell) or IsSpellKnown(spell);
 end
 

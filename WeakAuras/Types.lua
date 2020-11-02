@@ -9,6 +9,8 @@ local LibBabbleRace = LibStub("LibBabble-Race-3.0");
 local LBR_Locale = LibBabbleRace:GetUnstrictLookupTable()
 local LBR_Base = LibBabbleRace:GetBaseLookupTable();
 
+local Retail = LibStub("LibRetail")
+
 local wipe, tinsert = wipe, tinsert
 local GetNumShapeshiftForms, GetShapeshiftFormInfo = GetNumShapeshiftForms, GetShapeshiftFormInfo
 local GetNumSpecializationsForClassID, GetSpecializationInfoForClassID = GetNumSpecializationsForClassID, GetSpecializationInfoForClassID
@@ -115,7 +117,7 @@ local simpleFormatters = {
     return (type(value) == "number") and AbbreviateNumbers(value) or value
   end,
   AbbreviateLargeNumbers = function(value, state)
-    return (type(value) == "number") and AbbreviateLargeNumbers(Round(value)) or value
+    return (type(value) == "number") and AbbreviateLargeNumbers(Retail.Round(value)) or value
   end,
   floor = function(value)
     return (type(value) == "number") and floor(value) or value
@@ -124,7 +126,7 @@ local simpleFormatters = {
     return (type(value) == "number") and ceil(value) or value
   end,
   round = function(value)
-    return (type(value) == "number") and Round(value) or value
+    return (type(value) == "number") and Retail.Round(value) or value
   end
 }
 
