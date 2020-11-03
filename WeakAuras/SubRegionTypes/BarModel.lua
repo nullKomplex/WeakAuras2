@@ -55,17 +55,12 @@ local function PreShow(self)
   self:Show()
 
   -- Adjust model
-  local modelId
-  if WeakAuras.IsClassic() then
-    modelId = data.model_path
-  else
-    modelId = tonumber(data.model_fileId)
-  end
+  local modelId = data.model_path
   if modelId then
     self:SetModel(modelId)
   end
 
-  self:ClearTransform()
+  -- self:ClearTransform()
   if (data.api) then
     self:MakeCurrentCameraCustom()
     self:SetTransform(data.model_st_tx / 1000, data.model_st_ty / 1000, data.model_st_tz / 1000,
@@ -75,7 +70,7 @@ local function PreShow(self)
     self:SetPosition(data.model_z, data.model_x, data.model_y);
     self:SetFacing(0);
   end
-  self:SetModelAlpha(self.region.alpha)
+  -- self:SetModelAlpha(self.region.alpha)
 end
 
 local function CreateModel()
@@ -108,17 +103,12 @@ local function AcquireModel(region, data)
   model:Show()
 
   -- Adjust model
-  local modelId
-  if WeakAuras.IsClassic() then
-    modelId = data.model_path
-  else
-    modelId = tonumber(data.model_fileId)
-  end
+  local modelId = data.model_path
   if modelId then
     model:SetModel(modelId)
   end
 
-  model:ClearTransform()
+  -- model:ClearTransform()
   if (data.api) then
     model:MakeCurrentCameraCustom()
     model:SetTransform(data.model_st_tx / 1000, data.model_st_ty / 1000, data.model_st_tz / 1000,
@@ -145,9 +135,9 @@ local funcs = {
     self:UpdateVisible()
   end,
   SetAlpha = function(self, alpha)
-    if self.model then
-      self.model:SetModelAlpha(alpha)
-    end
+    -- if self.model then
+    --   self.model:SetModelAlpha(alpha)
+    -- end
     self.alpha = alpha
   end,
   AlphaChanged = function(self)
@@ -158,7 +148,7 @@ local funcs = {
     if effectiveVisible then
       if not self.model then
         self.model = AcquireModel(self, self.data)
-        self.model:SetModelAlpha(self.alpha)
+        -- self.model:SetModelAlpha(self.alpha)
         self.model.region = self
       end
       self:OnSizeChanged()

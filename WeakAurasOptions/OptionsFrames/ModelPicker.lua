@@ -295,7 +295,7 @@ local function ConstructModelPicker(frame)
 
     WeakAuras.SetModel(self.model, self.selectedValues.model_path, self.selectedValues.model_fileId)
 
-    self.model:ClearTransform();
+    -- self.model:ClearTransform();
     self.model:SetPosition(self.selectedValues.model_z, self.selectedValues.model_x, self.selectedValues.model_y);
     self.model:SetFacing(rad(self.selectedValues.rotation));
 
@@ -383,7 +383,7 @@ local function ConstructModelPicker(frame)
       modelPickerRZ.frame:Show();
       modelPickerUS.frame:Show();
     else
-      self.model:ClearTransform();
+      -- self.model:ClearTransform();
       self.model:SetPosition(self.selectedValues.model_z, self.selectedValues.model_x, self.selectedValues.model_y);
       self.model:SetFacing(rad(self.selectedValues.rotation));
       modelPickerZ:SetValue(self.selectedValues.model_z);
