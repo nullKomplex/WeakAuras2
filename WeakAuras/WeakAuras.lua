@@ -1361,7 +1361,7 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
     vehicle = UnitOnTaxi('player')
     role = "none"
   else
-    spec = GetSpecialization()
+    spec = GetSpecialization() or 0
     specId = GetSpecializationInfo(spec)
     role = select(5, GetSpecializationInfo(spec))
     inPetBattle = C_PetBattles.IsInBattle()

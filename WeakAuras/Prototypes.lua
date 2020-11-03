@@ -907,7 +907,7 @@ local function valuesForTalentFunction(trigger)
       end
 
       if (trigger.use_spec == nil) then
-        single_spec = GetSpecialization();
+        single_spec = GetSpecialization() or 0;
       end
     end
 
@@ -2544,6 +2544,7 @@ Private.event_prototypes = {
     args = {
       {}, -- timestamp ignored with _ argument
       {}, -- messageType ignored with _ argument (it is checked before the dynamic function)
+      {}, -- hideCaster ignored with _ argument
       {
         name = "sourceGUID",
         init = "arg",
@@ -2576,6 +2577,15 @@ Private.event_prototypes = {
         conditionType = "string"
       },
       {
+        name = "sourceNpcId",
+        display = L["Source NPC Id"],
+        type = "string",
+        test = "select(6, strsplit('-', sourceGUID or '')) == %q",
+        enable = function(trigger)
+          return not (trigger.subeventPrefix == "ENVIRONMENTAL")
+        end,
+      },
+      {
         name = "sourceFlags",
         display = L["Source In Group"],
         type = "select",
@@ -2586,6 +2596,28 @@ Private.event_prototypes = {
         conditionType = "select",
         conditionTest = function(state, needle)
           return state and state.show and WeakAuras.CheckCombatLogFlags(state.sourceFlags, needle);
+        end
+      },
+      {
+        name = "sourceFlags2",
+        display = L["Source Reaction"],
+        type = "select",
+        values = "combatlog_flags_check_reaction",
+        test = "WeakAuras.CheckCombatLogFlagsReaction(sourceFlags, %q)",
+        conditionType = "select",
+        conditionTest = function(state, needle)
+          return state and state.show and WeakAuras.CheckCombatLogFlagsReaction(state.sourceFlags, needle);
+        end
+      },
+      {
+        name = "sourceFlags3",
+        display = L["Source Object Type"],
+        type = "select",
+        values = "combatlog_flags_check_object_type",
+        test = "WeakAuras.CheckCombatLogFlagsObjectType(sourceFlags, %q)",
+        conditionType = "select",
+        conditionTest = function(state, needle)
+          return state and state.show and WeakAuras.CheckCombatLogFlagsObjectType(state.sourceFlags, needle);
         end
       },
       {
@@ -2666,6 +2698,39 @@ Private.event_prototypes = {
         end,
       },
       {
+        name = "destFlags2",
+        display = L["Destination Reaction"],
+        type = "select",
+        values = "combatlog_flags_check_reaction",
+        test = "WeakAuras.CheckCombatLogFlagsReaction(destFlags, %q)",
+        conditionType = "select",
+        conditionTest = function(state, needle)
+          return state and state.show and WeakAuras.CheckCombatLogFlagsReaction(state.destFlags, needle);
+        end,
+        enable = function(trigger)
+          return not (trigger.subeventPrefix == "SPELL" and trigger.subeventSuffix == "_CAST_START");
+        end,
+      },
+      {
+        name = "destFlags3",
+        display = L["Destination Object Type"],
+        type = "select",
+        values = "combatlog_flags_check_object_type",
+        test = "WeakAuras.CheckCombatLogFlagsObjectType(destFlags, %q)",
+        conditionType = "select",
+        conditionTest = function(state, needle)
+          return state and state.show and WeakAuras.CheckCombatLogFlagsObjectType(state.destFlags, needle);
+        end,
+        enable = function(trigger)
+          return not (trigger.subeventPrefix == "SPELL" and trigger.subeventSuffix == "_CAST_START");
+        end,
+      },
+      {-- destFlags ignore for SPELL_CAST_START
+        enable = function(trigger)
+          return (trigger.subeventPrefix == "SPELL" and trigger.subeventSuffix == "_CAST_START");
+        end,
+      },
+      {
         name = "destRaidFlags",
         display = L["Dest Raid Mark"],
         type = "select",
@@ -2680,6 +2745,11 @@ Private.event_prototypes = {
         enable = function(trigger)
           return not (trigger.subeventPrefix == "SPELL" and trigger.subeventSuffix == "_CAST_START");
         end,
+      },
+      { -- destRaidFlags ignore for SPELL_CAST_START
+        enable = function(trigger)
+          return (trigger.subeventPrefix == "SPELL" and trigger.subeventSuffix == "_CAST_START");
+        end
       },
       {
         name = "spellId",
@@ -2751,9 +2821,29 @@ Private.event_prototypes = {
       },
       {
         enable = function(trigger)
+          return trigger.subeventSuffix and (trigger.subeventSuffix == "_ABSORBED")
+        end
+      }, -- source of absorb GUID ignored with SPELL_ABSORBED
+      {
+        enable = function(trigger)
+          return trigger.subeventSuffix and (trigger.subeventSuffix == "_ABSORBED")
+        end
+      }, -- source of absorb Name ignored with SPELL_ABSORBED
+      {
+        enable = function(trigger)
+          return trigger.subeventSuffix and (trigger.subeventSuffix == "_ABSORBED")
+        end
+      }, -- source of absorb Flags ignored with SPELL_ABSORBED
+      {
+        enable = function(trigger)
+          return trigger.subeventSuffix and (trigger.subeventSuffix == "_ABSORBED")
+        end
+      }, -- source of absorb Raid Flags ignored with SPELL_ABSORBED
+      {
+        enable = function(trigger)
           return trigger.subeventSuffix and (trigger.subeventSuffix == "_ABSORBED" or trigger.subeventSuffix == "_INTERRUPT" or trigger.subeventSuffix == "_DISPEL" or trigger.subeventSuffix == "_DISPEL_FAILED" or trigger.subeventSuffix == "_STOLEN" or trigger.subeventSuffix == "_AURA_BROKEN_SPELL")
         end
-      }, -- extraSchool ignored with _ argument
+      }, -- extraSpellId ignored with SPELL_ABSORBED
       {
         name = "auraType",
         display = L["Aura Type"],
@@ -2882,6 +2972,11 @@ Private.event_prototypes = {
         conditionType = "number"
       },
       {
+        enable = function(trigger)
+          return trigger.subeventSuffix and (trigger.subeventSuffix == "_ENERGIZE")
+        end
+      }, -- unknown argument for _ENERGIZE ignored
+      {
         name = "powerType",
         display = L["Power Type"],
         type = "select",
@@ -2909,6 +3004,20 @@ Private.event_prototypes = {
           return trigger.subeventSuffix == "_CAST_FAILED"
         end
       }, -- failedType ignored with _ argument - theoretically this is not necessary because it is the last argument in the event, but it is added here for completeness
+      {
+        name = "cloneId",
+        display = L["Clone per Event"],
+        type = "toggle",
+        test = "true",
+        init = "use_cloneId and WeakAuras.GetUniqueCloneId() or ''"
+      },
+      {
+        hidden = true,
+        name = "icon",
+        init = "spellId and select(3, GetSpellInfo(spellId)) or 'Interface\\\\Icons\\\\INV_Misc_QuestionMark'",
+        store = true,
+        test = "true"
+      }
     },
     timedrequired = true
   },

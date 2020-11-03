@@ -3798,7 +3798,7 @@ do
     end
   elseif class == "MONK" then
     function WeakAuras.CalculatedGcdDuration()
-      local spec = GetSpecialization()
+      local spec = GetSpecialization() or 0
       local primaryStat = select(6, GetSpecializationInfo(spec))
       if primaryStat == LE_UNIT_STAT_AGILITY then
         return 1
