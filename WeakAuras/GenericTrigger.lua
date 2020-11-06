@@ -34,9 +34,6 @@ Returns whether the trigger can have a duration.
 GetOverlayInfo(data, triggernum)
 Returns a table containing the names of all overlays
 
-CanHaveAuto(data, triggernum)
-Returns whether the icon can be automatically selected.
-
 CanHaveClones(data)
 Returns whether the trigger can have clones.
 
@@ -2448,7 +2445,9 @@ do
         local active = (event == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
         spellActivationSpellsCurrent[spell] = active
         spellActivationSpellsCurrent[spellName] = active
-        WeakAuras.ScanEvents("WA_UPDATE_OVERLAY_GLOW", spell);
+        if not WeakAuras.IsPaused() then
+          WeakAuras.ScanEvents("WA_UPDATE_OVERLAY_GLOW", spell)
+        end
       end
 
       Private.StopProfileSystem("generictrigger");
@@ -3343,40 +3342,6 @@ function GenericTrigger.GetOverlayInfo(data, triggernum)
   return result;
 end
 
-function GenericTrigger.CanHaveAuto(data, triggernum)
-  -- Is also called on importing before conversion, so do a few checks
-  local trigger = data.triggers[triggernum].trigger
-
-  if (not trigger) then
-    return false;
-  end
-  if(
-    (
-    (
-    trigger.type == "event"
-    or trigger.type == "status"
-    )
-    and trigger.event
-    and Private.event_prototypes[trigger.event]
-    and (
-    Private.event_prototypes[trigger.event].iconFunc
-    or Private.event_prototypes[trigger.event].canHaveAuto
-    )
-    )
-    or (
-    trigger.type == "custom"
-    and ((
-    trigger.customIcon
-    and trigger.customIcon ~= ""
-    ) or trigger.custom_type == "stateupdate")
-    )
-    ) then
-    return true;
-  else
-    return false;
-  end
-end
-
 function GenericTrigger.CanHaveClones(data)
   return false;
 end
@@ -3520,6 +3485,27 @@ local commonConditions = {
   }
 }
 
+function Private.ExpandCustomVariables(variables)
+  -- Make the life of tsu authors easier, by automatically filling in the details for
+  -- expirationTime, duration, value, total, stacks, if those exists but aren't a table value
+  -- By allowing a short-hand notation of just variable = type
+  -- In addition to the long form of variable = { type = xyz, display = "desc"}
+  for k, v in pairs(commonConditions) do
+    if (variables[k] and type(variables[k]) ~= "table") then
+      variables[k] = v;
+    end
+  end
+
+  for k, v in pairs(variables) do
+    if (type(v) == "string") then
+      variables[k] = {
+        display = k,
+        type = v,
+      };
+    end
+  end
+end
+
 function GenericTrigger.GetTriggerConditions(data, triggernum)
   local trigger = data.triggers[triggernum].trigger
 
@@ -3635,25 +3621,7 @@ function GenericTrigger.GetTriggerConditions(data, triggernum)
         if (type(result)) ~= "table" then
           return nil;
         end
-        -- Make the life of tsu authors easier, by automatically filling in the details for
-        -- expirationTime, duration, value, total, stacks, if those exists but aren't a table value
-        -- By allowing a short-hand notation of just variable = type
-        -- In addition to the long form of variable = { type = xyz, display = "desc"}
-        for k, v in pairs(commonConditions) do
-          if (result[k] and type(result[k]) ~= "table") then
-            result[k] = v;
-          end
-        end
-
-        for k, v in pairs(result) do
-          if (type(v) == "string") then
-            result[k] = {
-              display = k,
-              type = v,
-            };
-          end
-        end
-
+        Private.ExpandCustomVariables(result)
         for k, v in pairs(result) do
           if (type(v) ~= "table") then
             result[k] = nil;
@@ -3813,12 +3781,14 @@ do
   -- end
 end
 
-WeakAuras.CheckForItemBonusId = function(id)
-  id = ":" .. tostring(id) .. ":"
-  for slot in pairs(Private.item_slot_types) do
-    local itemLink = GetInventoryItemLink('player', slot)
-    if itemLink and itemLink:find(id, 1, true) then
-      return true
+WeakAuras.CheckForItemBonusId = function(ids)
+  for id in tostring(ids):gmatch('([^,]+)') do
+    id = ":" .. tostring(id:trim()) .. ":"
+    for slot in pairs(Private.item_slot_types) do
+      local itemLink = GetInventoryItemLink('player', slot)
+      if itemLink and itemLink:find(id, 1, true) then
+        return true
+      end
     end
   end
   return false

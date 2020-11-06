@@ -2539,7 +2539,6 @@ Private.event_prototypes = {
       return ret:format(trigger.use_cloneId and "true" or "false");
     end,
     name = L["Combat Log"],
-    canHaveAuto = true,
     statesParameter = "all",
     args = {
       {}, -- timestamp ignored with _ argument
@@ -4022,7 +4021,6 @@ Private.event_prototypes = {
       return ret:format(trigger.use_cloneId and "true" or "false");
     end,
     statesParameter = "all",
-    canHaveAuto = true,
     args = {
       {
         name = "message",
@@ -4064,7 +4062,6 @@ Private.event_prototypes = {
     },
     force_events = "DBM_TimerForce",
     name = L["DBM Timer"],
-    canHaveAuto = true,
     canHaveDuration = "timed",
     triggerFunction = function(trigger)
       WeakAuras.RegisterDBMCallback("DBM_TimerStart")
@@ -4259,7 +4256,6 @@ Private.event_prototypes = {
       return ret:format(trigger.use_cloneId and "true" or "false");
     end,
     statesParameter = "all",
-    canHaveAuto = true,
     args = {
       {
         name = "addon",
@@ -4314,7 +4310,6 @@ Private.event_prototypes = {
     },
     force_events = "BigWigs_Timer_Force",
     name = L["BigWigs Timer"],
-    canHaveAuto = true,
     canHaveDuration = "timed",
     triggerFunction = function(trigger)
       WeakAuras.RegisterBigWigsTimer()
@@ -4633,7 +4628,6 @@ Private.event_prototypes = {
     },
     automaticrequired = true,
     canHaveDuration = true,
-    canHaveAuto = true,
     statesParameter = "one"
   },
   ["Action Usable"] = {
@@ -4925,7 +4919,6 @@ Private.event_prototypes = {
     },
     automaticrequired = true,
     statesParameter = "one",
-    canHaveAuto = true
   },
   ["Totem"] = {
     type = "status",
@@ -4941,7 +4934,6 @@ Private.event_prototypes = {
     force_events = "PLAYER_ENTERING_WORLD",
     name = L["Totem"],
     statesParameter = "full",
-    canHaveAuto = true,
     canHaveDuration = "timed",
     triggerFunction = function(trigger)
       local ret = [[return
@@ -5414,7 +5406,6 @@ Private.event_prototypes = {
     },
     automaticrequired = true,
     canHaveDuration = true,
-    canHaveAuto = true,
     statesParameter = "one"
   },
   ["Chat Message"] = {
@@ -6054,7 +6045,6 @@ Private.event_prototypes = {
       return result
     end,
     force_events = unitHelperFunctions.UnitChangedForceEvents,
-    canHaveAuto = true,
     canHaveDuration = "timed",
     name = L["Cast"],
     init = function(trigger)
@@ -7031,7 +7021,6 @@ Private.event_prototypes = {
       return ret;
     end,
     statesParameter = "one",
-    canHaveAuto = true,
     args = {
       {
         name = "behavior",

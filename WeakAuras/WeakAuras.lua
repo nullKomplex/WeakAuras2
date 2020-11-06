@@ -1,6 +1,6 @@
 local AddonName, Private = ...
 
-local internalVersion = 38
+local internalVersion = 39
 
 -- Lua APIs
 local insert = table.insert
@@ -3248,7 +3248,6 @@ local function wrapTriggerSystemFunction(functionName, mode)
 end
 
 Private.CanHaveDuration = wrapTriggerSystemFunction("CanHaveDuration", "firstValue");
-Private.CanHaveAuto = wrapTriggerSystemFunction("CanHaveAuto", "or");
 Private.CanHaveClones = wrapTriggerSystemFunction("CanHaveClones", "or");
 Private.CanHaveTooltip = wrapTriggerSystemFunction("CanHaveTooltip", "or");
 -- This has to be in WeakAuras for now, because GetNameAndIcon can be called from the options
@@ -3619,6 +3618,10 @@ function WeakAuras.GetTriggerStateForTrigger(id, triggernum)
   return triggerState[id][triggernum];
 end
 
+function WeakAuras.GetActiveStates(id)
+  return triggerState[id].activeStates
+end
+
 function WeakAuras.GetActiveTriggers(id)
   return triggerState[id].triggers
 end
@@ -3912,6 +3915,7 @@ function Private.UpdatedTriggerState(id)
   local oldShow = triggerState[id].show;
   triggerState[id].activeTrigger = newActiveTrigger;
   triggerState[id].show = show;
+  triggerState[id].fallbackStates = nil
 
   local activeTriggerState = WeakAuras.GetTriggerStateForTrigger(id, newActiveTrigger);
   if (not next(activeTriggerState)) then
@@ -3929,9 +3933,10 @@ function Private.UpdatedTriggerState(id)
       end
     end
     if (needsFallback) then
-      activeTriggerState = CreateFallbackState(id, newActiveTrigger);
+      activeTriggerState = CreateFallbackState(id, newActiveTrigger)
     end
   end
+  triggerState[id].activeStates = activeTriggerState
 
   local region;
   -- Now apply
@@ -5121,6 +5126,18 @@ end
 
 function WeakAuras.IsAuraLoaded(id)
   return Private.loaded[id]
+end
+
+function Private.IconSources(data)
+  local values = {
+    [-1] = L["Dynamic Information"],
+    [0] = L["Fallback Icon"],
+  }
+
+  for i = 1, #data.triggers do
+    values[i] = string.format(L["Trigger %i"], i)
+  end
+  return values
 end
 
 -- Custom and ported functions
