@@ -6401,10 +6401,7 @@ Private.event_prototypes = {
     end,
     init = function()
       local ret = [[
-        local main_stat, _
-        if not WeakAuras.IsClassic() then
-          _, _, _, _, _, main_stat = GetSpecializationInfo(GetSpecialization() or 0)
-        end
+        local main_stat = WeakAuras.GetMainStat(WeakAuras.GetSpecializationId())
       ]]
       return ret;
     end,
@@ -6417,45 +6414,47 @@ Private.event_prototypes = {
         type = "number",
         init = "UnitStat('player', main_stat or 1)",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "strength",
         display = L["Strength"],
         type = "number",
-        init = "UnitStat('player', LE_UNIT_STAT_STRENGTH)",
+        init = "UnitStat('player', 1)",
         store = true,
-        enable = WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = not WeakAuras.IsClassic()
       },
       {
         name = "agility",
         display = L["Agility"],
         type = "number",
-        init = "UnitStat('player', LE_UNIT_STAT_AGILITY)",
+        init = "UnitStat('player', 2)",
         store = true,
-        enable = WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = not WeakAuras.IsClassic()
       },
      {
         name = "intellect",
         display = L["Intellect"],
         type = "number",
-        init = "UnitStat('player', LE_UNIT_STAT_INTELLECT)",
+        init = "UnitStat('player', 4)",
         store = true,
-        enable = WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = not WeakAuras.IsClassic()
+      },
+     {
+        name = "spirit",
+        display = L["Spirit"],
+        type = "number",
+        init = "UnitStat('player', 5)",
+        store = true,
+        conditionType = "number",
       },
       {
         name = "stamina",
         display = L["Stamina"],
         type = "number",
-        init = "select(2, UnitStat('player', LE_UNIT_STAT_STAMINA)) * GetUnitMaxHealthModifier('player')",
+        init = "select(2, UnitStat('player', 3)) * GetUnitMaxHealthModifier('player')",
         store = true,
         conditionType = "number"
       },
@@ -6465,15 +6464,15 @@ Private.event_prototypes = {
         type = "number",
         init = "GetCombatRating(CR_CRIT_SPELL)",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "criticalpercent",
         display = L["Critical (%)"],
         type = "number",
-        init = "GetCritChance()",
+        init = "WeakAuras.GetCritChance()",
         store = true,
         conditionType = "number"
       },
@@ -6483,15 +6482,15 @@ Private.event_prototypes = {
         type = "number",
         init = "GetCombatRating(CR_HASTE_SPELL)",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "hastepercent",
         display = L["Haste (%)"],
         type = "number",
-        init = "GetHaste()",
+        init = "WeakAuras.GetHaste(WeakAuras.GetSpecializationId())",
         store = true,
         conditionType = "number"
       },
@@ -6501,9 +6500,9 @@ Private.event_prototypes = {
         type = "number",
         init = "GetCombatRating(CR_MASTERY)",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "masterypercent",
@@ -6511,9 +6510,9 @@ Private.event_prototypes = {
         type = "number",
         init = "GetMasteryEffect()",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "attackpower",
@@ -6583,16 +6582,16 @@ Private.event_prototypes = {
         conditionType = "number",
         hidden = not WeakAuras.IsClassic()
       },
-      {
-        name = "movespeedrating",
-        display = L["Movement Speed Rating"],
-        type = "number",
-        init = "GetCombatRating(CR_SPEED)",
-        store = true,
-        enable = not WeakAuras.IsClassic(),
-        conditionType = "number",
-        hidden = WeakAuras.IsClassic()
-      },
+      -- {
+      --   name = "movespeedrating",
+      --   display = L["Movement Speed Rating"],
+      --   type = "number",
+      --   init = "GetCombatRating(CR_SPEED)",
+      --   store = true,
+      --   enable = not WeakAuras.IsClassic(),
+      --   conditionType = "number",
+      --   hidden = WeakAuras.IsClassic()
+      -- },
       {
         name = "moveSpeed",
         display = L["Continuously update Movement Speed"],
@@ -6614,9 +6613,9 @@ Private.event_prototypes = {
         type = "number",
         init = "GetCombatRating(CR_DODGE)",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "dodgepercent",
@@ -6632,9 +6631,9 @@ Private.event_prototypes = {
         type = "number",
         init = "GetCombatRating(CR_PARRY)",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "parrypercent",
@@ -6658,9 +6657,9 @@ Private.event_prototypes = {
         type = "number",
         init = "PaperDollFrame_GetArmorReductionAgainstTarget(GetShieldBlock())",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "armorrating",
@@ -6676,9 +6675,9 @@ Private.event_prototypes = {
         type = "number",
         init = "PaperDollFrame_GetArmorReduction(select(2, UnitArmor('player')), UnitEffectiveLevel('player'))",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "armortargetpercent",
@@ -6686,9 +6685,9 @@ Private.event_prototypes = {
         type = "number",
         init = "PaperDollFrame_GetArmorReductionAgainstTarget(select(2, UnitArmor('player')))",
         store = true,
-        enable = not WeakAuras.IsClassic(),
+        -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
-        hidden = WeakAuras.IsClassic()
+        -- hidden = WeakAuras.IsClassic()
       },
       {
         name = "pvpresilencerating",

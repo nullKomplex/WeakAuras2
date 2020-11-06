@@ -5138,3 +5138,156 @@ function WeakAuras.GetMoPTalentInfo(tier, column)
   local talentId = (tier-1)*3+column;
   return GetTalentInfo(talentId);
 end
+
+function WeakAuras.GetSpecializationId() 
+  return GetSpecializationInfo(GetSpecialization() or 0) or 0
+end
+
+local specXMainStat = {
+    -- Death Knight
+  [250] = 1, -- Blood
+  [251] = 1, -- Frost
+  [252] = 1, -- Unholy
+  -- Druid
+  [102] = 4, -- Balance
+  [103] = 2, -- Feral
+  [104] = 2, -- Guardian
+  [105] = 4, -- Restoration
+  -- Hunter
+  [253] = 2, -- Beast Mastery
+  [254] = 2, -- Marksmanship
+  [255] = 2, -- Survival
+  -- Mage
+  [62] = 4, -- Arcane
+  [63] = 4, -- Fire
+  [64] = 4, -- Frost
+  -- Monk
+  [268] = 2, -- Brewmaster
+  [269] = 2, -- Windwalker
+  [270] = 4, -- Mistweaver
+  -- Paladin
+  [65] = 4, -- Holy
+  [66] = 1, -- Protection
+  [70] = 1, -- Retribution
+  -- Priest
+  [256] = 4, -- Discipline
+  [257] = 4, -- Holy
+  [258] = 4, -- Shadow
+  -- Rogue
+  [259] = 2, -- Assassination
+  [260] = 2, -- Combat
+  [261] = 2, -- Subtlety
+  -- Shaman
+  [262] = 4, -- Elemental
+  [263] = 2, -- Enhancement
+  [264] = 4, -- Restoration
+  -- Warlock
+  [265] = 4, -- Affliction
+  [266] = 4, -- Demonology
+  [267] = 4, -- Destruction
+  -- Warrior
+  [71] = 1, -- Arms
+  [72] = 1, -- Fury
+  [73] = 1, -- Protection
+}
+
+function WeakAuras.GetMainStat(specId)
+  if not specId then
+    specId = WeakAuras.GetSpecializationId()
+  end
+
+  if specId == 0 then
+    return 1;
+  end
+
+  return specXMainStat[specId];
+end
+
+local specXCombatType = {
+    -- Death Knight
+  [250] = "MEELE", -- Blood
+  [251] = "MEELE", -- Frost
+  [252] = "MEELE", -- Unholy
+  -- Druid
+  [102] = "SPELL", -- Balance
+  [103] = "MEELE", -- Feral
+  [104] = "MEELE", -- Guardian
+  [105] = "SPELL", -- Restoration
+  -- Hunter
+  [253] = "RANGED", -- Beast Mastery
+  [254] = "RANGED", -- Marksmanship
+  [255] = "RANGED", -- Survival
+  -- Mage
+  [62] = "SPELL", -- Arcane
+  [63] = "SPELL", -- Fire
+  [64] = "SPELL", -- Frost
+  -- Monk
+  [268] = "MEELE", -- Brewmaster
+  [269] = "MEELE", -- Windwalker
+  [270] = "SPELL", -- Mistweaver
+  -- Paladin
+  [65] = "SPELL", -- Holy
+  [66] = "MEELE", -- Protection
+  [70] = "MEELE", -- Retribution
+  -- Priest
+  [256] = "SPELL", -- Discipline
+  [257] = "SPELL", -- Holy
+  [258] = "SPELL", -- Shadow
+  -- Rogue
+  [259] = "MEELE", -- Assassination
+  [260] = "MEELE", -- Combat
+  [261] = "MEELE", -- Subtlety
+  -- Shaman
+  [262] = "SPELL", -- Elemental
+  [263] = "MEELE", -- Enhancement
+  [264] = "SPELL", -- Restoration
+  -- Warlock
+  [265] = "SPELL", -- Affliction
+  [266] = "SPELL", -- Demonology
+  [267] = "SPELL", -- Destruction
+  -- Warrior
+  [71] = "MEELE", -- Arms
+  [72] = "MEELE", -- Fury
+  [73] = "MEELE", -- Protection
+}
+
+function WeakAuras.GetHaste(specId)
+  if not specId then
+    specId = WeakAuras.GetSpecializationId()
+  end
+
+  if specId == 0 then
+    return GetMeleeHaste()
+  end
+
+  local combatType = specXCombatType[specId];
+
+  if combatType == "RANGED" then
+    return GetRangedHaste()
+  elseif combatType == "SPELL" then
+    return UnitSpellHaste("player")
+  else
+    return GetMeleeHaste()
+  end
+end
+
+function WeakAuras.GetCritChance(specId)
+  if not specId then
+    specId = WeakAuras.GetSpecializationId()
+  end
+
+  if specId == 0 then
+    return GetCritChance()
+  end
+
+  local combatType = specXCombatType[specId];
+
+  if combatType == "RANGED" then
+    return GetRangedCritChance()
+  elseif combatType == "SPELL" then
+    local holySchool = 2;
+    return GetSpellCritChance(holySchool) 
+  else
+    return GetCritChance() 
+  end
+end
