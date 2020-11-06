@@ -266,7 +266,7 @@ function lib.PixelGlow_Start(r,color,N,frequency,length,th,xOffset,yOffset,borde
             f.bg:SetParent(f)
             f.bg:SetAllPoints(f)
             f.bg:SetDrawLayer("ARTWORK",6)
-            f.bg:AddMaskTexture(f.masks[2])
+            -- f.bg:AddMaskTexture(f.masks[2])
         end
     else
         if f.bg then
