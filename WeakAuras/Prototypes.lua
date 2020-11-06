@@ -6391,7 +6391,8 @@ Private.event_prototypes = {
     end,
     init = function()
       local ret = [[
-        local main_stat = WeakAuras.GetMainStat(WeakAuras.GetSpecializationId())
+        local spec_id = WeakAuras.GetSpecializationId()
+        local main_stat = WeakAuras.GetMainStat(spec_id)
       ]]
       return ret;
     end,
@@ -6480,7 +6481,7 @@ Private.event_prototypes = {
         name = "hastepercent",
         display = L["Haste (%)"],
         type = "number",
-        init = "WeakAuras.GetHaste(WeakAuras.GetSpecializationId())",
+        init = "WeakAuras.GetHaste(spec_id)",
         store = true,
         conditionType = "number"
       },
@@ -6641,16 +6642,16 @@ Private.event_prototypes = {
         store = true,
         conditionType = "number"
       },
-      {
-        name = "blocktargetpercent",
-        display = L["Block against Target (%)"],
-        type = "number",
-        init = "PaperDollFrame_GetArmorReductionAgainstTarget(GetShieldBlock())",
-        store = true,
-        -- enable = not WeakAuras.IsClassic(),
-        conditionType = "number",
-        -- hidden = WeakAuras.IsClassic()
-      },
+      -- {
+      --   name = "blocktargetpercent",
+      --   display = L["Block against Target (%)"],
+      --   type = "number",
+      --   init = "PaperDollFrame_GetArmorReductionAgainstTarget(GetShieldBlock())",
+      --   store = true,
+      --   -- enable = not WeakAuras.IsClassic(),
+      --   conditionType = "number",
+      --   -- hidden = WeakAuras.IsClassic()
+      -- },
       {
         name = "armorrating",
         display = L["Armor Rating"],
@@ -6663,22 +6664,22 @@ Private.event_prototypes = {
         name = "armorpercent",
         display = L["Armor (%)"],
         type = "number",
-        init = "PaperDollFrame_GetArmorReduction(select(2, UnitArmor('player')), UnitEffectiveLevel('player'))",
+        init = "PaperDollFrame_GetArmorReduction(select(2, UnitArmor('player')), UnitLevel('player'))",
         store = true,
         -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",
         -- hidden = WeakAuras.IsClassic()
       },
-      {
-        name = "armortargetpercent",
-        display = L["Armor against Target (%)"],
-        type = "number",
-        init = "PaperDollFrame_GetArmorReductionAgainstTarget(select(2, UnitArmor('player')))",
-        store = true,
-        -- enable = not WeakAuras.IsClassic(),
-        conditionType = "number",
-        -- hidden = WeakAuras.IsClassic()
-      },
+      -- {
+      --   name = "armortargetpercent",
+      --   display = L["Armor against Target (%)"],
+      --   type = "number",
+      --   init = "PaperDollFrame_GetArmorReductionAgainstTarget(select(2, UnitArmor('player')))",
+      --   store = true,
+      --   -- enable = not WeakAuras.IsClassic(),
+      --   conditionType = "number",
+      --   -- hidden = WeakAuras.IsClassic()
+      -- },
       {
         name = "pvpresilencerating",
         display = L["PvP Resilence Rating"],
