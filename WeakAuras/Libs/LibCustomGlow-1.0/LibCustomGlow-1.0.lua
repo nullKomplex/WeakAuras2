@@ -11,9 +11,9 @@ local table_insert = table.insert
 local table_remove = table.remove
 
 local textureList = {
-    ["empty"] = [[Interface\AdventureMap\BrokenIsles\AM_29]],
-    ["white"] = [[Interface\BUTTONS\WHITE8X8]],
-    ["shine"] = [[Interface\Artifacts\Artifacts]]
+    ["empty"] = [[Interface\AddOns\WeakAuras\Media\Textures\am_29.tga]],
+    ["white"] = [[Interface\AddOns\WeakAuras\Media\Textures\white8x8.tga]],
+    ["shine"] = [[Interface\AddOns\WeakAuras\Media\Textures\artifacts.tga]]
 }
 
 function lib.RegisterTextures(texture,id)

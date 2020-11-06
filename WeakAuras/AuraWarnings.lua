@@ -48,8 +48,8 @@ local severityLevel = {
 
 local icons = {
   info = [[Interface/friendsframe/informationicon.blp]],
-  warning = [[Interface/friendsframe/informationicon.blp]],
-  error =  [[Interface/friendsframe/informationicon.blp]]
+  warning = [[Interface/AddOns/WeakAuras/Media/Textures/adventureguidemicrobuttonalert.tga]],
+  error =  [[Interface/AddOns/WeakAuras/Media/Textures/ui-dialog-icon-alertnew.tga]]
 }
 
 local titles = {
