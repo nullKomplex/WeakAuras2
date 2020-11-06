@@ -100,13 +100,13 @@ local function createOptions(id, data)
       order = 35,
       hidden = function() return data.rotate end
     },
-    textureWrapMode = {
-      type = "select",
-      width = WeakAuras.normalWidth,
-      name = L["Texture Wrap"],
-      order = 36,
-      values = OptionsPrivate.Private.texture_wrap_types
-    },
+    -- textureWrapMode = {
+    --   type = "select",
+    --   width = WeakAuras.normalWidth,
+    --   name = L["Texture Wrap"],
+    --   order = 36,
+    --   values = OptionsPrivate.Private.texture_wrap_types
+    -- },
     endHeader = {
       type = "header",
       order = 100,

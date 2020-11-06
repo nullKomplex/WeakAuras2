@@ -35,7 +35,7 @@ local methods = {
     -- if (GetAtlasInfo(texturePath)) then
       -- self.texture:SetAtlas(texturePath);
     -- else
-      self.texture:SetTexture(texturePath, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE");
+      self.texture:SetTexture(texturePath);
     -- end
     self.texture.path = texturePath;
     self.texture.name = name;

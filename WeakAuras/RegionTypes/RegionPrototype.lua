@@ -908,6 +908,7 @@ function WeakAuras.SetTextureOrAtlas(texture, path, wrapModeH, wrapModeV)
     if needToClear then
       texture:SetTexture(nil)
     end
-    texture:SetTexture(path, wrapModeH, wrapModeV);
+    -- texture:SetTexture(path, wrapModeH, wrapModeV);
+    texture:SetTexture(path);
   -- end
 end
