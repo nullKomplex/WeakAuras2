@@ -6853,12 +6853,12 @@ Private.event_prototypes = {
         type = "tristate",
         init = "UnitExists('pet') and not UnitIsDead('pet')"
       },
-      {
-        name = "ismoving",
-        display = L["Is Moving"],
-        type = "tristate",
-        init = "IsPlayerMoving()"
-      },
+      -- {
+      --   name = "ismoving",
+      --   display = L["Is Moving"],
+      --   type = "tristate",
+      --   init = "IsPlayerMoving()"
+      -- },
       {
         name = "afk",
         display = L["Is Away from Keyboard"],
