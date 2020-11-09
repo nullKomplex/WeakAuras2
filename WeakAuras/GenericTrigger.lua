@@ -1667,6 +1667,8 @@ do
   local spellCharges = {};
   local spellChargesMax = {};
   local spellCounts = {}
+  local spellChargeGainTime = {}
+  local spellChargeLostTime = {}
 
   local items = {};
   local itemCdDurs = {};
@@ -1766,9 +1768,9 @@ do
 
   local function FetchSpellCooldown(self, id)
     if self.duration[id] and self.expirationTime[id] then
-      return self.expirationTime[id] - self.duration[id], self.duration[id]
+      return self.expirationTime[id] - self.duration[id], self.duration[id], self.readyTime[id]
     end
-    return 0, 0
+    return 0, 0, nil
   end
 
   local function HandleSpell(self, id, startTime, duration)
@@ -1796,6 +1798,7 @@ do
         if self.expirationTime[id] and self.expirationTime[id] > endTime and self.expirationTime[id] ~= 0 then
           self.duration[id] = 0
           self.expirationTime[id] = 0
+          self.readyTime[id] = time
           changed = true
           nowReady = true
         end
@@ -1815,6 +1818,12 @@ do
       nowReady = endTime == 0
     end
 
+    if duration == 0 then
+      self.readyTime[id] = time
+    else
+      self.readyTime[id] = nil
+    end
+
     RecheckHandles:Schedule(endTime, id)
     return changed, nowReady
   end
@@ -1823,6 +1832,7 @@ do
     local cd = {
       duration = {},
       expirationTime = {},
+      readyTime = {},
       handles = {}, -- Share handles, and use lowest time to schedule
       HandleSpell = HandleSpell,
       FetchSpellCooldown = FetchSpellCooldown
@@ -1897,19 +1907,19 @@ do
     if (not spellKnown[id] and not ignoreSpellKnown) then
       return;
     end
-    local startTime, duration, gcdCooldown;
+    local startTime, duration, gcdCooldown, readyTime
     if track == "charges" then
-      startTime, duration = spellCdsCharges:FetchSpellCooldown(id)
+      startTime, duration, readyTime = spellCdsCharges:FetchSpellCooldown(id)
     elseif track == "cooldown" then
       if ignoreRuneCD then
-        startTime, duration = spellCdsOnlyCooldownRune:FetchSpellCooldown(id)
+        startTime, duration, readyTime = spellCdsOnlyCooldownRune:FetchSpellCooldown(id)
       else
-        startTime, duration = spellCdsOnlyCooldown:FetchSpellCooldown(id)
+        startTime, duration, readyTime = spellCdsOnlyCooldown:FetchSpellCooldown(id)
       end
     elseif (ignoreRuneCD) then
-      startTime, duration = spellCdsRune:FetchSpellCooldown(id)
+      startTime, duration, readyTime = spellCdsRune:FetchSpellCooldown(id)
     else
-      startTime, duration = spellCds:FetchSpellCooldown(id)
+      startTime, duration, readyTime = spellCds:FetchSpellCooldown(id)
     end
 
     if (showgcd) then
@@ -1920,14 +1930,14 @@ do
       end
     end
 
-    return startTime, duration, gcdCooldown;
+    return startTime, duration, gcdCooldown, readyTime
   end
 
   function WeakAuras.GetSpellCharges(id, ignoreSpellKnown)
     if (not spellKnown[id] and not ignoreSpellKnown) then
       return;
     end
-    return spellCharges[id], spellChargesMax[id], spellCounts[id];
+    return spellCharges[id], spellChargesMax[id], spellCounts[id], spellChargeGainTime[id], spellChargeLostTime[id]
   end
 
   function WeakAuras.GetItemCooldown(id, showgcd)
@@ -2144,6 +2154,15 @@ do
     spellCharges[id] = charges;
     spellChargesMax[id] = maxCharges;
     spellCounts[id] = spellCount
+    if chargesDifference ~= 0 then
+      if chargesDifference > 0 then
+        spellChargeGainTime[id] = time
+        spellChargeLostTime[id] = nil
+      else
+        spellChargeGainTime[id] = nil
+        spellChargeLostTime[id] = time
+      end
+    end
 
     local changed = false
     local spellId = select(7, GetSpellInfo(id))
