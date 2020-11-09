@@ -499,21 +499,21 @@ end
 -- * Force enable the profanity filter for the chinese region
 -- * Add a realm name's part to the profanity filter
 local function ObfuscateName(name)
-  if (GetCurrentRegion() == 5) then
-    local result = ""
-    for i = 1, #name do
-      local b = name:byte(i)
-      if (b >= 196 and i ~= 1) then
-        -- UTF8 Start byte
-        result = result .. string.char(46, b)
-      else
-        result = result .. string.char(b)
-      end
-    end
-    return result
-  else
+  -- if (GetCurrentRegion() == 5) then
+  --   local result = ""
+  --   for i = 1, #name do
+  --     local b = name:byte(i)
+  --     if (b >= 196 and i ~= 1) then
+  --       -- UTF8 Start byte
+  --       result = result .. string.char(46, b)
+  --     else
+  --       result = result .. string.char(b)
+  --     end
+  --   end
+  --   return result
+  -- else
     return name
-  end
+  -- end
 end
 
 --[[-----------------------------------------------------------------------------
