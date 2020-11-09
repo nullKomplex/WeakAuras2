@@ -261,7 +261,6 @@ local function modifyThumbnail(parent, frame, data)
   function frame:SetIcon(path)
     local auto = data.auto or data.iconSource == -1
     local iconPath = auto and path or data.displayIcon or "Interface\\Icons\\INV_Misc_QuestionMark"
-    print(iconPath)
     WeakAuras.SetTextureOrAtlas(self.icon, iconPath)
   end
 
