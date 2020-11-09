@@ -583,7 +583,8 @@ local function modifyThumbnail(parent, borderframe, data, fullModify, width, hei
   -- Fake icon (code)
   if(data.icon) then
     function borderframe:SetIcon(path)
-      local success = icon:SetTexture(data.auto and path or data.displayIcon) and (data.auto and path or data.displayIcon);
+      local auto = data.auto or data.iconSource == -1
+      local success = icon:SetTexture(auto and path or data.displayIcon) and (auto and path or data.displayIcon);
       if not(success) then
         icon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark");
       end
