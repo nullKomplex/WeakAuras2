@@ -94,13 +94,20 @@ local basekeys={
 }
 
 local typedkeys={
-	header={},
+	header={
+		control=optstring,
+		dialogControl=optstring,
+		dropdownControl=optstring,
+	},
 	description={
 		image=optstringnumberfunc,
 		imageCoords=optmethodtable,
 		imageHeight=optnumber,
 		imageWidth=optnumber,
 		fontSize=optstringfunc,
+		control=optstring,
+		dialogControl=optstring,
+		dropdownControl=optstring,
 	},
 	group={
 		args=istable,
@@ -113,11 +120,13 @@ local typedkeys={
 		childGroups=optstring,
 	},
 	execute={
-		control=optstring,
 		image=optstringnumberfunc,
 		imageCoords=optmethodtable,
 		imageHeight=optnumber,
 		imageWidth=optnumber,
+		control=optstring,
+		dialogControl=optstring,
+		dropdownControl=optstring,
 	},
 	input={
 		pattern=optstring,
@@ -131,6 +140,9 @@ local typedkeys={
 		tristate=optbool,
 		image=optstringnumberfunc,
 		imageCoords=optmethodtable,
+		control=optstring,
+		dialogControl=optstring,
+		dropdownControl=optstring,
 	},
 	tristate={
 	},
@@ -142,12 +154,16 @@ local typedkeys={
 		step=optnumber,
 		bigStep=optnumber,
 		isPercent=optbool,
+		control=optstring,
+		dialogControl=optstring,
+		dropdownControl=optstring,
 	},
 	select={
 		values=ismethodtable,
+		sorting=optmethodtable,
 		style={
-			["nil"]=true, 
-			["string"]={dropdown=true,radio=true}, 
+			["nil"]=true,
+			["string"]={dropdown=true,radio=true},
 			_="string: 'dropdown' or 'radio'"
 		},
 		control=optstring,
@@ -165,9 +181,14 @@ local typedkeys={
 	},
 	color={
 		hasAlpha=optmethodbool,
+		control=optstring,
+		dialogControl=optstring,
+		dropdownControl=optstring,
 	},
 	keybinding={
-		-- TODO
+		control=optstring,
+		dialogControl=optstring,
+		dropdownControl=optstring,
 	},
 }
 
@@ -214,7 +235,7 @@ local function validate(options,errlvl,...)
 	-- make sure that all options[] are known parameters
 	for k,v in pairs(options) do
 		if not (tk[k] or basekeys[k]) then
-			print(": unknown parameter", errlvl,tostring(k),...)
+			err(": unknown parameter", errlvl,tostring(k),...)
 		end
 	end
 

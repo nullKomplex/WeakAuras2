@@ -56,14 +56,18 @@ local function modify(parent, region, parentData, data, first)
     edgeSize = data.border_size,
     bgFile = nil,
   });
-  region:SetBackdropBorderColor(data.border_color[1], data.border_color[2], data.border_color[3], data.border_color[4])
+  if data.border_color then
+    region:SetBackdropBorderColor(data.border_color[1], data.border_color[2], data.border_color[3], data.border_color[4])
+  end
   region:SetBackdropColor(0, 0, 0, 0)
 
   function region:SetBorderColor(r, g, b, a)
     self:SetBackdropBorderColor(r, g, b, a or 1)
   end
 
-  region:SetBorderColor(data.border_color[1], data.border_color[2], data.border_color[3], data.border_color[4]);
+  if data.border_color then
+    region:SetBorderColor(data.border_color[1], data.border_color[2], data.border_color[3], data.border_color[4]);
+  end
 
   function region:SetVisible(visible)
     if visible then
