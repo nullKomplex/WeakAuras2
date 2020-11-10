@@ -365,7 +365,7 @@ local anchorers = {
           end
         end
         if not found and WeakAuras.IsOptionsOpen() then
-          Private.ensurePRDFrame()
+          -- Private.ensurePRDFrame()
           Private.personalRessourceDisplayFrame:anchorFrame(regionData.region.state.id, "NAMEPLATE")
           frames[Private.personalRessourceDisplayFrame] = frames[Private.personalRessourceDisplayFrame] or {}
           tinsert(frames[Private.personalRessourceDisplayFrame], regionData)

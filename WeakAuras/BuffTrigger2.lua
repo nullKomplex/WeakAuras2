@@ -58,12 +58,12 @@ local tinsert, wipe = table.insert, wipe
 local pairs, next, type = pairs, next, type
 local UnitAura = UnitAura
 
-local LCD
-if WeakAuras.IsClassic() then
-  LCD = LibStub("LibClassicDurations")
-  LCD:Register("WeakAuras")
-  UnitAura = LCD.UnitAuraWithBuffs
-end
+-- local LCD
+-- if WeakAuras.IsClassic() then
+--   LCD = LibStub("LibClassicDurations")
+--   LCD:Register("WeakAuras")
+--   UnitAura = LCD.UnitAuraWithBuffs
+-- end
 
 local WeakAuras = WeakAuras
 local L = WeakAuras.L
@@ -1655,16 +1655,16 @@ frame:RegisterEvent("UNIT_NAME_UPDATE")
 frame:RegisterEvent("UNIT_FLAGS")
 frame:RegisterEvent("PLAYER_FLAGS_CHANGED")
 frame:RegisterUnitEvent("UNIT_PET", "player")
-if not WeakAuras.IsClassic() then
+-- if not WeakAuras.IsClassic() then
   frame:RegisterEvent("PLAYER_FOCUS_CHANGED")
   frame:RegisterEvent("ARENA_OPPONENT_UPDATE")
   frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
   frame:RegisterEvent("UNIT_EXITED_VEHICLE")
-else
-  LCD.RegisterCallback("WeakAuras", "UNIT_BUFF", function(event, unit)
-    EventHandler(frame, "UNIT_AURA", unit)
-  end)
-end
+-- else
+--   LCD.RegisterCallback("WeakAuras", "UNIT_BUFF", function(event, unit)
+--     EventHandler(frame, "UNIT_AURA", unit)
+--   end)
+-- end
 frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 frame:RegisterEvent("ENCOUNTER_START")
 frame:RegisterEvent("ENCOUNTER_END")

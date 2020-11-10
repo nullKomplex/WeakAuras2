@@ -1363,7 +1363,7 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
   else
     spec = GetSpecialization() or 0
     specId = GetSpecializationInfo(spec)
-    role = select(5, GetSpecializationInfo(spec))
+    role = select(6, GetSpecializationInfo(spec))
     inPetBattle = C_PetBattles.IsInBattle()
     vehicle = UnitInVehicle('player') or UnitOnTaxi('player')
     vehicleUi = UnitHasVehicleUI('player') or HasOverrideActionBar() or HasVehicleActionBar()
@@ -4810,7 +4810,7 @@ local function GetAnchorFrame(data, region, parent)
   end
 
   if (anchorFrameType == "PRD") then
-    Private.ensurePRDFrame();
+    -- Private.ensurePRDFrame();
     personalRessourceDisplayFrame:anchorFrame(id, anchorFrameType);
     return personalRessourceDisplayFrame;
   end
@@ -4826,7 +4826,7 @@ local function GetAnchorFrame(data, region, parent)
     local frame = unit and WeakAuras.GetUnitNameplate(unit)
     if frame then return frame end
     if WeakAuras.IsOptionsOpen() then
-      Private.ensurePRDFrame()
+      -- Private.ensurePRDFrame()
       personalRessourceDisplayFrame:anchorFrame(id, anchorFrameType)
       return personalRessourceDisplayFrame
     end

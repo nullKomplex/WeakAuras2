@@ -7,11 +7,11 @@ local prettyPrint = WeakAuras.prettyPrint
 
 local Retail = LibStub("LibRetail")
 
-local LCD
-if WeakAuras.IsClassic() then
-  LCD = LibStub("LibClassicDurations")
-  LCD:RegisterFrame("WeakAuras")
-end
+-- local LCD
+-- if WeakAuras.IsClassic() then
+--   LCD = LibStub("LibClassicDurations")
+--   LCD:RegisterFrame("WeakAuras")
+-- end
 
 local UnitAura = UnitAura
 -- Unit Aura functions that return info about the first Aura matching the spellName or spellID given on the unit.
