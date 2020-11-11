@@ -65,7 +65,6 @@ templates.class.WARRIOR = {
         { spell = 23920, type = "buff", unit = "player"}, -- Spell Reflection
         { spell = 139958, type = "buff", unit = "player"}, -- Sudden Execute
         { spell = 469, type = "buff", unit = "player"}, -- Commanding Shout
-        { spell = 40192, type = "buff", unit = "player"}, -- Ashes of Al'ar
         { spell = 133278, type = "buff", unit = "player"}, -- Speed
         { spell = 32216, type = "buff", unit = "player"}, -- Victorious
         { spell = 12880, type = "buff", unit = "player"}, -- Enrage
