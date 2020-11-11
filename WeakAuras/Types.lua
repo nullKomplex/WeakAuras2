@@ -1010,6 +1010,7 @@ Private.power_types = {
   [7] = SOUL_SHARDS_POWER,
   [8] = POWER_TYPE_SUN_POWER,
   [9] = HOLY_POWER,
+
   [12] = CHI_POWER,
   [13] = SHADOW_ORBS,
   [14] = BURNING_EMBERS,
@@ -1026,7 +1027,7 @@ Private.power_types_with_stagger = {
   [7] = SOUL_SHARDS_POWER,
   [8] = POWER_TYPE_SUN_POWER,
   [9] = HOLY_POWER,
-  [11] = POWER_TYPE_MAELSTROM,
+
   [12] = CHI_POWER,
   [13] = SHADOW_ORBS,
   [14] = BURNING_EMBERS,
