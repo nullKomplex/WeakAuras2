@@ -1142,8 +1142,8 @@ local function PositionOptions(id, data, _, hideWidthHeight, disableSelfPoint)
       name = function()
         if (data.anchorFrameType == "SCREEN") then
           return L["To Screen's"]
-        elseif (data.anchorFrameType == "PRD") then
-          return L["To Personal Ressource Display's"];
+        -- elseif (data.anchorFrameType == "PRD") then
+        --   return L["To Personal Ressource Display's"];
         else
           return L["To Frame's"];
         end

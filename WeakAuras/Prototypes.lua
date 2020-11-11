@@ -834,14 +834,14 @@ function WeakAuras.IsSpellKnownIncludingPet(spell)
 end
 
 function WeakAuras.UnitPowerDisplayMod(powerType)
-  if (powerType == 7) then
+  if (powerType == 7 or powerType == 14) then
     return 10;
   end
   return 1;
 end
 
 function WeakAuras.UseUnitPowerThirdArg(powerType)
-  if (powerType == 7) then
+  if (powerType == 7 or powerType == 14) then
     return true;
   end
   return nil;

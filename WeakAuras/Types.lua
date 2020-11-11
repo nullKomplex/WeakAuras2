@@ -875,7 +875,7 @@ Private.inverse_point_types = {
 
 Private.anchor_frame_types = {
   SCREEN = L["Screen/Parent Group"],
-  PRD = L["Personal Resource Display"],
+  -- PRD = L["Personal Resource Display"],
   MOUSE = L["Mouse Cursor"],
   SELECTFRAME = L["Select Frame"],
   NAMEPLATE = L["Nameplates"],
@@ -885,7 +885,7 @@ Private.anchor_frame_types = {
 
 Private.anchor_frame_types_group = {
   SCREEN = L["Screen/Parent Group"],
-  PRD = L["Personal Resource Display"],
+  -- PRD = L["Personal Resource Display"],
   MOUSE = L["Mouse Cursor"],
   SELECTFRAME = L["Select Frame"],
   CUSTOM = L["Custom"]

@@ -4539,6 +4539,10 @@ end
 
 local personalRessourceDisplayFrame;
 function Private.ensurePRDFrame()
+  if true then
+    return
+  end
+  
   if (personalRessourceDisplayFrame) then
     return;
   end
