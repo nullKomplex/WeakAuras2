@@ -888,29 +888,6 @@ local function valuesForTalentFunction(trigger)
       single_class = select(2, UnitClass("player"));
     end
 
-    local single_spec;
-    if not WeakAuras.IsClassic() then
-      if single_class then
-        if(trigger.use_spec == false and trigger.spec and trigger.spec.multi) then
-          local num_specs = 0;
-          for spec in pairs(trigger.spec.multi) do
-            single_spec = spec;
-            num_specs = num_specs + 1;
-          end
-          if (num_specs ~= 1) then
-            single_spec = nil;
-          end
-        end
-      end
-      if ((not single_spec) and trigger.use_spec and trigger.spec and trigger.spec.single) then
-        single_spec = trigger.spec.single;
-      end
-
-      if (trigger.use_spec == nil) then
-        single_spec = GetSpecialization() or 0;
-      end
-    end
-
     -- If a single specific class was found, load the specific list for it
     if(single_class and Private.talent_types_specific[single_class] and Private.talent_types_specific[single_class]) then
       return Private.talent_types_specific[single_class];
@@ -1091,7 +1068,7 @@ Private.load_prototype = {
       type = "multiselect",
       values = valuesForTalentFunction,
       test = "WeakAuras.CheckTalentByIndex(%d)",
-      events = WeakAuras.IsClassic() and {"CHARACTER_POINTS_CHANGED"} or {"PLAYER_TALENT_UPDATE"}
+      events = {"PLAYER_TALENT_UPDATE"}
     },
     {
       name = "talent2",
@@ -1102,7 +1079,7 @@ Private.load_prototype = {
       enable = function(trigger)
         return trigger.use_talent ~= nil or trigger.use_talent2 ~= nil;
       end,
-      events = WeakAuras.IsClassic() and {"CHARACTER_POINTS_CHANGED"} or {"PLAYER_TALENT_UPDATE"}
+      events = {"PLAYER_TALENT_UPDATE"}
     },
     {
       name = "talent3",
@@ -1113,7 +1090,7 @@ Private.load_prototype = {
       enable = function(trigger)
         return (trigger.use_talent ~= nil and trigger.use_talent2 ~= nil) or trigger.use_talent3 ~= nil;
       end,
-      events = WeakAuras.IsClassic() and {"CHARACTER_POINTS_CHANGED"} or {"PLAYER_TALENT_UPDATE"}
+      events = {"PLAYER_TALENT_UPDATE"}
     },
     {
       name = "spellknown",
@@ -4830,94 +4807,53 @@ Private.event_prototypes = {
   },
   ["Talent Known"] = {
     type = "status",
-    events = function()
-      local events
-      if WeakAuras.IsClassic() then
-        events = {
-          "CHARACTER_POINTS_CHANGED",
-          "SPELLS_CHANGED"
-        }
-      else
-        events = { "PLAYER_TALENT_UPDATE" }
-      end
-      return {
-        ["events"] = events
+    events = {
+      ["events"] = {
+        "PLAYER_TALENT_UPDATE"
       }
-    end,
-    force_events = WeakAuras.IsClassic() and "CHARACTER_POINTS_CHANGED" or "PLAYER_TALENT_UPDATE",
+    },
+    force_events = "PLAYER_TALENT_UPDATE",
     name = L["Talent Selected"],
     init = function(trigger)
       local inverse = trigger.use_inverse;
       if (trigger.use_talent) then
         -- Single selection
         local index = trigger.talent and trigger.talent.single;
-        local tier, column
-        if WeakAuras.IsClassic() then
-          tier = index and ceil(index / 20)
-          column = index and ((index - 1) % 20 + 1)
-        else
-          tier = index and ceil(index / 3)
-          column = index and ((index - 1) % 3 + 1)
-        end
 
         local ret = [[
-          local tier = %s;
-          local column = %s;
-          local active, _, activeName, activeIcon, selected, known, rank
-          if WeakAuras.IsClassic() then
-            _, _, _, _, rank  = GetTalentInfo(tier, column)
-            active = rank > 0
-          else
-            _, activeName, activeIcon, selected, _, _, _, _, _, _, known  = GetTalentInfo(tier, column, 1)
-            active = selected or known;
-          end
+          local index = %s;
+          local active, _, activeName, activeIcon, selected, known
+          
+          activeName, activeIcon, _, _, selected, known  = GetTalentInfo(index)
+          active = selected or known;
         ]]
         if (inverse) then
           ret = ret .. [[
           active = not (active);
           ]]
         end
-        return ret:format(tier or 0, column or 0)
+        return ret:format(index or 0)
       elseif (trigger.use_talent == false) then
         if (trigger.talent.multi) then
           local ret = [[
-            local tier
-            local column
+            local index
             local active = false;
             local activeIcon;
             local activeName;
           ]]
           for index in pairs(trigger.talent.multi) do
-            local tier, column
-            if WeakAuras.IsClassic() then
-              tier = index and ceil(index / 20)
-              column = index and ((index - 1) % 20 + 1)
-            else
-              tier = index and ceil(index / 3)
-              column = index and ((index - 1) % 3 + 1)
-            end
             local ret2 = [[
               if (not active) then
-                tier = %s
-                column = %s
-                if WeakAuras.IsClassic() then
-                  local name, icon, _, _, rank  = GetTalentInfo(tier, column)
-                  if rank > 0 then
-                    active = true;
-                    activeName = name;
-                    activeIcon = icon;
-                  end
-                else
-                  local _, name, icon, selected, _, _, _, _, _, _, known  = GetTalentInfo(tier, column, 1)
-                  if (selected or known) then
-                    active = true;
-                    activeName = name;
-                    activeIcon = icon;
-                  end
+                index = %s
+                local name, icon, _, _, selected, known  = GetTalentInfo(index)
+                if (selected or known) then
+                  active = true;
+                  activeName = name;
+                  activeIcon = icon;
                 end
               end
             ]]
-            ret = ret .. ret2:format(tier, column);
+            ret = ret .. ret2:format(index);
           end
           if (inverse) then
             ret = ret .. [[
