@@ -365,6 +365,20 @@ local function createAbilityTrigger(triggers, position, item, genericShowOn)
   end
 end
 
+local function createAbilityTriggerUsable(triggers, position, item)
+  triggers[position] = {
+    trigger = {
+      event = "Action Usable",
+      spellName = item.spell,
+      type = "status",
+      unevent = "auto",
+      -- targetRequired = targetRequired
+    }
+  };
+  triggers[position].trigger.use_track = true
+  triggers[position].trigger.track = "cooldown"
+end
+
 local function createItemTrigger(triggers, position, item, genericShowOn)
   triggers[position] = {
     trigger = {
@@ -490,8 +504,8 @@ local function subTypesFor(item, regionType)
       t2:SetPoint("BOTTOMRIGHT", -2, 2);
       return thumbnail;
     end,
-    cd = 134377,
-    cd2 = 134376,
+    cd = "Interface\\Icons\\Inv_misc_pocketwatch_02",
+    cd2 = "Interface\\Icons\\Inv_misc_pocketwatch_01",
   };
   local subglow = WeakAuras.getDefaultGlow(regionType)
   local subglowindex = (regionType == "icon" or regionType == "aurabar") and 1
@@ -524,6 +538,19 @@ local function subTypesFor(item, regionType)
         isNotUsableBlue(conditions, 1, regionType)
       end,
     });
+    if (action.usable) then
+    tinsert(types, {
+        icon = icon.cd2,
+        title = L["Basic Action Usable"],
+        description = L["Only shows the aura when the ability can be used (cooldown and power cost)."],
+        createTriggers = function(triggers, item)
+          createAbilityTriggerUsable(triggers, 1, item);
+        end,
+        createConditions = function(conditions, item, regionType)
+          isNotUsableBlue(conditions, 1, regionType)
+        end,
+      });
+    end
     if (item.charges) then
       data.cooldownSwipe = false
       data.cooldownEdge = true
