@@ -3547,7 +3547,7 @@ templates.class.DEATHKNIGHT = {
       title = L["Resources"],
       args = {
       },
-      icon = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-SingleRune",
+      icon = "Interface\\Icons\\INV_Misc_Rune_10",
     },
   },
   [2] = { -- Frost
@@ -3655,7 +3655,7 @@ templates.class.DEATHKNIGHT = {
       title = L["Resources"],
       args = {
       },
-      icon = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-SingleRune",
+      icon = "Interface\\Icons\\INV_Misc_Rune_10",
     },
   },
   [3] = { -- Unholy
@@ -3773,7 +3773,7 @@ templates.class.DEATHKNIGHT = {
       title = L["Resources"],
       args = {
       },
-      icon = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-SingleRune",
+      icon = "Interface\\Icons\\INV_Misc_Rune_10",
     },
   },
 }
