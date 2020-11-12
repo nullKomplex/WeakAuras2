@@ -446,6 +446,7 @@ local function modify(parent, region, data)
 
     iconPath = iconPath or self.displayIcon or "Interface\\Icons\\INV_Misc_QuestionMark"
     WeakAuras.SetTextureOrAtlas(self.icon, iconPath)
+    self.icon:SetDesaturated(data.desaturate)
   end
 
   function region:Scale(scalex, scaley)
