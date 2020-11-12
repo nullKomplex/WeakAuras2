@@ -26,6 +26,8 @@ local templates =
         icon = "Interface\\Icons\\spell_nature_wispsplode",
       args = {}
     },
+    items = {
+    },
   }
 
 local powerTypes =
@@ -3714,68 +3716,68 @@ templates.class.DEATHKNIGHT = {
 
 -- Items section
 templates.items[1] = {
-    title = L["Enchants"],
-    args = {
-      -- Windsong
-      { spell = 104423, type = "buff", unit = "player"}, -- Haste
-      { spell = 104509, type = "buff", unit = "player"}, -- Crit
-      { spell = 104510, type = "buff", unit = "player"}, -- Mastery
+  title = L["Enchants"],
+  args = {
+    -- Windsong
+    { spell = 104423, type = "buff", unit = "player"}, -- Haste
+    { spell = 104509, type = "buff", unit = "player"}, -- Crit
+    { spell = 104510, type = "buff", unit = "player"}, -- Mastery
 
-      -- Dancing Steel
-      { spell = 118334, type = "buff", unit = "player"}, -- Agility
-      { spell = 118335, type = "buff", unit = "player"}, -- Strength
-      { spell = 120032, type = "buff", unit = "player"}, -- Str + Agi
-      { spell = 142530, type = "buff", unit = "player"}, -- Bloody (PvP) Str + Agi
+    -- Dancing Steel
+    { spell = 118334, type = "buff", unit = "player"}, -- Agility
+    { spell = 118335, type = "buff", unit = "player"}, -- Strength
+    { spell = 120032, type = "buff", unit = "player"}, -- Str + Agi
+    { spell = 142530, type = "buff", unit = "player"}, -- Bloody (PvP) Str + Agi
 
-      -- Others
-      { spell = 116631, type = "buff", unit = "player"}, -- Colossus
-      { spell = 142535, type = "buff", unit = "player"}, -- Spirit of Conquest
-      { spell = 116660, type = "buff", unit = "player"}, -- River's Song
-      { spell = 104993, type = "buff", unit = "player"}, -- Jade Spirit
-      
-      { spell = 126734, type = "buff", unit = "player"}, -- Synapse Springs
-    }
+    -- Others
+    { spell = 116631, type = "buff", unit = "player"}, -- Colossus
+    { spell = 142535, type = "buff", unit = "player"}, -- Spirit of Conquest
+    { spell = 116660, type = "buff", unit = "player"}, -- River's Song
+    { spell = 104993, type = "buff", unit = "player"}, -- Jade Spirit
+    
+    { spell = 126734, type = "buff", unit = "player"}, -- Synapse Springs
+  }
 }
 
 templates.items[2] = {
-    title = L["On Use Trinkets (Aura)"],
-    args = {
-      -- Tier 14
-      -- Tier 15
-      -- Tier 16
-    }
+  title = L["On Use Trinkets (Aura)"],
+  args = {
+    -- Tier 14
+    -- Tier 15
+    -- Tier 16
+  }
 }
 
 templates.items[3] = {
-    title = L["On Use Trinkets (CD)"],
-    args = {
-      -- Tier 14
-      -- Tier 15
-      -- Tier 16
-    }
+  title = L["On Use Trinkets (CD)"],
+  args = {
+    -- Tier 14
+    -- Tier 15
+    -- Tier 16
+  }
 }
 
 templates.items[4] = {
-    title = L["On Procc Trinkets (Aura)"],
-    args = {
-      -- Tier 14
-      -- Tier 15
-      -- Tier 16
-    }
+  title = L["On Procc Trinkets (Aura)"],
+  args = {
+    -- Tier 14
+    -- Tier 15
+    -- Tier 16
+  }
 }
 
 templates.items[5] = {
-    title = L["PVP Trinkets (Aura)"],
-    args = {
+  title = L["PVP Trinkets (Aura)"],
+  args = {
 
-    }
+  }
 }
 
 templates.items[6] = {
-    title = L["PVP Trinkets (CD)"],
-    args = {
+  title = L["PVP Trinkets (CD)"],
+  args = {
 
-    }
+  }
 }
 
 
@@ -4150,6 +4152,14 @@ local function enrichDatabase()
   for _, item in pairs(templates.general.args) do
     if (handleItem(item)) then
       waitingForItemInfo = true;
+    end
+  end
+
+  for _, section in pairs(templates.items) do
+    for _, item in pairs(section.args) do
+      if (handleItem(item)) then
+        waitingForItemInfo = true;
+      end
     end
   end
 
