@@ -142,6 +142,9 @@ templates.class.WARRIOR = {
         { spell = 64382, type = "ability", usable = true }, -- Shattering Throw
         { spell = 86346, type = "ability", usable = true }, -- Colossus Smash
         { spell = 97462, type = "ability", usable = true }, -- Rallying Cry
+        { spell = 114192, type = "ability", usable = true , totem = true , buff = true }, -- Mocking Banner
+        { spell = 114203, type = "ability", usable = true , totem = true }, -- Demoralizing Banner
+        { spell = 114207, type = "ability", usable = true , totem = true }, -- Skull Banner
         { spell = 118038, type = "ability", usable = true , buff = true }, -- Die by the Sword
         { spell = 55694, type = "ability", usable = true , buff = true, talent = 4 }, -- Enraged Regeneration
         { spell = 103840, type = "ability", usable = true, talent = 6 }, -- Impending Victory
@@ -259,6 +262,9 @@ templates.class.WARRIOR = {
         { spell = 85288, type = "ability", usable = true }, -- Raging Blow
         { spell = 86346, type = "ability", usable = true }, -- Colossus Smash
         { spell = 97462, type = "ability", usable = true }, -- Rallying Cry
+        { spell = 114192, type = "ability", usable = true , totem = true , buff = true }, -- Mocking Banner
+        { spell = 114203, type = "ability", usable = true , totem = true }, -- Demoralizing Banner
+        { spell = 114207, type = "ability", usable = true , totem = true }, -- Skull Banner
         { spell = 100130, type = "ability", charges = true , usable = true }, -- Wild Strike
         { spell = 118038, type = "ability", usable = true , buff = true }, -- Die by the Sword
         { spell = 55694, type = "ability", usable = true , buff = true, talent = 4 }, -- Enraged Regeneration
@@ -1595,7 +1601,6 @@ templates.class.SHAMAN = {
         { spell = 73683, type = "buff", unit = "player"}, -- Unleash Flame
         { spell = 2645, type = "buff", unit = "player"}, -- Ghost Wolf
         { spell = 16246, type = "buff", unit = "player"}, -- Clearcasting
-        { spell = 133630, type = "buff", unit = "player"}, -- Exquisite Proficiency
         { spell = 77762, type = "buff", unit = "player"}, -- Lava Surge
         { spell = 73920, type = "buff", unit = "player"}, -- Healing Rain
         { spell = 8178, type = "buff", unit = "player"}, -- Grounding Totem Effect
@@ -1674,8 +1679,20 @@ templates.class.SHAMAN = {
         { spell = 79206, type = "ability", usable = true , buff = true }, -- Spiritwalker's Grace
         { spell = 107079, type = "ability", usable = true }, -- Quaking Palm
         { spell = 114049, type = "ability", usable = true }, -- Ascendance
-        { spell = 108270, type = "ability", talent = 2 , usable = true , buff = true }, -- Stone Bulwark Totem
+        { spell = 2062, type = "ability", usable = true , totem = true }, -- Earth Elemental Totem
+        { spell = 2484, type = "ability", usable = true , totem = true }, -- Earthbind Totem
+        { spell = 2894, type = "ability", usable = true , totem = true }, -- Fire Elemental Totem
+        { spell = 3599, type = "ability", usable = true , totem = true }, -- Searing Totem
+        { spell = 5394, type = "ability", usable = true , totem = true }, -- Healing Stream Totem
+        { spell = 8143, type = "ability", usable = true , totem = true }, -- Tremor Totem
+        { spell = 8177, type = "ability", usable = true , totem = true }, -- Grounding Totem
+        { spell = 8190, type = "ability", usable = true , totem = true }, -- Magma Totem
+        { spell = 108280, type = "ability", usable = true , totem = true }, -- Healing Tide Totem
+        { spell = 120668, type = "ability", usable = true , totem = true }, -- Stormlash Totem
+        { spell = 108270, type = "ability", talent = 2 , usable = true , totem = true }, -- Stone Bulwark Totem
         { spell = 108271, type = "ability", talent = 3 , usable = true , buff = true }, -- Astral Shift
+        { spell = 51485, type = "ability", talent = 5 , usable = true , totem = true }, -- Earthgrab Totem
+        { spell = 108273, type = "ability", talent = 6, usable = true , totem = true }, -- Windwalk Totem
         { spell = 108285, type = "ability", talent = 7 , usable = true }, -- Call of the Elements
         { spell = 108287, type = "ability", talent = 9 , usable = true }, -- Totemic Projection
         { spell = 16166, type = "ability", talent = 10 , usable = true , buff = true }, -- Elemental Mastery
