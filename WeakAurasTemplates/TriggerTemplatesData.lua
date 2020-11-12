@@ -3712,6 +3712,49 @@ templates.class.DEATHKNIGHT = {
   },
 }
 
+-- Items section
+templates.items[1] = {
+    title = L["Enchants"],
+    args = {
+
+    }
+}
+
+templates.items[2] = {
+    title = L["On Use Trinkets (Aura)"],
+    args = {
+
+    }
+}
+
+templates.items[3] = {
+    title = L["On Use Trinkets (CD)"],
+    args = {
+
+    }
+}
+
+templates.items[4] = {
+    title = L["On Procc Trinkets (Aura)"],
+    args = {
+
+    }
+}
+
+templates.items[5] = {
+    title = L["PVP Trinkets (Aura)"],
+    args = {
+
+    }
+}
+
+templates.items[6] = {
+    title = L["PVP Trinkets (CD)"],
+    args = {
+
+    }
+}
+
 
 -- General Section
 tinsert(templates.general.args, {
