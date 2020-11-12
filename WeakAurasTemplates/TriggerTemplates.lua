@@ -72,10 +72,6 @@ local function changes(property, regionType)
 end
 
 local checks = {
-  active = {
-    variable = "active",
-    value = 1,
-  },
   spellInRange = {
     variable = "spellInRange",
     value = 0,
@@ -166,10 +162,6 @@ end
 
 local function isNotUsableBlue(conditions, trigger, regionType)
   tinsert(conditions, buildCondition(trigger, checks.usable, {changes("blue", regionType)}));
-end
-
-local function isActionNotUsableGreyed(conditions, trigger, regionType)
-  tinsert(conditions, buildCondition(trigger, checks.active, {changes("grey", regionType)}));
 end
 
 local function insufficientResourcesBlue(conditions, trigger, regionType)
@@ -373,20 +365,6 @@ local function createAbilityTrigger(triggers, position, item, genericShowOn)
   end
 end
 
-local function createAbilityTriggerUsable(triggers, position, item)
-  triggers[position] = {
-    trigger = {
-      event = "Action Usable",
-      spellName = item.spell,
-      type = "status",
-      unevent = "auto",
-      -- targetRequired = targetRequired
-    }
-  };
-  triggers[position].trigger.use_track = true
-  triggers[position].trigger.track = "cooldown"
-end
-
 local function createItemTrigger(triggers, position, item, genericShowOn)
   triggers[position] = {
     trigger = {
@@ -546,16 +524,6 @@ local function subTypesFor(item, regionType)
         isNotUsableBlue(conditions, 1, regionType)
       end,
     });
-    if (item.usable) then
-      tinsert(types, {
-        icon = icon.cd2,
-        title = L["Basic Action Usable"],
-        description = L["Only shows the aura when the ability can be used (cooldown and power cost)."],
-        createTriggers = function(triggers, item)
-          createAbilityTriggerUsable(triggers, 1, item);
-        end,
-      });
-    end
     if (item.charges) then
       data.cooldownSwipe = false
       data.cooldownEdge = true
