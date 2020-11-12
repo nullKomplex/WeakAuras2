@@ -1864,75 +1864,128 @@ templates.class.SHAMAN = {
     [1] = {
       title = L["Buffs"],
       args = {
-        { spell = 546, type = "buff", unit = "player"}, -- Water Walking
-        { spell = 974, type = "buff", unit = "group", talent = 6 }, -- Earth Shield
-        { spell = 2645, type = "buff", unit = "player"}, -- Ghost Wolf
-        { spell = 6196, type = "buff", unit = "player"}, -- Far Sight
-        { spell = 53390, type = "buff", unit = "player"}, -- Tidal Waves
-        { spell = 61295, type = "buff", unit = "target"}, -- Riptide
-        { spell = 73685, type = "buff", unit = "player", talent = 3 }, -- Unleash Life
-        { spell = 73920, type = "buff", unit = "player"}, -- Healing Rain
-        { spell = 77762, type = "buff", unit = "player"}, -- Lava Surge
         { spell = 79206, type = "buff", unit = "player"}, -- Spiritwalker's Grace
+        { spell = 114052, type = "buff", unit = "player"}, -- Ascendance
+        { spell = 51945, type = "buff", unit = "player"}, -- Earthliving
+        { spell = 6196, type = "buff", unit = "player"}, -- Far Sight
+        { spell = 2825, type = "buff", unit = "player"}, -- Bloodlust
+        { spell = 73685, type = "buff", unit = "player"}, -- Unleash Life
+        { spell = 2645, type = "buff", unit = "player"}, -- Ghost Wolf
+        { spell = 16191, type = "buff", unit = "player"}, -- Mana Tide
+        { spell = 105284, type = "buff", unit = "player"}, -- Ancestral Vigor
+        { spell = 61295, type = "buff", unit = "player"}, -- Riptide
+        { spell = 53390, type = "buff", unit = "player"}, -- Tidal Waves
+        { spell = 73920, type = "buff", unit = "player"}, -- Healing Rain
+        { spell = 546, type = "buff", unit = "player"}, -- Water Walking
+        { spell = 8178, type = "buff", unit = "player"}, -- Grounding Totem Effect
+        { spell = 120676, type = "buff", unit = "player"}, -- Stormlash Totem
         { spell = 98007, type = "buff", unit = "player"}, -- Spirit Link Totem
-        { spell = 108271, type = "buff", unit = "player"}, -- Astral Shift
-        { spell = 114052, type = "buff", unit = "player", talent = 21 }, -- Ascendance
-        { spell = 157504, type = "buff", unit = "player", talent = 18 }, -- Cloudburst Totem
-        { spell = 201633, type = "buff", unit = "player", talent = 11 }, -- Earthen Wall
-        { spell = 207400, type = "buff", unit = "target", talent = 10 }, -- Ancestral Vigor
-        { spell = 207498, type = "buff", unit = "player", talent = 12 }, -- Ancestral Protection
-        { spell = 216251, type = "buff", unit = "player", talent = 2 }, -- Undulation
-        { spell = 260881, type = "buff", unit = "player", talent = 7 }, -- Spirit Wolf
-        { spell = 280615, type = "buff", unit = "player", talent = 16 }, -- Flash Flood
+        { spell = 974, type = "buff", unit = "player"}, -- Earth Shield
+        { spell = 52127, type = "buff", unit = "player"}, -- Water Shield
+        { spell = 324, type = "buff", unit = "player"}, -- Lightning Shield
+        { spell = 114893, type = "buff", unit = "player", talent = 2 }, -- Stone Bulwark
+        { spell = 108271, type = "buff", unit = "player", talent = 3 }, -- Astral Shift
+        { spell = 114896, type = "buff", unit = "player", talent = 6 }, -- Windwalk Totem
+        { spell = 16166, type = "buff", unit = "player", talent = 10 }, -- Elemental Mastery
+        { spell = 16188, type = "buff", unit = "player", talent = 11 }, -- Ancestral Swiftness
+        { spell = 108281, type = "buff", unit = "player", talent = 14 }, -- Ancestral Guidance
+        { spell = 118474, type = "buff", unit = "player", talent = 16 }, -- Unleashed Fury
+        { spell = 118475, type = "buff", unit = "player", talent = 16 }, -- Unleashed Fury
+        { spell = 118473, type = "buff", unit = "player", talent = 16 }, -- Unleashed Fury
+        { spell = 118350, type = "buff", unit = "player", talent = 17 }, -- Empower
+        { spell = 118347, type = "buff", unit = "player", talent = 17 }, -- Reinforce
+        { spell = 118337, type = "buff", unit = "target", talent = 17 }, -- Harden Skin
+        { spell = 118522, type = "buff", unit = "player", talent = 18 }, -- Elemental Blast
 
         -- Enchant
-        { spell = 318038, type = "weaponenchant", enchant = 5400, weapon = "main"}, -- Flametongue Weapon
+        -- { spell = 318038, type = "weaponenchant", enchant = 5400, weapon = "main"}, -- Flametongue Weapon
       },
       icon = "Interface\\Icons\\Spell_nature_riptide"
     },
     [2] = {
       title = L["Debuffs"],
       args = {
+        { spell = 115798, type = "debuff", unit = "target"}, -- Weakened Blows
+        { spell = 8056, type = "debuff", unit = "target"}, -- Frost Shock
         { spell = 3600, type = "debuff", unit = "target"}, -- Earthbind
-        { spell = 64695, type = "debuff", unit = "target", talent = 8 }, -- Earthgrab
-        { spell = 118905, type = "debuff", unit = "target"}, -- Static Charge
-        { spell = 188389, type = "debuff", unit = "target"}, -- Flame Shock
+        { spell = 8034, type = "debuff", unit = "target"}, -- Frostbrand Attack
+        { spell = 8050, type = "debuff", unit = "target"}, -- Flame Shock
+        { spell = 76780, type = "debuff", unit = "target"}, -- Bind Elemental
+        { spell = 73682, type = "debuff", unit = "target"}, -- Unleash Frost
+        { spell = 73684, type = "debuff", unit = "target"}, -- Unleash Earth
+        { spell = 51514, type = "debuff", unit = "target"}, -- Hex
+        { spell = 63685, type = "debuff", unit = "target", talent = 4 }, -- Freeze
+        { spell = 116947, type = "debuff", unit = "target", talent = 5 }, -- Earthbind
+        { spell = 64695, type = "debuff", unit = "target", talent = 5 }, -- Earthgrab
+        { spell = 118470, type = "debuff", unit = "target", talent = 16 }, -- Unleashed Fury
+        { spell = 118297, type = "debuff", unit = "target", talent = 17 }, -- Immolate
+        { spell = 118345, type = "debuff", unit = "target", talent = 17 }, -- Pulverize
       },
       icon = "Interface\\Icons\\Spell_fire_flameshock"
     },
     [3] = {
       title = L["Abilities"],
       args = {
-        { spell = 556, type = "ability"}, -- Astral Recall
-        { spell = 2484, type = "ability", totem = true}, -- Earthbind Totem
-        { spell = 2825, type = "ability", buff = true}, -- Bloodlust
-        { spell = 5394, type = "ability", totem = true, talent = {5,6}}, -- Healing Stream Totem
-        { spell = 5394, type = "ability", charges = true, totem = true, talent = 4, titleSuffix = " (2 Charges)"}, -- Healing Stream Totem
-        { spell = 8143, type = "ability", totem = true}, -- Tremor Totem
-        { spell = 32182, type = "ability", buff = true}, -- Heroism
-        { spell = 51485, type = "ability", totem = true, talent = 8 }, -- Earthgrab Totem
-        { spell = 51505, type = "ability", requiresTarget = true, talent = {5,6}}, -- Lava Burst
-        { spell = 51505, type = "ability", charges = true, requiresTarget = true, talent = 4, titleSuffix = " (2 Charges)"}, -- Lava Burst
-        { spell = 51514, type = "ability", requiresTarget = true}, -- Hex
-        { spell = 57994, type = "ability", requiresTarget = true}, -- Wind Shear
-        { spell = 61295, type = "ability", talent = {5,6}}, -- Riptide
-        { spell = 61295, type = "ability", charges = true, talent = 4, titleSuffix = " (2 Charges)"}, -- Riptide
-        { spell = 73685, type = "ability", buff = true, talent = 3 }, -- Unleash Life
-        { spell = 73920, type = "ability", duration = 10}, -- Healing Rain
-        { spell = 79206, type = "ability", buff = true}, -- Spiritwalker's Grace
-        { spell = 98008, type = "ability", totem = true}, -- Spirit Link Totem
-        { spell = 108271, type = "ability", buff = true}, -- Astral Shift
-        { spell = 108280, type = "ability", totem = true}, -- Healing Tide Totem
-        { spell = 114052, type = "ability", buff = true, talent = 21 }, -- Ascendance
-        { spell = 157153, type = "ability", charges = true, totem = true, talent = 18 }, -- Cloudburst Totem
-        { spell = 188389, type = "ability", debuff = true, requiresTarget = true}, -- Flame Shock
-        { spell = 192058, type = "ability", totem = true}, -- Capacitor Totem
-        { spell = 192077, type = "ability", totem = true, talent = 15 }, -- Wind Rush Totem
-        { spell = 197995, type = "ability", talent = 20 }, -- Wellspring
-        { spell = 198103, type = "ability", duration = 60 }, -- Earth Elemental
-        { spell = 198838, type = "ability", totem = true, talent = 11 }, -- Earthen Wall Totem
-        { spell = 207399, type = "ability", totem = true, talent = 12 }, -- Ancestral Protection Totem
-        { spell = 207778, type = "ability", talent = 17 }, -- Downpour
+        { spell = 331, type = "ability", usable = true }, -- Healing Wave
+        { spell = 370, type = "ability", usable = true }, -- Purge
+        { spell = 403, type = "ability", usable = true }, -- Lightning Bolt
+        { spell = 421, type = "ability", usable = true }, -- Chain Lightning
+        { spell = 546, type = "ability", usable = true , buff = true }, -- Water Walking
+        { spell = 556, type = "ability", usable = true }, -- Astral Recall
+        { spell = 974, type = "ability", usable = true , buff = true }, -- Earth Shield
+        { spell = 1064, type = "ability", usable = true }, -- Chain Heal
+        { spell = 2008, type = "ability", usable = true }, -- Ancestral Spirit
+        { spell = 2062, type = "ability", usable = true , totem = true }, -- Earth Elemental Totem
+        { spell = 2484, type = "ability", usable = true , totem = true }, -- Earthbind Totem
+        { spell = 2645, type = "ability", usable = true , buff = true }, -- Ghost Wolf
+        { spell = 2825, type = "ability", usable = true , buff = true }, -- Bloodlust
+        { spell = 2894, type = "ability", usable = true , totem = true }, -- Fire Elemental Totem
+        { spell = 3599, type = "ability", usable = true , totem = true }, -- Searing Totem
+        { spell = 5394, type = "ability", usable = true , totem = true }, -- Healing Stream Totem
+        { spell = 6196, type = "ability", usable = true , buff = true }, -- Far Sight
+        { spell = 8004, type = "ability", usable = true }, -- Healing Surge
+        { spell = 8042, type = "ability", usable = true }, -- Earth Shock
+        { spell = 8050, type = "ability", usable = true }, -- Flame Shock
+        { spell = 8056, type = "ability", usable = true }, -- Frost Shock
+        { spell = 8143, type = "ability", usable = true , totem = true }, -- Tremor Totem
+        { spell = 8177, type = "ability", usable = true , totem = true }, -- Grounding Totem
+        { spell = 8190, type = "ability", usable = true , totem = true }, -- Magma Totem
+        { spell = 16190, type = "ability", usable = true , totem = true }, -- Mana Tide Totem
+        { spell = 51505, type = "ability", usable = true }, -- Lava Burst
+        { spell = 51514, type = "ability", usable = true }, -- Hex
+        { spell = 51730, type = "ability", usable = true }, -- Earthliving Weapon
+        { spell = 57994, type = "ability", usable = true }, -- Wind Shear
+        { spell = 61295, type = "ability", usable = true , buff = true }, -- Riptide
+        { spell = 73680, type = "ability", usable = true }, -- Unleash Elements
+        { spell = 73899, type = "ability", usable = true }, -- Primal Strike
+        { spell = 73920, type = "ability", usable = true , buff = true }, -- Healing Rain
+        { spell = 76780, type = "ability", usable = true }, -- Bind Elemental
+        { spell = 77130, type = "ability", usable = true }, -- Purify Spirit
+        { spell = 77472, type = "ability", usable = true }, -- Greater Healing Wave
+        { spell = 79206, type = "ability", usable = true , buff = true }, -- Spiritwalker's Grace
+        { spell = 98008, type = "ability", usable = true , totem = true }, -- Spirit Link Totem
+        { spell = 108269, type = "ability", usable = true }, -- Capacitor Totem
+        { spell = 108280, type = "ability", usable = true , totem = true }, -- Healing Tide Totem
+        { spell = 114049, type = "ability", usable = true }, -- Ascendance
+        { spell = 120668, type = "ability", usable = true , totem = true }, -- Stormlash Totem
+        { spell = 108270, type = "ability", talent = 2 , usable = true , totem = true }, -- Stone Bulwark Totem
+        { spell = 108271, type = "ability", talent = 3 , usable = true , buff = true }, -- Astral Shift
+        { spell = 51485, type = "ability", talent = 5 , usable = true , totem = true }, -- Earthgrab Totem
+        { spell = 108273, type = "ability", talent = 6, usable = true , totem = true }, -- Windwalk Totem
+        { spell = 108285, type = "ability", talent = 7 , usable = true }, -- Call of the Elements
+        { spell = 108287, type = "ability", talent = 9 , usable = true }, -- Totemic Projection
+        { spell = 16166, type = "ability", talent = 10 , usable = true , buff = true }, -- Elemental Mastery
+        { spell = 16188, type = "ability", talent = 11 , usable = true , buff = true }, -- Ancestral Swiftness
+        { spell = 108281, type = "ability", talent = 14 , usable = true , buff = true }, -- Ancestral Guidance
+        { spell = 117588, type = "ability", talent = 17 , usable = true }, -- Fire Nova
+        { spell = 118297, type = "ability", talent = 17 , usable = true }, -- Immolate
+        { spell = 118337, type = "ability", talent = 17 , usable = true , buff = true, unit = 'pet' , debuff = true }, -- Harden Skin
+        { spell = 118345, type = "ability", talent = 17 , usable = true }, -- Pulverize
+        { spell = 118347, type = "ability", talent = 17 , usable = true , buff = true }, -- Reinforce
+        { spell = 118350, type = "ability", talent = 17 , usable = true , buff = true }, -- Empower
+        { spell = 36213, type = "ability", talent = 17 , usable = true }, -- Angered Earth
+        { spell = 57984, type = "ability", talent = 17 , usable = true }, -- Fire Blast
+        { spell = 117014, type = "ability", talent = 18 , usable = true }, -- Elemental Blast
       },
       icon = "Interface\\Icons\\Inv_spear_04"
     },
