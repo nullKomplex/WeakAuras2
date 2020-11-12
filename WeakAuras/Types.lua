@@ -2470,6 +2470,7 @@ WeakAuras.data_stub = {
   conditions = {},
   config = {},
   authorOptions = {},
+  information = {},
 }
 
 Private.author_option_classes = {
