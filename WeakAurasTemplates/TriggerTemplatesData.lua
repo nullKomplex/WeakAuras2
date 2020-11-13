@@ -115,41 +115,41 @@ templates.class.WARRIOR = {
       title = L["Abilities"],
       args = {
         { spell = 71, type = "ability", usable = true }, -- Defensive Stance
-        { spell = 78, type = "ability", usable = true }, -- Heroic Strike
-        { spell = 100, type = "ability", usable = true }, -- Charge
-        { spell = 355, type = "ability", usable = true }, -- Taunt
+        { spell = 78, type = "ability", usable = true, requiresTarget = true }, -- Heroic Strike
+        { spell = 100, type = "ability", usable = true, requiresTarget = true }, -- Charge
+        { spell = 355, type = "ability", usable = true, requiresTarget = true }, -- Taunt
         { spell = 469, type = "ability", usable = true , buff = true }, -- Commanding Shout
-        { spell = 676, type = "ability", usable = true }, -- Disarm
-        { spell = 845, type = "ability", usable = true }, -- Cleave
+        { spell = 676, type = "ability", usable = true, requiresTarget = true }, -- Disarm
+        { spell = 845, type = "ability", usable = true, requiresTarget = true }, -- Cleave
         { spell = 871, type = "ability", usable = true , buff = true }, -- Shield Wall
-        { spell = 1464, type = "ability", usable = true }, -- Slam
+        { spell = 1464, type = "ability", usable = true, requiresTarget = true }, -- Slam
         { spell = 1680, type = "ability", usable = true }, -- Whirlwind
-        { spell = 1715, type = "ability", usable = true }, -- Hamstring
+        { spell = 1715, type = "ability", usable = true, requiresTarget = true }, -- Hamstring
         { spell = 1719, type = "ability", usable = true , buff = true }, -- Recklessness
         { spell = 2457, type = "ability", usable = true }, -- Battle Stance
         { spell = 2458, type = "ability", usable = true }, -- Berserker Stance
-        { spell = 3411, type = "ability", usable = true }, -- Intervene
+        { spell = 3411, type = "ability", usable = true, requiresTarget = true }, -- Intervene
         { spell = 5246, type = "ability", usable = true }, -- Intimidating Shout
-        { spell = 5308, type = "ability", usable = true }, -- Execute
+        { spell = 5308, type = "ability", usable = true, requiresTarget = true }, -- Execute
         { spell = 6343, type = "ability", usable = true }, -- Thunder Clap
         { spell = 6544, type = "ability", usable = true }, -- Heroic Leap
-        { spell = 6552, type = "ability", usable = true }, -- Pummel
+        { spell = 6552, type = "ability", usable = true, requiresTarget = true }, -- Pummel
         { spell = 6673, type = "ability", usable = true , buff = true }, -- Battle Shout
-        { spell = 7384, type = "ability", charges = true , usable = true }, -- Overpower
-        { spell = 7386, type = "ability", usable = true }, -- Sunder Armor
-        { spell = 12294, type = "ability", usable = true }, -- Mortal Strike
+        { spell = 7384, type = "ability", charges = true , usable = true, requiresTarget = true }, -- Overpower
+        { spell = 7386, type = "ability", usable = true, requiresTarget = true }, -- Sunder Armor
+        { spell = 12294, type = "ability", usable = true, requiresTarget = true }, -- Mortal Strike
         { spell = 12328, type = "ability", usable = true , buff = true }, -- Sweeping Strikes
         { spell = 23920, type = "ability", usable = true , buff = true }, -- Spell Reflection
-        { spell = 57755, type = "ability", usable = true }, -- Heroic Throw
-        { spell = 64382, type = "ability", usable = true }, -- Shattering Throw
-        { spell = 86346, type = "ability", usable = true }, -- Colossus Smash
+        { spell = 57755, type = "ability", usable = true, requiresTarget = true }, -- Heroic Throw
+        { spell = 64382, type = "ability", usable = true, requiresTarget = true }, -- Shattering Throw
+        { spell = 86346, type = "ability", usable = true, requiresTarget = true }, -- Colossus Smash
         { spell = 97462, type = "ability", usable = true }, -- Rallying Cry
         { spell = 114192, type = "ability", usable = true , totem = true , buff = true }, -- Mocking Banner
         { spell = 114203, type = "ability", usable = true , totem = true }, -- Demoralizing Banner
         { spell = 114207, type = "ability", usable = true , totem = true }, -- Skull Banner
         { spell = 118038, type = "ability", usable = true , buff = true }, -- Die by the Sword
         { spell = 55694, type = "ability", usable = true , buff = true, talent = 4 }, -- Enraged Regeneration
-        { spell = 103840, type = "ability", usable = true, talent = 6 }, -- Impending Victory
+        { spell = 103840, type = "ability", usable = true, talent = 6, requiresTarget = true }, -- Impending Victory
         { spell = 107566, type = "ability", usable = true, talent = 7 }, -- Staggering Shout
         { spell = 12323, type = "ability", usable = true, talent = 8 }, -- Piercing Howl
         { spell = 102060, type = "ability", usable = true, talent = 9 }, -- Disrupting Shout
@@ -157,11 +157,11 @@ templates.class.WARRIOR = {
         { spell = 46968, type = "ability", usable = true, talent = 11 }, -- Shockwave
         { spell = 118000, type = "ability", usable = true, talent = 12 }, -- Dragon Roar
         { spell = 114028, type = "ability", usable = true , buff = true, talent = 13 }, -- Mass Spell Reflection
-        { spell = 114029, type = "ability", usable = true , debuff = true, talent = 14 }, -- Safeguard
-        { spell = 114030, type = "ability", usable = true , debuff = true, talent = 15 }, -- Vigilance
+        { spell = 114029, type = "ability", usable = true , debuff = true, talent = 14, requiresTarget = true }, -- Safeguard
+        { spell = 114030, type = "ability", usable = true , debuff = true, talent = 15, requiresTarget = true }, -- Vigilance
         { spell = 107574, type = "ability", usable = true , buff = true, talent = 16 }, -- Avatar
         { spell = 12292, type = "ability", usable = true , buff = true, talent = 17 }, -- Bloodbath
-        { spell = 107570, type = "ability", usable = true, talent = 18 }, -- Storm Bolt
+        { spell = 107570, type = "ability", usable = true, talent = 18, requiresTarget = true }, -- Storm Bolt
       },
       icon = "Interface\\Icons\\Ability_warrior_savageblow"
     },
@@ -236,41 +236,41 @@ templates.class.WARRIOR = {
       title = L["Abilities"],
       args = {
         { spell = 71, type = "ability", usable = true }, -- Defensive Stance
-        { spell = 78, type = "ability", usable = true }, -- Heroic Strike
-        { spell = 100, type = "ability", charges = true , usable = true }, -- Charge
-        { spell = 355, type = "ability", usable = true }, -- Taunt
+        { spell = 78, type = "ability", usable = true, requiresTarget = true }, -- Heroic Strike
+        { spell = 100, type = "ability", charges = true , usable = true, requiresTarget = true }, -- Charge
+        { spell = 355, type = "ability", usable = true, requiresTarget = true }, -- Taunt
         { spell = 469, type = "ability", usable = true }, -- Commanding Shout
-        { spell = 676, type = "ability", usable = true }, -- Disarm
-        { spell = 845, type = "ability", usable = true }, -- Cleave
+        { spell = 676, type = "ability", usable = true, requiresTarget = true }, -- Disarm
+        { spell = 845, type = "ability", usable = true, requiresTarget = true }, -- Cleave
         { spell = 871, type = "ability", usable = true , buff = true }, -- Shield Wall
         { spell = 1680, type = "ability", usable = true }, -- Whirlwind
-        { spell = 1715, type = "ability", usable = true }, -- Hamstring
+        { spell = 1715, type = "ability", usable = true, requiresTarget = true }, -- Hamstring
         { spell = 1719, type = "ability", usable = true , buff = true }, -- Recklessness
         { spell = 2457, type = "ability", usable = true }, -- Battle Stance
         { spell = 2458, type = "ability", usable = true }, -- Berserker Stance
-        { spell = 3411, type = "ability", usable = true }, -- Intervene
+        { spell = 3411, type = "ability", usable = true, requiresTarget = true }, -- Intervene
         { spell = 5246, type = "ability", usable = true }, -- Intimidating Shout
-        { spell = 5308, type = "ability", usable = true }, -- Execute
+        { spell = 5308, type = "ability", usable = true, requiresTarget = true }, -- Execute
         { spell = 6343, type = "ability", usable = true }, -- Thunder Clap
         { spell = 6544, type = "ability", usable = true }, -- Heroic Leap
-        { spell = 6552, type = "ability", usable = true }, -- Pummel
+        { spell = 6552, type = "ability", usable = true, requiresTarget = true }, -- Pummel
         { spell = 6673, type = "ability", usable = true , buff = true }, -- Battle Shout
-        { spell = 7386, type = "ability", usable = true }, -- Sunder Armor
+        { spell = 7386, type = "ability", usable = true, requiresTarget = true }, -- Sunder Armor
         { spell = 18499, type = "ability", usable = true , buff = true }, -- Berserker Rage
-        { spell = 23881, type = "ability", usable = true }, -- Bloodthirst
+        { spell = 23881, type = "ability", usable = true, requiresTarget = true }, -- Bloodthirst
         { spell = 23920, type = "ability", usable = true , buff = true }, -- Spell Reflection
-        { spell = 57755, type = "ability", usable = true }, -- Heroic Throw
-        { spell = 64382, type = "ability", usable = true }, -- Shattering Throw
-        { spell = 85288, type = "ability", usable = true }, -- Raging Blow
-        { spell = 86346, type = "ability", usable = true }, -- Colossus Smash
+        { spell = 57755, type = "ability", usable = true, requiresTarget = true }, -- Heroic Throw
+        { spell = 64382, type = "ability", usable = true, requiresTarget = true }, -- Shattering Throw
+        { spell = 85288, type = "ability", usable = true, requiresTarget = true }, -- Raging Blow
+        { spell = 86346, type = "ability", usable = true, requiresTarget = true }, -- Colossus Smash
         { spell = 97462, type = "ability", usable = true }, -- Rallying Cry
         { spell = 114192, type = "ability", usable = true , totem = true , buff = true }, -- Mocking Banner
         { spell = 114203, type = "ability", usable = true , totem = true }, -- Demoralizing Banner
         { spell = 114207, type = "ability", usable = true , totem = true }, -- Skull Banner
-        { spell = 100130, type = "ability", charges = true , usable = true }, -- Wild Strike
+        { spell = 100130, type = "ability", charges = true , usable = true, requiresTarget = true }, -- Wild Strike
         { spell = 118038, type = "ability", usable = true , buff = true }, -- Die by the Sword
         { spell = 55694, type = "ability", usable = true , buff = true, talent = 4 }, -- Enraged Regeneration
-        { spell = 103840, type = "ability", usable = true, talent = 6 }, -- Impending Victory
+        { spell = 103840, type = "ability", usable = true, talent = 6, requiresTarget = true }, -- Impending Victory
         { spell = 107566, type = "ability", usable = true, talent = 7 }, -- Staggering Shout
         { spell = 12323, type = "ability", usable = true, talent = 8 }, -- Piercing Howl
         { spell = 102060, type = "ability", usable = true, talent = 9 }, -- Disrupting Shout
@@ -278,11 +278,11 @@ templates.class.WARRIOR = {
         { spell = 46968, type = "ability", usable = true, talent = 11 }, -- Shockwave
         { spell = 118000, type = "ability", usable = true, talent = 12 }, -- Dragon Roar
         { spell = 114028, type = "ability", usable = true , buff = true, talent = 13 }, -- Mass Spell Reflection
-        { spell = 114029, type = "ability", usable = true , debuff = true, talent = 14 }, -- Safeguard
-        { spell = 114030, type = "ability", usable = true , debuff = true, talent = 15 }, -- Vigilance
+        { spell = 114029, type = "ability", usable = true , debuff = true, talent = 14, requiresTarget = true }, -- Safeguard
+        { spell = 114030, type = "ability", usable = true , debuff = true, talent = 15, requiresTarget = true }, -- Vigilance
         { spell = 107574, type = "ability", usable = true , buff = true, talent = 16 }, -- Avatar
         { spell = 12292, type = "ability", usable = true , buff = true, talent = 17 }, -- Bloodbath
-        { spell = 107570, type = "ability", usable = true, talent = 18 }, -- Storm Bolt
+        { spell = 107570, type = "ability", usable = true, talent = 18, requiresTarget = true }, -- Storm Bolt
       },
       icon = "Interface\\Icons\\Spell_nature_bloodlust"
     },
@@ -336,9 +336,7 @@ templates.class.WARRIOR = {
     [3] = {
       title = L["Abilities"],
       args = {
-        { spell = 100, type = "ability", requiresTarget = true, talent = {5,6}, titleSuffix=" (1 Charge)" }, -- Charge
         { spell = 100, type = "ability", requiresTarget = true}, -- Charge
-        { spell = 100, type = "ability", charges = true, requiresTarget = true, talent = 4, titleSuffix=" (2 Charges)"}, -- Charge
         { spell = 355, type = "ability", debuff = true, requiresTarget = true}, -- Taunt
         { spell = 871, type = "ability", buff = true}, -- Shield Wall
         { spell = 1160, type = "ability", debuff = true}, -- Demoralizing Shout
@@ -356,7 +354,6 @@ templates.class.WARRIOR = {
         { spell = 6673, type = "ability"}, -- Battle Shout
         { spell = 12975, type = "ability", buff = true}, -- Last Stand
         { spell = 18499, type = "ability", buff = true}, -- Berserker Rage
-        { spell = 20243, type = "ability", requiresTarget = true, talent = {1, 2}}, -- Devastate
         { spell = 23920, type = "ability", buff = true}, -- Spell Reflection
         { spell = 23922, type = "ability", requiresTarget = true, overlayGlow = true}, -- Shield Slam
         { spell = 23922, type = "ability", requiresTarget = true}, -- Shield Slam
@@ -365,13 +362,27 @@ templates.class.WARRIOR = {
         { spell = 57755, type = "ability", requiresTarget = true}, -- Heroic Throw
         { spell = 64382, type = "ability", requiresTarget = true}, -- Shattering Throw
         { spell = 97462, type = "ability"}, -- Rallying Cry
-        { spell = 107570, type = "ability", debuff = true, requiresTarget = true, talent = 6}, -- Storm Bolt
         { spell = 107574, type = "ability", buff = true}, -- Avatar
-        { spell = 118000, type = "ability", talent = 9}, -- Dragon Roar
         { spell = 163201, type = "ability", requiresTarget = true}, -- Execute
         { spell = 198304, type = "ability", charges = true, requiresTarget = true}, -- Intercept
-        { spell = 202168, type = "ability", requiresTarget = true, talent = 15}, -- Impending Victory
-        { spell = 228920, type = "ability", talent = 18}, -- Ravager
+        { spell = 114192, type = "ability", usable = true , totem = true , buff = true }, -- Mocking Banner
+        { spell = 114203, type = "ability", usable = true , totem = true }, -- Demoralizing Banner
+        { spell = 114207, type = "ability", usable = true , totem = true }, -- Skull Banner
+        { spell = 118038, type = "ability", usable = true , buff = true }, -- Die by the Sword
+        { spell = 55694, type = "ability", usable = true , buff = true, talent = 4 }, -- Enraged Regeneration
+        { spell = 103840, type = "ability", usable = true, talent = 6, requiresTarget = true }, -- Impending Victory
+        { spell = 107566, type = "ability", usable = true, talent = 7 }, -- Staggering Shout
+        { spell = 12323, type = "ability", usable = true, talent = 8 }, -- Piercing Howl
+        { spell = 102060, type = "ability", usable = true, talent = 9 }, -- Disrupting Shout
+        { spell = 46924, type = "ability", usable = true , buff = true, talent = 10 }, -- Bladestorm
+        { spell = 46968, type = "ability", usable = true, talent = 11 }, -- Shockwave
+        { spell = 118000, type = "ability", usable = true, talent = 12 }, -- Dragon Roar
+        { spell = 114028, type = "ability", usable = true , buff = true, talent = 13 }, -- Mass Spell Reflection
+        { spell = 114029, type = "ability", usable = true , debuff = true, talent = 14, requiresTarget = true }, -- Safeguard
+        { spell = 114030, type = "ability", usable = true , debuff = true, talent = 15, requiresTarget = true }, -- Vigilance
+        { spell = 107574, type = "ability", usable = true , buff = true, talent = 16 }, -- Avatar
+        { spell = 12292, type = "ability", usable = true , buff = true, talent = 17 }, -- Bloodbath
+        { spell = 107570, type = "ability", usable = true, talent = 18, requiresTarget = true }, -- Storm Bolt
       },
       icon = "Interface\\Icons\\Inv_shield_05"
     },
@@ -1653,33 +1664,32 @@ templates.class.SHAMAN = {
     [3] = {
       title = L["Abilities"],
       args = {
-        { spell = 370, type = "ability", usable = true }, -- Purge
-        { spell = 403, type = "ability", usable = true }, -- Lightning Bolt
-        { spell = 421, type = "ability", usable = true }, -- Chain Lightning
+        { spell = 370, type = "ability", usable = true, requiresTarget = true }, -- Purge
+        { spell = 403, type = "ability", usable = true, requiresTarget = true }, -- Lightning Bolt
+        { spell = 421, type = "ability", usable = true, requiresTarget = true }, -- Chain Lightning
         { spell = 546, type = "ability", usable = true }, -- Water Walking
         { spell = 556, type = "ability", usable = true }, -- Astral Recall
         { spell = 1064, type = "ability", usable = true }, -- Chain Heal
-        { spell = 2008, type = "ability", usable = true }, -- Ancestral Spirit
+        { spell = 2008, type = "ability", usable = true, requiresTarget = true }, -- Ancestral Spirit
         { spell = 2645, type = "ability", usable = true , buff = true }, -- Ghost Wolf
         { spell = 2825, type = "ability", usable = true , buff = true }, -- Bloodlust
         { spell = 6196, type = "ability", usable = true , buff = true }, -- Far Sight
         { spell = 8004, type = "ability", usable = true }, -- Healing Surge
-        { spell = 8042, type = "ability", usable = true }, -- Earth Shock
-        { spell = 8050, type = "ability", usable = true }, -- Flame Shock
-        { spell = 8056, type = "ability", usable = true }, -- Frost Shock
+        { spell = 8042, type = "ability", usable = true, requiresTarget = true }, -- Earth Shock
+        { spell = 8050, type = "ability", usable = true, requiresTarget = true }, -- Flame Shock
+        { spell = 8056, type = "ability", usable = true, requiresTarget = true }, -- Frost Shock
         { spell = 30823, type = "ability", usable = true , buff = true }, -- Shamanistic Rage
         { spell = 51490, type = "ability", usable = true }, -- Thunderstorm
-        { spell = 51505, type = "ability", usable = true }, -- Lava Burst
-        { spell = 51514, type = "ability", usable = true }, -- Hex
+        { spell = 51505, type = "ability", usable = true, requiresTarget = true }, -- Lava Burst
+        { spell = 51514, type = "ability", usable = true, requiresTarget = true }, -- Hex
         { spell = 51886, type = "ability", usable = true }, -- Cleanse Spirit
-        { spell = 57994, type = "ability", usable = true }, -- Wind Shear
+        { spell = 57994, type = "ability", usable = true, requiresTarget = true }, -- Wind Shear
         { spell = 61882, type = "ability", usable = true }, -- Earthquake
-        { spell = 73680, type = "ability", usable = true }, -- Unleash Elements
-        { spell = 73899, type = "ability", usable = true }, -- Primal Strike
+        { spell = 73680, type = "ability", usable = true, requiresTarget = true }, -- Unleash Elements
+        { spell = 73899, type = "ability", usable = true, requiresTarget = true }, -- Primal Strike
         { spell = 73920, type = "ability", usable = true , buff = true }, -- Healing Rain
-        { spell = 76780, type = "ability", usable = true }, -- Bind Elemental
+        { spell = 76780, type = "ability", usable = true, requiresTarget = true }, -- Bind Elemental
         { spell = 79206, type = "ability", usable = true , buff = true }, -- Spiritwalker's Grace
-        { spell = 107079, type = "ability", usable = true }, -- Quaking Palm
         { spell = 114049, type = "ability", usable = true }, -- Ascendance
         { spell = 2062, type = "ability", usable = true , totem = true }, -- Earth Elemental Totem
         { spell = 2484, type = "ability", usable = true , totem = true }, -- Earthbind Totem
@@ -1792,32 +1802,32 @@ templates.class.SHAMAN = {
     [3] = {
       title = L["Abilities"],
       args = {
-        { spell = 370, type = "ability", usable = true }, -- Purge
-        { spell = 403, type = "ability", usable = true }, -- Lightning Bolt
-        { spell = 421, type = "ability", usable = true }, -- Chain Lightning
+        { spell = 370, type = "ability", usable = true, requiresTarget = true }, -- Purge
+        { spell = 403, type = "ability", usable = true, requiresTarget = true }, -- Lightning Bolt
+        { spell = 421, type = "ability", usable = true, requiresTarget = true }, -- Chain Lightning
         { spell = 546, type = "ability", usable = true , buff = true }, -- Water Walking
         { spell = 556, type = "ability", usable = true }, -- Astral Recall
         { spell = 1064, type = "ability", usable = true }, -- Chain Heal
         { spell = 1535, type = "ability", usable = true }, -- Fire Nova
-        { spell = 2008, type = "ability", usable = true }, -- Ancestral Spirit
+        { spell = 2008, type = "ability", usable = true, requiresTarget = true }, -- Ancestral Spirit
         { spell = 2645, type = "ability", usable = true , buff = true }, -- Ghost Wolf
         { spell = 2825, type = "ability", usable = true , buff = true }, -- Bloodlust
         { spell = 6196, type = "ability", usable = true , buff = true }, -- Far Sight
         { spell = 8004, type = "ability", usable = true }, -- Healing Surge
-        { spell = 8042, type = "ability", usable = true }, -- Earth Shock
-        { spell = 8050, type = "ability", usable = true }, -- Flame Shock
-        { spell = 8056, type = "ability", usable = true }, -- Frost Shock
-        { spell = 17364, type = "ability", usable = true }, -- Stormstrike
+        { spell = 8042, type = "ability", usable = true, requiresTarget = true }, -- Earth Shock
+        { spell = 8050, type = "ability", usable = true, requiresTarget = true }, -- Flame Shock
+        { spell = 8056, type = "ability", usable = true, requiresTarget = true }, -- Frost Shock
+        { spell = 17364, type = "ability", usable = true, requiresTarget = true }, -- Stormstrike
         { spell = 30823, type = "ability", usable = true , buff = true }, -- Shamanistic Rage
-        { spell = 51514, type = "ability", usable = true }, -- Hex
+        { spell = 51514, type = "ability", usable = true, requiresTarget = true }, -- Hex
         { spell = 51533, type = "ability", usable = true }, -- Feral Spirit
         { spell = 51886, type = "ability", usable = true }, -- Cleanse Spirit
-        { spell = 57994, type = "ability", usable = true }, -- Wind Shear
+        { spell = 57994, type = "ability", usable = true, requiresTarget = true }, -- Wind Shear
         { spell = 58875, type = "ability", usable = true , buff = true }, -- Spirit Walk
-        { spell = 60103, type = "ability", usable = true }, -- Lava Lash
-        { spell = 73680, type = "ability", usable = true }, -- Unleash Elements
+        { spell = 60103, type = "ability", usable = true, requiresTarget = true }, -- Lava Lash
+        { spell = 73680, type = "ability", usable = true, requiresTarget = true }, -- Unleash Elements
         { spell = 73920, type = "ability", usable = true , buff = true }, -- Healing Rain
-        { spell = 76780, type = "ability", usable = true }, -- Bind Elemental
+        { spell = 76780, type = "ability", usable = true, requiresTarget = true }, -- Bind Elemental
         { spell = 79206, type = "ability", usable = true , buff = true }, -- Spiritwalker's Grace
         { spell = 114049, type = "ability", usable = true }, -- Ascendance
         { spell = 120668, type = "ability", usable = true }, -- Stormlash Totem
@@ -1929,14 +1939,14 @@ templates.class.SHAMAN = {
       title = L["Abilities"],
       args = {
         { spell = 331, type = "ability", usable = true }, -- Healing Wave
-        { spell = 370, type = "ability", usable = true }, -- Purge
-        { spell = 403, type = "ability", usable = true }, -- Lightning Bolt
-        { spell = 421, type = "ability", usable = true }, -- Chain Lightning
+        { spell = 370, type = "ability", usable = true, requiresTarget = true }, -- Purge
+        { spell = 403, type = "ability", usable = true, requiresTarget = true }, -- Lightning Bolt
+        { spell = 421, type = "ability", usable = true, requiresTarget = true }, -- Chain Lightning
         { spell = 546, type = "ability", usable = true , buff = true }, -- Water Walking
         { spell = 556, type = "ability", usable = true }, -- Astral Recall
         { spell = 974, type = "ability", usable = true , buff = true }, -- Earth Shield
         { spell = 1064, type = "ability", usable = true }, -- Chain Heal
-        { spell = 2008, type = "ability", usable = true }, -- Ancestral Spirit
+        { spell = 2008, type = "ability", usable = true, requiresTarget = true }, -- Ancestral Spirit
         { spell = 2062, type = "ability", usable = true , totem = true }, -- Earth Elemental Totem
         { spell = 2484, type = "ability", usable = true , totem = true }, -- Earthbind Totem
         { spell = 2645, type = "ability", usable = true , buff = true }, -- Ghost Wolf
@@ -1946,27 +1956,27 @@ templates.class.SHAMAN = {
         { spell = 5394, type = "ability", usable = true , totem = true }, -- Healing Stream Totem
         { spell = 6196, type = "ability", usable = true , buff = true }, -- Far Sight
         { spell = 8004, type = "ability", usable = true }, -- Healing Surge
-        { spell = 8042, type = "ability", usable = true }, -- Earth Shock
-        { spell = 8050, type = "ability", usable = true }, -- Flame Shock
-        { spell = 8056, type = "ability", usable = true }, -- Frost Shock
+        { spell = 8042, type = "ability", usable = true, requiresTarget = true }, -- Earth Shock
+        { spell = 8050, type = "ability", usable = true, requiresTarget = true }, -- Flame Shock
+        { spell = 8056, type = "ability", usable = true, requiresTarget = true }, -- Frost Shock
         { spell = 8143, type = "ability", usable = true , totem = true }, -- Tremor Totem
         { spell = 8177, type = "ability", usable = true , totem = true }, -- Grounding Totem
         { spell = 8190, type = "ability", usable = true , totem = true }, -- Magma Totem
         { spell = 16190, type = "ability", usable = true , totem = true }, -- Mana Tide Totem
-        { spell = 51505, type = "ability", usable = true }, -- Lava Burst
-        { spell = 51514, type = "ability", usable = true }, -- Hex
+        { spell = 51505, type = "ability", usable = true, requiresTarget = true }, -- Lava Burst
+        { spell = 51514, type = "ability", usable = true, requiresTarget = true }, -- Hex
         { spell = 51730, type = "ability", usable = true }, -- Earthliving Weapon
-        { spell = 57994, type = "ability", usable = true }, -- Wind Shear
+        { spell = 57994, type = "ability", usable = true, requiresTarget = true }, -- Wind Shear
         { spell = 61295, type = "ability", usable = true , buff = true }, -- Riptide
-        { spell = 73680, type = "ability", usable = true }, -- Unleash Elements
-        { spell = 73899, type = "ability", usable = true }, -- Primal Strike
+        { spell = 73680, type = "ability", usable = true, requiresTarget = true }, -- Unleash Elements
+        { spell = 73899, type = "ability", usable = true, requiresTarget = true }, -- Primal Strike
         { spell = 73920, type = "ability", usable = true , buff = true }, -- Healing Rain
-        { spell = 76780, type = "ability", usable = true }, -- Bind Elemental
+        { spell = 76780, type = "ability", usable = true, requiresTarget = true }, -- Bind Elemental
         { spell = 77130, type = "ability", usable = true }, -- Purify Spirit
         { spell = 77472, type = "ability", usable = true }, -- Greater Healing Wave
         { spell = 79206, type = "ability", usable = true , buff = true }, -- Spiritwalker's Grace
         { spell = 98008, type = "ability", usable = true , totem = true }, -- Spirit Link Totem
-        { spell = 108269, type = "ability", usable = true }, -- Capacitor Totem
+        { spell = 108269, type = "ability", usable = true, totem = true }, -- Capacitor Totem
         { spell = 108280, type = "ability", usable = true , totem = true }, -- Healing Tide Totem
         { spell = 114049, type = "ability", usable = true }, -- Ascendance
         { spell = 120668, type = "ability", usable = true , totem = true }, -- Stormlash Totem
