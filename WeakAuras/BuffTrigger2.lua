@@ -129,7 +129,8 @@ local function UnitIsVisibleFixed(unit)
 end
 
 local function UnitInSubgroupOrPlayer(unit)
-  return UnitInSubgroup(unit) or UnitIsUnit("player", unit)
+  return UnitIsUnit("player", unit) or UnitName(unit)
+  -- return UnitIsUnit("player", unit) or UnitInSubgroup(unit)
 end
 
 local function GetOrCreateSubTable(base, next, ...)
