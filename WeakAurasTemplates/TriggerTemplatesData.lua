@@ -3505,46 +3505,46 @@ templates.class.DEATHKNIGHT = {
         { spell = 48982, type = "ability", usable = true }, -- Rune Tap
         { spell = 49028, type = "ability", usable = true }, -- Dancing Rune Weapon
         { spell = 49222, type = "ability", usable = true , buff = true }, -- Bone Shield
-        { spell = 55050, type = "ability", usable = true }, -- Heart Strike
+        { spell = 55050, type = "ability", usable = true, requiresTarget = true }, -- Heart Strike
         { spell = 55233, type = "ability", usable = true , buff = true }, -- Vampiric Blood
-        { spell = 56222, type = "ability", usable = true }, -- Dark Command
-        { spell = 56815, type = "ability", usable = true }, -- Rune Strike
-        { spell = 114866, type = "ability", usable = true }, -- Soul Reaper
+        { spell = 56222, type = "ability", usable = true, requiresTarget = true }, -- Dark Command
+        { spell = 56815, type = "ability", usable = true, requiresTarget = true }, -- Rune Strike
+        { spell = 114866, type = "ability", usable = true, requiresTarget = true }, -- Soul Reaper
         { spell = 3714, type = "ability", usable = true , buff = true }, -- Path of Frost
         { spell = 42650, type = "ability", usable = true , buff = true }, -- Army of the Dead
         { spell = 43265, type = "ability", usable = true }, -- Death and Decay
         { spell = 46584, type = "ability", usable = true }, -- Raise Dead
-        { spell = 47476, type = "ability", usable = true }, -- Strangulate
-        { spell = 47528, type = "ability", usable = true }, -- Mind Freeze
-        { spell = 47541, type = "ability", usable = true }, -- Death Coil
+        { spell = 47476, type = "ability", usable = true, requiresTarget = true }, -- Strangulate
+        { spell = 47528, type = "ability", usable = true, requiresTarget = true }, -- Mind Freeze
+        { spell = 47541, type = "ability", usable = true, requiresTarget = true }, -- Death Coil
         { spell = 47568, type = "ability", usable = true }, -- Empower Rune Weapon
         { spell = 48707, type = "ability", usable = true , buff = true }, -- Anti-Magic Shell
-        { spell = 45902, type = "ability", usable = true }, -- Blood Strike
-        { spell = 45477, type = "ability", usable = true }, -- Icy Touch
-        { spell = 45524, type = "ability", usable = true }, -- Chains of Ice
+        { spell = 45902, type = "ability", usable = true, requiresTarget = true }, -- Blood Strike
+        { spell = 45477, type = "ability", usable = true, requiresTarget = true }, -- Icy Touch
+        { spell = 45524, type = "ability", usable = true, requiresTarget = true }, -- Chains of Ice
         { spell = 48792, type = "ability", usable = true , buff = true }, -- Icebound Fortitude
-        { spell = 49576, type = "ability", usable = true }, -- Death Grip
-        { spell = 50842, type = "ability", usable = true }, -- Pestilence
-        { spell = 73975, type = "ability", usable = true }, -- Necrotic Strike
-        { spell = 50977, type = "ability", usable = true }, -- Death Gate
+        { spell = 49576, type = "ability", usable = true, requiresTarget = true }, -- Death Grip
+        { spell = 50842, type = "ability", usable = true, requiresTarget = true }, -- Pestilence
+        { spell = 73975, type = "ability", usable = true, requiresTarget = true }, -- Necrotic Strike
+        { spell = 50977, type = "ability", usable = true, requiresTarget = true }, -- Death Gate
         { spell = 57330, type = "ability", usable = true , buff = true }, -- Horn of Winter
         { spell = 61999, type = "ability", usable = true }, -- Raise Ally
-        { spell = 77575, type = "ability", usable = true }, -- Outbreak
-        { spell = 77606, type = "ability", usable = true }, -- Dark Simulacrum
+        { spell = 77575, type = "ability", usable = true, requiresTarget = true }, -- Outbreak
+        { spell = 77606, type = "ability", usable = true, requiresTarget = true }, -- Dark Simulacrum
         { spell = 48721, type = "ability" , usable = true }, -- Blood Boil
-        { spell = 111673, type = "ability", usable = true }, -- Control Undead
-        { spell = 123693, type = "ability", talent = 2 , usable = true }, -- Plague Leech
+        { spell = 111673, type = "ability", usable = true, requiresTarget = true }, -- Control Undead
+        { spell = 123693, type = "ability", talent = 2 , usable = true, requiresTarget = true }, -- Plague Leech
         { spell = 115989, type = "ability", talent = 3 , usable = true , buff = true }, -- Unholy Blight
         { spell = 49039, type = "ability", talent = 4 , usable = true , buff = true }, -- Lichborne
         { spell = 51052, type = "ability", talent = 5 , usable = true }, -- Anti-Magic Zone
         { spell = 96268, type = "ability", talent = 7 , usable = true , buff = true }, -- Death's Advance
-        { spell = 49998, type = "ability", talent = 8 , usable = true }, -- Death Strike
-        { spell = 108194, type = "ability", talent = 9 , usable = true }, -- Asphyxiate
+        { spell = 49998, type = "ability", talent = 8 , usable = true, requiresTarget = true }, -- Death Strike
+        { spell = 108194, type = "ability", talent = 9 , usable = true, requiresTarget = true }, -- Asphyxiate
         { spell = 48743, type = "ability", talent = 10 , usable = true }, -- Death Pact
-        { spell = 108196, type = "ability", talent = 11 , usable = true }, -- Death Siphon
+        { spell = 108196, type = "ability", talent = 11 , usable = true, requiresTarget = true }, -- Death Siphon
         { spell = 119975, type = "ability", talent = 12 , usable = true , buff = true }, -- Conversion
         { spell = 45529, type = "ability", talent = 13 , charges = true }, -- Blood Tap
-        { spell = 108199, type = "ability", talent = 16 , usable = true }, -- Gorefiend's Grasp
+        { spell = 108199, type = "ability", talent = 16 , usable = true, requiresTarget = true }, -- Gorefiend's Grasp
         { spell = 108200, type = "ability", talent = 17 , usable = true , buff = true }, -- Remorseless Winter
         { spell = 108201, type = "ability", talent = 18 , usable = true }, -- Desecrated Ground
       },
@@ -3614,45 +3614,45 @@ templates.class.DEATHKNIGHT = {
     [3] = {
       title = L["Abilities"],
       args = {
-        { spell = 130735, type = "ability", usable = true }, -- Soul Reaper
-        { spell = 49020, type = "ability", usable = true }, -- Obliterate
-        { spell = 49143, type = "ability", usable = true }, -- Frost Strike
+        { spell = 130735, type = "ability", usable = true, requiresTarget = true }, -- Soul Reaper
+        { spell = 49020, type = "ability", usable = true, requiresTarget = true }, -- Obliterate
+        { spell = 49143, type = "ability", usable = true, requiresTarget = true }, -- Frost Strike
         { spell = 51271, type = "ability", usable = true , buff = true }, -- Pillar of Frost
-        { spell = 49184, type = "ability", usable = true }, -- Howling Blast        
+        { spell = 49184, type = "ability", usable = true, requiresTarget = true }, -- Howling Blast        
         { spell = 3714, type = "ability", usable = true , buff = true }, -- Path of Frost
         { spell = 42650, type = "ability", usable = true , buff = true }, -- Army of the Dead
         { spell = 43265, type = "ability", usable = true }, -- Death and Decay
         { spell = 46584, type = "ability", usable = true }, -- Raise Dead
-        { spell = 47476, type = "ability", usable = true }, -- Strangulate
-        { spell = 47528, type = "ability", usable = true }, -- Mind Freeze
-        { spell = 47541, type = "ability", usable = true }, -- Death Coil
+        { spell = 47476, type = "ability", usable = true, requiresTarget = true }, -- Strangulate
+        { spell = 47528, type = "ability", usable = true, requiresTarget = true }, -- Mind Freeze
+        { spell = 47541, type = "ability", usable = true, requiresTarget = true }, -- Death Coil
         { spell = 47568, type = "ability", usable = true }, -- Empower Rune Weapon
         { spell = 48707, type = "ability", usable = true , buff = true }, -- Anti-Magic Shell
-        { spell = 45902, type = "ability", usable = true }, -- Blood Strike
-        { spell = 45477, type = "ability", usable = true }, -- Icy Touch
-        { spell = 45524, type = "ability", usable = true }, -- Chains of Ice
+        { spell = 45902, type = "ability", usable = true, requiresTarget = true }, -- Blood Strike
+        { spell = 45477, type = "ability", usable = true, requiresTarget = true }, -- Icy Touch
+        { spell = 45524, type = "ability", usable = true, requiresTarget = true }, -- Chains of Ice
         { spell = 48792, type = "ability", usable = true , buff = true }, -- Icebound Fortitude
-        { spell = 49576, type = "ability", usable = true }, -- Death Grip
-        { spell = 50842, type = "ability", usable = true }, -- Pestilence
-        { spell = 73975, type = "ability", usable = true }, -- Necrotic Strike
+        { spell = 49576, type = "ability", usable = true, requiresTarget = true }, -- Death Grip
+        { spell = 50842, type = "ability", usable = true, requiresTarget = true }, -- Pestilence
+        { spell = 73975, type = "ability", usable = true, requiresTarget = true }, -- Necrotic Strike
         { spell = 50977, type = "ability", usable = true }, -- Death Gate
         { spell = 57330, type = "ability", usable = true , buff = true }, -- Horn of Winter
         { spell = 61999, type = "ability", usable = true }, -- Raise Ally
-        { spell = 77575, type = "ability", usable = true }, -- Outbreak
-        { spell = 77606, type = "ability", usable = true }, -- Dark Simulacrum
+        { spell = 77575, type = "ability", usable = true, requiresTarget = true }, -- Outbreak
+        { spell = 77606, type = "ability", usable = true, requiresTarget = true }, -- Dark Simulacrum
         { spell = 48721, type = "ability" , usable = true }, -- Blood Boil
-        { spell = 123693, type = "ability", talent = 2 , usable = true }, -- Plague Leech
+        { spell = 123693, type = "ability", talent = 2 , usable = true, requiresTarget = true }, -- Plague Leech
         { spell = 115989, type = "ability", talent = 3 , usable = true , buff = true }, -- Unholy Blight
         { spell = 49039, type = "ability", talent = 4 , usable = true , buff = true }, -- Lichborne
         { spell = 51052, type = "ability", talent = 5 , usable = true }, -- Anti-Magic Zone
         { spell = 96268, type = "ability", talent = 7 , usable = true , buff = true }, -- Death's Advance
-        { spell = 49998, type = "ability", talent = 8 , usable = true }, -- Death Strike
-        { spell = 108194, type = "ability", talent = 9 , usable = true }, -- Asphyxiate
+        { spell = 49998, type = "ability", talent = 8 , usable = true, requiresTarget = true }, -- Death Strike
+        { spell = 108194, type = "ability", talent = 9 , usable = true, requiresTarget = true }, -- Asphyxiate
         { spell = 48743, type = "ability", talent = 10 , usable = true }, -- Death Pact
-        { spell = 108196, type = "ability", talent = 11 , usable = true }, -- Death Siphon
+        { spell = 108196, type = "ability", talent = 11 , usable = true, requiresTarget = true }, -- Death Siphon
         { spell = 119975, type = "ability", talent = 12 , usable = true , buff = true }, -- Conversion
         { spell = 45529, type = "ability", talent = 13 , charges = true }, -- Blood Tap
-        { spell = 108199, type = "ability", talent = 16 , usable = true }, -- Gorefiend's Grasp
+        { spell = 108199, type = "ability", talent = 16 , usable = true, requiresTarget = true }, -- Gorefiend's Grasp
         { spell = 108200, type = "ability", talent = 17 , usable = true , buff = true }, -- Remorseless Winter
         { spell = 108201, type = "ability", talent = 18 , usable = true }, -- Desecrated Ground
       },
@@ -3732,45 +3732,45 @@ templates.class.DEATHKNIGHT = {
         { spell = 47484, type = "ability", usable = true }, -- Huddle
         { spell = 49016, type = "ability", usable = true , buff = true }, -- Unholy Frenzy
         { spell = 49206, type = "ability", usable = true }, -- Summon Gargoyle
-        { spell = 55090, type = "ability", usable = true }, -- Scourge Strike
+        { spell = 55090, type = "ability", usable = true, requiresTarget = true }, -- Scourge Strike
         { spell = 63560, type = "ability", charges = true , usable = true , buff = true, unit = 'pet' , debuff = true }, -- Dark Transformation
-        { spell = 85948, type = "ability", usable = true }, -- Festering Strike
-        { spell = 130736, type = "ability", usable = true }, -- Soul Reaper
+        { spell = 85948, type = "ability", usable = true, requiresTarget = true }, -- Festering Strike
+        { spell = 130736, type = "ability", usable = true, requiresTarget = true }, -- Soul Reaper
         { spell = 3714, type = "ability", usable = true , buff = true }, -- Path of Frost
         { spell = 42650, type = "ability", usable = true , buff = true }, -- Army of the Dead
         { spell = 43265, type = "ability", usable = true }, -- Death and Decay
         { spell = 46584, type = "ability", usable = true }, -- Raise Dead
-        { spell = 47476, type = "ability", usable = true }, -- Strangulate
-        { spell = 47528, type = "ability", usable = true }, -- Mind Freeze
-        { spell = 47541, type = "ability", usable = true }, -- Death Coil
+        { spell = 47476, type = "ability", usable = true, requiresTarget = true }, -- Strangulate
+        { spell = 47528, type = "ability", usable = true, requiresTarget = true }, -- Mind Freeze
+        { spell = 47541, type = "ability", usable = true, requiresTarget = true }, -- Death Coil
         { spell = 47568, type = "ability", usable = true }, -- Empower Rune Weapon
         { spell = 48707, type = "ability", usable = true , buff = true }, -- Anti-Magic Shell
-        { spell = 45902, type = "ability", usable = true }, -- Blood Strike
-        { spell = 45477, type = "ability", usable = true }, -- Icy Touch
-        { spell = 45524, type = "ability", usable = true }, -- Chains of Ice
+        { spell = 45902, type = "ability", usable = true, requiresTarget = true }, -- Blood Strike
+        { spell = 45477, type = "ability", usable = true, requiresTarget = true }, -- Icy Touch
+        { spell = 45524, type = "ability", usable = true, requiresTarget = true }, -- Chains of Ice
         { spell = 48792, type = "ability", usable = true , buff = true }, -- Icebound Fortitude
-        { spell = 49576, type = "ability", usable = true }, -- Death Grip
-        { spell = 50842, type = "ability", usable = true }, -- Pestilence
-        { spell = 73975, type = "ability", usable = true }, -- Necrotic Strike
+        { spell = 49576, type = "ability", usable = true, requiresTarget = true }, -- Death Grip
+        { spell = 50842, type = "ability", usable = true, requiresTarget = true }, -- Pestilence
+        { spell = 73975, type = "ability", usable = true, requiresTarget = true }, -- Necrotic Strike
         { spell = 50977, type = "ability", usable = true }, -- Death Gate
         { spell = 57330, type = "ability", usable = true , buff = true }, -- Horn of Winter
         { spell = 61999, type = "ability", usable = true }, -- Raise Ally
-        { spell = 77575, type = "ability", usable = true }, -- Outbreak
-        { spell = 77606, type = "ability", usable = true }, -- Dark Simulacrum
+        { spell = 77575, type = "ability", usable = true, requiresTarget = true }, -- Outbreak
+        { spell = 77606, type = "ability", usable = true, requiresTarget = true }, -- Dark Simulacrum
         { spell = 48721, type = "ability" , usable = true }, -- Blood Boil
-        { spell = 111673, type = "ability", usable = true }, -- Control Undead
-        { spell = 123693, type = "ability", talent = 2 , usable = true }, -- Plague Leech
+        { spell = 111673, type = "ability", usable = true, requiresTarget = true }, -- Control Undead
+        { spell = 123693, type = "ability", talent = 2 , usable = true, requiresTarget = true }, -- Plague Leech
         { spell = 115989, type = "ability", talent = 3 , usable = true , buff = true }, -- Unholy Blight
         { spell = 49039, type = "ability", talent = 4 , usable = true , buff = true }, -- Lichborne
         { spell = 51052, type = "ability", talent = 5 , usable = true }, -- Anti-Magic Zone
         { spell = 96268, type = "ability", talent = 7 , usable = true , buff = true }, -- Death's Advance
-        { spell = 49998, type = "ability", talent = 8 , usable = true }, -- Death Strike
-        { spell = 108194, type = "ability", talent = 9 , usable = true }, -- Asphyxiate
+        { spell = 49998, type = "ability", talent = 8 , usable = true, requiresTarget = true }, -- Death Strike
+        { spell = 108194, type = "ability", talent = 9 , usable = true, requiresTarget = true }, -- Asphyxiate
         { spell = 48743, type = "ability", talent = 10 , usable = true }, -- Death Pact
-        { spell = 108196, type = "ability", talent = 11 , usable = true }, -- Death Siphon
+        { spell = 108196, type = "ability", talent = 11 , usable = true, requiresTarget = true }, -- Death Siphon
         { spell = 119975, type = "ability", talent = 12 , usable = true , buff = true }, -- Conversion
         { spell = 45529, type = "ability", talent = 13 , charges = true }, -- Blood Tap
-        { spell = 108199, type = "ability", talent = 16 , usable = true }, -- Gorefiend's Grasp
+        { spell = 108199, type = "ability", talent = 16 , usable = true, requiresTarget = true }, -- Gorefiend's Grasp
         { spell = 108200, type = "ability", talent = 17 , usable = true , buff = true }, -- Remorseless Winter
         { spell = 108201, type = "ability", talent = 18 , usable = true }, -- Desecrated Ground
       },
