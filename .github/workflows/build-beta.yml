@@ -1,46 +1,47 @@
-name: CI-Beta
-
-on:
-  push:
-    branches:
-      - shadowlands
-    tags:
-      - "**-alpha**"
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 500
-
-      - name: Install and run Luacheck
-        uses: nebularg/actions-luacheck@v1
-        with:
-          args: "--no-color -q"
-          annotate: warning
-
-      - name: Generate Changelog
-        run: ./generate_changelog.sh
-
-      - name: Update Build Date
-        run: sed -i "s/@build-time@/`date +%Y%m%d%H%M%S`/" WeakAuras/Init.lua
-
-      - name: Create Package
-        uses: BigWigsMods/packager@master
-        env:
-          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: WeakAuras-SL
-          path: .release/
-
-      - name: Send Status to Discord
-        uses: nebularg/actions-discord-webhook@v1
-        with:
-          webhook_url: ${{ secrets.WEBHOOK_URL }}
-          status: ${{ job.status }}
-        if: failure()
+# name: CI-Beta
+# 
+# on:
+#   push:
+#     branches:
+#       - shadowlands
+#     tags:
+#       - "**-alpha**"
+# 
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+# 
+#     steps:
+#       - uses: actions/checkout@v1
+#         with:
+#           fetch-depth: 500
+# 
+#       - name: Install and run Luacheck
+#         uses: nebularg/actions-luacheck@v1
+#         with:
+#           args: "--no-color -q"
+#           annotate: warning
+# 
+#       - name: Generate Changelog
+#         run: ./generate_changelog.sh
+# 
+#       - name: Update Build Date
+#         run: sed -i "s/@build-time@/`date +%Y%m%d%H%M%S`/" WeakAuras/Init.lua
+# 
+#       - name: Create Package
+#         uses: BigWigsMods/packager@master
+#         env:
+#           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+# 
+#       - uses: actions/upload-artifact@v2
+#         with:
+#           name: WeakAuras-SL
+#           path: .release/
+# 
+#       - name: Send Status to Discord
+#         uses: nebularg/actions-discord-webhook@v1
+#         with:
+#           webhook_url: ${{ secrets.WEBHOOK_URL }}
+#           status: ${{ job.status }}
+#         if: failure()
+# 
