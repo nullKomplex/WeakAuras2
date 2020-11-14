@@ -61,12 +61,12 @@ templates.class.WARRIOR = {
         { spell = 60503, type = "buff", unit = "player"}, -- Taste for Blood
         { spell = 114192, type = "buff", unit = "player"}, -- Mocking Banner
         { spell = 118038, type = "buff", unit = "player"}, -- Die by the Sword
-        { spell = 6673, type = "buff", unit = "player"}, -- Battle Shout
+        { spell = 6673, type = "buff", unit = "player", forceOwnOnly = true, ownOnly = nil}, -- Battle Shout
         { spell = 871, type = "buff", unit = "player"}, -- Shield Wall
         { spell = 114206, type = "buff", unit = "player"}, -- Skull Banner
         { spell = 23920, type = "buff", unit = "player"}, -- Spell Reflection
         { spell = 139958, type = "buff", unit = "player"}, -- Sudden Execute
-        { spell = 469, type = "buff", unit = "player"}, -- Commanding Shout
+        { spell = 469, type = "buff", unit = "player", forceOwnOnly = true, ownOnly = nil}, -- Commanding Shout
         { spell = 133278, type = "buff", unit = "player"}, -- Speed
         { spell = 32216, type = "buff", unit = "player"}, -- Victorious
         { spell = 12880, type = "buff", unit = "player"}, -- Enrage
@@ -181,7 +181,8 @@ templates.class.WARRIOR = {
       args = {
         { spell = 114192, type = "buff", unit = "player"}, -- Mocking Banner
         { spell = 118038, type = "buff", unit = "player"}, -- Die by the Sword
-        { spell = 6673, type = "buff", unit = "player"}, -- Battle Shout
+        { spell = 6673, type = "buff", unit = "player", forceOwnOnly = true, ownOnly = nil}, -- Battle Shout
+        { spell = 469, type = "buff", unit = "player", forceOwnOnly = true, ownOnly = nil}, -- Commanding Shout
         { spell = 871, type = "buff", unit = "player"}, -- Shield Wall
         { spell = 114206, type = "buff", unit = "player"}, -- Skull Banner
         { spell = 23920, type = "buff", unit = "player"}, -- Spell Reflection
@@ -341,7 +342,7 @@ templates.class.WARRIOR = {
         { spell = 871, type = "ability", buff = true}, -- Shield Wall
         { spell = 1160, type = "ability", debuff = true}, -- Demoralizing Shout
         { spell = 1161, type = "ability"}, -- Challenging Shout
-        { spell = 1464, type = "ability", overlayGlow = true,  requiresTarget = true}, -- Revenge
+        { spell = 1464, type = "ability", overlayGlow = true, requiresTarget = true}, -- Revenge
         { spell = 1715, type = "ability", debuff = true,  requiresTarget = true}, -- Hamstring
         { spell = 1680, type = "ability"}, -- Whirlwind
         { spell = 2565, type = "ability", charges = true, buff = true}, -- Shield Block
@@ -2070,40 +2071,40 @@ templates.class.MAGE = {
     [3] = {
       title = L["Abilities"],
       args = {
+        { spell = 44425, type = "ability", usable = true }, -- Arcane Barrage
+        { spell = 5143, type = "ability", charges = true, requiresTarget = true }, -- Arcane Missiles
+        { spell = 12042, type = "ability", usable = true , buff = true }, -- Arcane Power
+        { spell = 31589, type = "ability", usable = true, requiresTarget = true }, -- Slow
         { spell = 10, type = "ability", usable = true }, -- Blizzard
         { spell = 66, type = "ability", usable = true , buff = true }, -- Invisibility
-        { spell = 118, type = "ability", usable = true }, -- Polymorph
+        { spell = 118, type = "ability", usable = true, requiresTarget = true }, -- Polymorph
         { spell = 120, type = "ability", usable = true }, -- Cone of Cold
         { spell = 122, type = "ability", usable = true }, -- Frost Nova
         { spell = 130, type = "ability", usable = true , buff = true }, -- Slow Fall
-        { spell = 475, type = "ability", usable = true }, -- Remove Curse
+        { spell = 475, type = "ability", usable = true, requiresTarget = true }, -- Remove Curse
         { spell = 759, type = "ability", usable = true }, -- Conjure Mana Gem
         { spell = 1449, type = "ability", usable = true }, -- Arcane Explosion
         { spell = 1459, type = "ability", usable = true , buff = true }, -- Arcane Brilliance
         { spell = 1953, type = "ability", usable = true }, -- Blink
         { spell = 2120, type = "ability", usable = true }, -- Flamestrike
-        { spell = 2136, type = "ability", usable = true }, -- Fire Blast
-        { spell = 2139, type = "ability", usable = true }, -- Counterspell
-        { spell = 5143, type = "ability", charges = true }, -- Arcane Missiles
+        { spell = 2136, type = "ability", usable = true, requiresTarget = true }, -- Fire Blast
+        { spell = 2139, type = "ability", usable = true, requiresTarget = true }, -- Counterspell
         { spell = 6117, type = "ability", usable = true , buff = true }, -- Mage Armor
         { spell = 7302, type = "ability", usable = true , buff = true }, -- Frost Armor
         { spell = 11417, type = "ability", usable = true }, -- Portal: Orgrimmar
-        { spell = 12042, type = "ability", usable = true , buff = true }, -- Arcane Power
         { spell = 12051, type = "ability", usable = true , buff = true }, -- Evocation
-        { spell = 30449, type = "ability", usable = true }, -- Spellsteal
-        { spell = 30451, type = "ability", usable = true }, -- Arcane Blast
-        { spell = 30455, type = "ability", usable = true }, -- Ice Lance
+        { spell = 30449, type = "ability", usable = true, requiresTarget = true }, -- Spellsteal
+        { spell = 30455, type = "ability", usable = true, requiresTarget = true }, -- Ice Lance
         { spell = 30482, type = "ability", usable = true , buff = true }, -- Molten Armor
-        { spell = 31589, type = "ability", usable = true }, -- Slow
+        { spell = 31589, type = "ability", usable = true, requiresTarget = true }, -- Slow
         { spell = 42955, type = "ability", usable = true }, -- Conjure Refreshment
         { spell = 43987, type = "ability", usable = true }, -- Conjure Refreshment Table
-        { spell = 44425, type = "ability", usable = true }, -- Arcane Barrage
-        { spell = 44572, type = "ability", usable = true }, -- Deep Freeze
-        { spell = 44614, type = "ability", usable = true }, -- Frostfire Bolt
+        { spell = 44572, type = "ability", usable = true, requiresTarget = true }, -- Deep Freeze
+        { spell = 44614, type = "ability", usable = true, requiresTarget = true }, -- Frostfire Bolt
         { spell = 45438, type = "ability", usable = true , buff = true }, -- Ice Block
         { spell = 55342, type = "ability", usable = true }, -- Mirror Image
         { spell = 80353, type = "ability", usable = true , buff = true }, -- Time Warp
-        { spell = 108978, type = "ability", usable = true }, -- Alter Time
+        { spell = 108978, type = "ability", usable = true , buff = true }, -- Alter Time
         { spell = 12043, type = "ability", talent = 1 , usable = true , buff = true }, -- Presence of Mind
         { spell = 108843, type = "ability", talent = 2 , usable = true , buff = true }, -- Blazing Speed
         { spell = 108839, type = "ability", talent = 3 , charges = true , usable = true , buff = true }, -- Ice Floes
@@ -2111,12 +2112,12 @@ templates.class.MAGE = {
         { spell = 11426, type = "ability", talent = 6 , usable = true , buff = true }, -- Ice Barrier
         { spell = 113724, type = "ability", talent = 7 , usable = true }, -- Ring of Frost
         { spell = 111264, type = "ability", talent = 8 , usable = true , buff = true }, -- Ice Ward
-        { spell = 102051, type = "ability", talent = 9 , usable = true }, -- Frostjaw
+        { spell = 102051, type = "ability", talent = 9 , usable = true, requiresTarget = true }, -- Frostjaw
         { spell = 110959, type = "ability", talent = 10 , usable = true }, -- Greater Invisibility
         { spell = 11958, type = "ability", talent = 12 , usable = true }, -- Cold Snap
-        { spell = 114923, type = "ability", talent = 13 , usable = true }, -- Nether Tempest
-        { spell = 44457, type = "ability", talent = 14 , usable = true }, -- Living Bomb
-        { spell = 112948, type = "ability", talent = 15 , usable = true }, -- Frost Bomb
+        { spell = 114923, type = "ability", talent = 13 , usable = true, requiresTarget = true }, -- Nether Tempest
+        { spell = 44457, type = "ability", talent = 14 , usable = true, requiresTarget = true }, -- Living Bomb
+        { spell = 112948, type = "ability", talent = 15 , usable = true, requiresTarget = true }, -- Frost Bomb
         { spell = 1463, type = "ability", talent = 18 , usable = true , buff = true }, -- Incanter's Ward
       },
       icon = "Interface\\Icons\\ability_mage_arcanebarrage"
@@ -2140,7 +2141,7 @@ templates.class.MAGE = {
         { spell = 30482, type = "buff", unit = "player"}, -- Molten Armor
         { spell = 45438, type = "buff", unit = "player"}, -- Ice Block
         { spell = 66, type = "buff", unit = "player"}, -- Invisibility
-        { spell = 1459, type = "buff", unit = "player"}, -- Arcane Brilliance
+        { spell = 1459, type = "buff", unit = "player", forceOwnOnly = true, ownOnly = nil}, -- Arcane Brilliance
         { spell = 32612, type = "buff", unit = "player"}, -- Invisibility
         { spell = 130, type = "buff", unit = "player"}, -- Slow Fall
         { spell = 80353, type = "buff", unit = "player"}, -- Time Warp
@@ -2161,7 +2162,7 @@ templates.class.MAGE = {
         { spell = 1463, type = "buff", unit = "player", talent = 18 }, -- Incanter's Ward
         { spell = 116267, type = "buff", unit = "player", talent = 18 }, -- Incanter's Absorption
       },
-      icon = "Interface\\Icons\\spell_holy_arcaneintellect"
+      icon = "Interface\\Icons\\spell_arcane_focusedpower"
     },
     [2] = {
       title = L["Debuffs"],
@@ -2189,7 +2190,7 @@ templates.class.MAGE = {
         { spell = 113092, type = "debuff", unit = "target", talent = 15 }, -- Frost Bomb
         { spell = 112948, type = "debuff", unit = "target", talent = 15 }, -- Frost Bomb
       },
-      icon = "Interface\\Icons\\Spell_fire_incinerate"
+      icon = "Interface\\Icons\\Spell_frost_frostnova"
     },
     [3] = {
       title = L["Abilities"],
@@ -2201,34 +2202,34 @@ templates.class.MAGE = {
         { spell = 108853, type = "ability", usable = true }, -- Inferno Blast
         { spell = 10, type = "ability", usable = true }, -- Blizzard
         { spell = 66, type = "ability", usable = true , buff = true }, -- Invisibility
-        { spell = 118, type = "ability", usable = true }, -- Polymorph
+        { spell = 118, type = "ability", usable = true, requiresTarget = true }, -- Polymorph
         { spell = 120, type = "ability", usable = true }, -- Cone of Cold
         { spell = 122, type = "ability", usable = true }, -- Frost Nova
         { spell = 130, type = "ability", usable = true , buff = true }, -- Slow Fall
-        { spell = 475, type = "ability", usable = true }, -- Remove Curse
+        { spell = 475, type = "ability", usable = true, requiresTarget = true }, -- Remove Curse
         { spell = 759, type = "ability", usable = true }, -- Conjure Mana Gem
         { spell = 1449, type = "ability", usable = true }, -- Arcane Explosion
         { spell = 1459, type = "ability", usable = true , buff = true }, -- Arcane Brilliance
         { spell = 1953, type = "ability", usable = true }, -- Blink
         { spell = 2120, type = "ability", usable = true }, -- Flamestrike
-        { spell = 2136, type = "ability", usable = true }, -- Fire Blast
-        { spell = 2139, type = "ability", usable = true }, -- Counterspell
+        { spell = 2136, type = "ability", usable = true, requiresTarget = true }, -- Fire Blast
+        { spell = 2139, type = "ability", usable = true, requiresTarget = true }, -- Counterspell
         { spell = 6117, type = "ability", usable = true , buff = true }, -- Mage Armor
         { spell = 7302, type = "ability", usable = true , buff = true }, -- Frost Armor
         { spell = 11417, type = "ability", usable = true }, -- Portal: Orgrimmar
         { spell = 12051, type = "ability", usable = true , buff = true }, -- Evocation
-        { spell = 30449, type = "ability", usable = true }, -- Spellsteal
-        { spell = 30455, type = "ability", usable = true }, -- Ice Lance
+        { spell = 30449, type = "ability", usable = true, requiresTarget = true }, -- Spellsteal
+        { spell = 30455, type = "ability", usable = true, requiresTarget = true }, -- Ice Lance
         { spell = 30482, type = "ability", usable = true , buff = true }, -- Molten Armor
-        { spell = 31589, type = "ability", usable = true }, -- Slow
+        { spell = 31589, type = "ability", usable = true, requiresTarget = true }, -- Slow
         { spell = 42955, type = "ability", usable = true }, -- Conjure Refreshment
         { spell = 43987, type = "ability", usable = true }, -- Conjure Refreshment Table
-        { spell = 44572, type = "ability", usable = true }, -- Deep Freeze
-        { spell = 44614, type = "ability", usable = true }, -- Frostfire Bolt
+        { spell = 44572, type = "ability", usable = true, requiresTarget = true }, -- Deep Freeze
+        { spell = 44614, type = "ability", usable = true, requiresTarget = true }, -- Frostfire Bolt
         { spell = 45438, type = "ability", usable = true , buff = true }, -- Ice Block
         { spell = 55342, type = "ability", usable = true }, -- Mirror Image
         { spell = 80353, type = "ability", usable = true , buff = true }, -- Time Warp
-        { spell = 108978, type = "ability", usable = true }, -- Alter Time
+        { spell = 108978, type = "ability", usable = true , buff = true }, -- Alter Time
         { spell = 12043, type = "ability", talent = 1 , usable = true , buff = true }, -- Presence of Mind
         { spell = 108843, type = "ability", talent = 2 , usable = true , buff = true }, -- Blazing Speed
         { spell = 108839, type = "ability", talent = 3 , charges = true , usable = true , buff = true }, -- Ice Floes
@@ -2236,15 +2237,15 @@ templates.class.MAGE = {
         { spell = 11426, type = "ability", talent = 6 , usable = true , buff = true }, -- Ice Barrier
         { spell = 113724, type = "ability", talent = 7 , usable = true }, -- Ring of Frost
         { spell = 111264, type = "ability", talent = 8 , usable = true , buff = true }, -- Ice Ward
-        { spell = 102051, type = "ability", talent = 9 , usable = true }, -- Frostjaw
+        { spell = 102051, type = "ability", talent = 9 , usable = true, requiresTarget = true }, -- Frostjaw
         { spell = 110959, type = "ability", talent = 10 , usable = true }, -- Greater Invisibility
         { spell = 11958, type = "ability", talent = 12 , usable = true }, -- Cold Snap
-        { spell = 114923, type = "ability", talent = 13 , usable = true }, -- Nether Tempest
-        { spell = 44457, type = "ability", talent = 14 , usable = true }, -- Living Bomb
-        { spell = 112948, type = "ability", talent = 15 , usable = true }, -- Frost Bomb
+        { spell = 114923, type = "ability", talent = 13 , usable = true, requiresTarget = true }, -- Nether Tempest
+        { spell = 44457, type = "ability", talent = 14 , usable = true, requiresTarget = true }, -- Living Bomb
+        { spell = 112948, type = "ability", talent = 15 , usable = true, requiresTarget = true }, -- Frost Bomb
         { spell = 1463, type = "ability", talent = 18 , usable = true , buff = true }, -- Incanter's Ward
       },
-      icon = "Interface\\Icons\\Spell_mage_infernoblast"
+      icon = "Interface\\Icons\\ability_mage_arcanebarrage"
     },
     [4] = {},
     [5] = {},
@@ -2266,7 +2267,7 @@ templates.class.MAGE = {
         { spell = 30482, type = "buff", unit = "player"}, -- Molten Armor
         { spell = 45438, type = "buff", unit = "player"}, -- Ice Block
         { spell = 66, type = "buff", unit = "player"}, -- Invisibility
-        { spell = 1459, type = "buff", unit = "player"}, -- Arcane Brilliance
+        { spell = 1459, type = "buff", unit = "player", forceOwnOnly = true, ownOnly = nil}, -- Arcane Brilliance
         { spell = 32612, type = "buff", unit = "player"}, -- Invisibility
         { spell = 130, type = "buff", unit = "player"}, -- Slow Fall
         { spell = 80353, type = "buff", unit = "player"}, -- Time Warp
@@ -2287,7 +2288,7 @@ templates.class.MAGE = {
         { spell = 1463, type = "buff", unit = "player", talent = 18 }, -- Incanter's Ward
         { spell = 116267, type = "buff", unit = "player", talent = 18 }, -- Incanter's Absorption
       },
-      icon = "Interface\\Icons\\Ability_mage_wintersgrasp"
+      icon = "Interface\\Icons\\spell_arcane_focusedpower"
     },
     [2] = {
       title = L["Debuffs"],
@@ -2312,46 +2313,46 @@ templates.class.MAGE = {
         { spell = 113092, type = "debuff", unit = "target", talent = 15 }, -- Frost Bomb
         { spell = 112948, type = "debuff", unit = "target", talent = 15 }, -- Frost Bomb
       },
-      icon = "Interface\\Icons\\Ability_mage_chilledtothebone"
+      icon = "Interface\\Icons\\Spell_frost_frostnova"
     },
     [3] = {
       title = L["Abilities"],
       args = {
-        { spell = 116, type = "ability", usable = true }, -- Frostbolt
+        { spell = 116, type = "ability", usable = true, requiresTarget = true }, -- Frostbolt
         { spell = 12472, type = "ability", usable = true , buff = true }, -- Icy Veins
         { spell = 31687, type = "ability", usable = true }, -- Summon Water Elemental
         { spell = 31707, type = "ability", usable = true }, -- Waterbolt
         { spell = 33395, type = "ability", usable = true }, -- Freeze
         { spell = 10, type = "ability", usable = true }, -- Blizzard
         { spell = 66, type = "ability", usable = true , buff = true }, -- Invisibility
-        { spell = 118, type = "ability", usable = true }, -- Polymorph
+        { spell = 118, type = "ability", usable = true, requiresTarget = true }, -- Polymorph
         { spell = 120, type = "ability", usable = true }, -- Cone of Cold
         { spell = 122, type = "ability", usable = true }, -- Frost Nova
         { spell = 130, type = "ability", usable = true , buff = true }, -- Slow Fall
-        { spell = 475, type = "ability", usable = true }, -- Remove Curse
+        { spell = 475, type = "ability", usable = true, requiresTarget = true }, -- Remove Curse
         { spell = 759, type = "ability", usable = true }, -- Conjure Mana Gem
         { spell = 1449, type = "ability", usable = true }, -- Arcane Explosion
         { spell = 1459, type = "ability", usable = true , buff = true }, -- Arcane Brilliance
         { spell = 1953, type = "ability", usable = true }, -- Blink
         { spell = 2120, type = "ability", usable = true }, -- Flamestrike
-        { spell = 2136, type = "ability", usable = true }, -- Fire Blast
-        { spell = 2139, type = "ability", usable = true }, -- Counterspell
+        { spell = 2136, type = "ability", usable = true, requiresTarget = true }, -- Fire Blast
+        { spell = 2139, type = "ability", usable = true, requiresTarget = true }, -- Counterspell
         { spell = 6117, type = "ability", usable = true , buff = true }, -- Mage Armor
         { spell = 7302, type = "ability", usable = true , buff = true }, -- Frost Armor
         { spell = 11417, type = "ability", usable = true }, -- Portal: Orgrimmar
         { spell = 12051, type = "ability", usable = true , buff = true }, -- Evocation
-        { spell = 30449, type = "ability", usable = true }, -- Spellsteal
-        { spell = 30455, type = "ability", usable = true }, -- Ice Lance
+        { spell = 30449, type = "ability", usable = true, requiresTarget = true }, -- Spellsteal
+        { spell = 30455, type = "ability", usable = true, requiresTarget = true }, -- Ice Lance
         { spell = 30482, type = "ability", usable = true , buff = true }, -- Molten Armor
-        { spell = 31589, type = "ability", usable = true }, -- Slow
+        { spell = 31589, type = "ability", usable = true, requiresTarget = true }, -- Slow
         { spell = 42955, type = "ability", usable = true }, -- Conjure Refreshment
         { spell = 43987, type = "ability", usable = true }, -- Conjure Refreshment Table
-        { spell = 44572, type = "ability", usable = true }, -- Deep Freeze
-        { spell = 44614, type = "ability", usable = true }, -- Frostfire Bolt
+        { spell = 44572, type = "ability", usable = true, requiresTarget = true }, -- Deep Freeze
+        { spell = 44614, type = "ability", usable = true, requiresTarget = true }, -- Frostfire Bolt
         { spell = 45438, type = "ability", usable = true , buff = true }, -- Ice Block
         { spell = 55342, type = "ability", usable = true }, -- Mirror Image
         { spell = 80353, type = "ability", usable = true , buff = true }, -- Time Warp
-        { spell = 108978, type = "ability", usable = true }, -- Alter Time
+        { spell = 108978, type = "ability", usable = true , buff = true }, -- Alter Time
         { spell = 12043, type = "ability", talent = 1 , usable = true , buff = true }, -- Presence of Mind
         { spell = 108843, type = "ability", talent = 2 , usable = true , buff = true }, -- Blazing Speed
         { spell = 108839, type = "ability", talent = 3 , charges = true , usable = true , buff = true }, -- Ice Floes
@@ -2359,15 +2360,15 @@ templates.class.MAGE = {
         { spell = 11426, type = "ability", talent = 6 , usable = true , buff = true }, -- Ice Barrier
         { spell = 113724, type = "ability", talent = 7 , usable = true }, -- Ring of Frost
         { spell = 111264, type = "ability", talent = 8 , usable = true , buff = true }, -- Ice Ward
-        { spell = 102051, type = "ability", talent = 9 , usable = true }, -- Frostjaw
+        { spell = 102051, type = "ability", talent = 9 , usable = true, requiresTarget = true }, -- Frostjaw
         { spell = 110959, type = "ability", talent = 10 , usable = true }, -- Greater Invisibility
         { spell = 11958, type = "ability", talent = 12 , usable = true }, -- Cold Snap
-        { spell = 114923, type = "ability", talent = 13 , usable = true }, -- Nether Tempest
-        { spell = 44457, type = "ability", talent = 14 , usable = true }, -- Living Bomb
-        { spell = 112948, type = "ability", talent = 15 , usable = true }, -- Frost Bomb
+        { spell = 114923, type = "ability", talent = 13 , usable = true, requiresTarget = true }, -- Nether Tempest
+        { spell = 44457, type = "ability", talent = 14 , usable = true, requiresTarget = true }, -- Living Bomb
+        { spell = 112948, type = "ability", talent = 15 , usable = true, requiresTarget = true }, -- Frost Bomb
         { spell = 1463, type = "ability", talent = 18 , usable = true , buff = true }, -- Incanter's Ward
       },
-      icon = "Interface\\Icons\\Spell_frost_frozenorb"
+      icon = "Interface\\Icons\\ability_mage_arcanebarrage"
     },
     [4] = {},
     [5] = {},
