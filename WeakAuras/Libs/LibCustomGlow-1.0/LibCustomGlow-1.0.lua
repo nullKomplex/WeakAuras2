@@ -436,6 +436,12 @@ local function CreateAlphaAnim(group, target, order, duration, fromAlpha, toAlph
     -- alpha:SetChildKey(target)
     alpha:SetOrder(order)
     alpha:SetDuration(duration)
+
+    if fromAlpha <= toAlpha then
+        alpha:SetChange(toAlpha)
+    else
+        alpha:SetChange(-fromAlpha)
+    end
     -- alpha:SetFromAlpha(fromAlpha)
     -- alpha:SetToAlpha(toAlpha)
     if delay then
@@ -579,16 +585,16 @@ end
 
 local function updateAlphaAnim(f,alpha)
     for _,anim in pairs(f.animIn.appear) do
-        -- anim:SetToAlpha(alpha)
+        anim:SetChange(alpha)
     end
     for _,anim in pairs(f.animIn.fade) do
-        -- anim:SetFromAlpha(alpha)
+        anim:SetChange(-alpha)
     end
     for _,anim in pairs(f.animOut.appear) do
-        -- anim:SetToAlpha(alpha)
+        anim:SetChange(alpha)
     end
     for _,anim in pairs(f.animOut.fade) do
-        -- anim:SetFromAlpha(alpha)
+        anim:SetChange(-alpha)
     end
 end
 
