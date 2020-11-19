@@ -4019,58 +4019,56 @@ end
 -------------------------------
 -- Hardcoded trigger templates
 -------------------------------
---------------------------------------------------------------------------------
--- Retail starts here
---------------------------------------------------------------------------------
+local resourceSection = 7
 -- Warrior
 for i = 1, 3 do
-  tinsert(templates.class.WARRIOR[i][7].args, createSimplePowerTemplate(1));
+  tinsert(templates.class.WARRIOR[i][resourceSection].args, createSimplePowerTemplate(1));
 end
 
 -- Paladin
 for i = 1, 3 do
-  tinsert(templates.class.PALADIN[i][7].args, createSimplePowerTemplate(9));
-  tinsert(templates.class.PALADIN[i][7].args, createSimplePowerTemplate(0));
+  tinsert(templates.class.PALADIN[i][resourceSection].args, createSimplePowerTemplate(9));
+  tinsert(templates.class.PALADIN[i][resourceSection].args, createSimplePowerTemplate(0));
 end
 
 -- Hunter
 for i = 1, 3 do
-  tinsert(templates.class.HUNTER[i][7].args, createSimplePowerTemplate(2));
+  tinsert(templates.class.HUNTER[i][resourceSection].args, createSimplePowerTemplate(2));
 end
 
 -- Rogue
 for i = 1, 3 do
-  tinsert(templates.class.ROGUE[i][7].args, createSimplePowerTemplate(3));
-  tinsert(templates.class.ROGUE[i][7].args, createSimplePowerTemplate(4));
+  tinsert(templates.class.ROGUE[i][resourceSection].args, createSimplePowerTemplate(3));
+  tinsert(templates.class.ROGUE[i][resourceSection].args, createSimplePowerTemplate(4));
 end
 
 -- Priest
 for i = 1, 3 do
-  tinsert(templates.class.PRIEST[i][7].args, createSimplePowerTemplate(0));
+  tinsert(templates.class.PRIEST[i][resourceSection].args, createSimplePowerTemplate(0));
 end
-tinsert(templates.class.PRIEST[3][7].args, createSimplePowerTemplate(13));
+tinsert(templates.class.PRIEST[3][resourceSection].args, createSimplePowerTemplate(13));
 
 -- Shaman
 for i = 1, 3 do
-  tinsert(templates.class.SHAMAN[i][7].args, createSimplePowerTemplate(0));
+  tinsert(templates.class.SHAMAN[i][resourceSection].args, createSimplePowerTemplate(0));
 end
 
 -- Mage
 for i = 1, 3 do
-  tinsert(templates.class.MAGE[i][7].args, createSimplePowerTemplate(0));
+  tinsert(templates.class.MAGE[i][resourceSection].args, createSimplePowerTemplate(0));
 end
 
 -- Warlock
 for i = 1, 3 do
-  tinsert(templates.class.WARLOCK[i][7].args, createSimplePowerTemplate(0));
-  tinsert(templates.class.WARLOCK[i][7].args, createSimplePowerTemplate(7));
+  tinsert(templates.class.WARLOCK[i][resourceSection].args, createSimplePowerTemplate(0));
+  tinsert(templates.class.WARLOCK[i][resourceSection].args, createSimplePowerTemplate(7));
 end
 
 -- Monk
-tinsert(templates.class.MONK[1][7].args, createSimplePowerTemplate(3));
-tinsert(templates.class.MONK[2][7].args, createSimplePowerTemplate(0));
-tinsert(templates.class.MONK[3][7].args, createSimplePowerTemplate(3));
-tinsert(templates.class.MONK[3][7].args, createSimplePowerTemplate(12));
+tinsert(templates.class.MONK[1][resourceSection].args, createSimplePowerTemplate(3));
+tinsert(templates.class.MONK[2][resourceSection].args, createSimplePowerTemplate(0));
+tinsert(templates.class.MONK[3][resourceSection].args, createSimplePowerTemplate(3));
+tinsert(templates.class.MONK[3][resourceSection].args, createSimplePowerTemplate(12));
 
 templates.class.MONK[1][9] = {
   title = L["Ability Charges"],
@@ -4097,7 +4095,7 @@ templates.class.MONK[3][9] = {
 -- Druid
 for i = 1, 4 do
   -- Shapeshift Form
-  tinsert(templates.class.DRUID[i][7].args, {
+  tinsert(templates.class.DRUID[i][resourceSection].args, {
     title = L["Shapeshift Form"],
     icon = "Interface\\Icons\\Ability_racial_bearform",
     triggers = {[1] = { trigger = { type = "status", event = "Stance/Form/Aura", unevent = "auto"}}}
@@ -4108,7 +4106,7 @@ for j, id in ipairs({5487, 768, 783, 1066, 24858, 40120}) do
   local title, _, icon = GetSpellInfo(id)
   if title then
     for i = 1, 4 do
-      tinsert(templates.class.DRUID[i][7].args, {
+      tinsert(templates.class.DRUID[i][resourceSection].args, {
         title = title,
         icon = icon,
         triggers = {
@@ -4128,13 +4126,13 @@ for j, id in ipairs({5487, 768, 783, 1066, 24858, 40120}) do
 end
 
 -- Astral Power
-tinsert(templates.class.DRUID[1][7].args, createSimplePowerTemplate(8));
+tinsert(templates.class.DRUID[1][resourceSection].args, createSimplePowerTemplate(8));
 
 for i = 1, 4 do
-  tinsert(templates.class.DRUID[i][7].args, createSimplePowerTemplate(0)); -- Mana
-  tinsert(templates.class.DRUID[i][7].args, createSimplePowerTemplate(1)); -- Rage
-  tinsert(templates.class.DRUID[i][7].args, createSimplePowerTemplate(3)); -- Energy
-  tinsert(templates.class.DRUID[i][7].args, createSimplePowerTemplate(4)); -- Combo Points
+  tinsert(templates.class.DRUID[i][resourceSection].args, createSimplePowerTemplate(0)); -- Mana
+  tinsert(templates.class.DRUID[i][resourceSection].args, createSimplePowerTemplate(1)); -- Rage
+  tinsert(templates.class.DRUID[i][resourceSection].args, createSimplePowerTemplate(3)); -- Energy
+  tinsert(templates.class.DRUID[i][resourceSection].args, createSimplePowerTemplate(4)); -- Combo Points
 end
 
 -- Efflorescence aka Mushroom
@@ -4142,9 +4140,9 @@ tinsert(templates.class.DRUID[4][3].args,  {spell = 145205, type = "totem"});
 
 -- Death Knight
 for i = 1, 3 do
-  tinsert(templates.class.DEATHKNIGHT[i][7].args, createSimplePowerTemplate(6));
+  tinsert(templates.class.DEATHKNIGHT[i][resourceSection].args, createSimplePowerTemplate(6));
 
-  tinsert(templates.class.DEATHKNIGHT[i][7].args, {
+  tinsert(templates.class.DEATHKNIGHT[i][resourceSection].args, {
     title = L["Runes"],
     icon = "Interface\\Icons\\spell_deathknight_frozenruneweapon",
     triggers = {[1] = { trigger = { type = "status", event = "Death Knight Rune", unevent = "auto"}}}
