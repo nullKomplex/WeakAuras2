@@ -1,6 +1,8 @@
 if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, OptionsPrivate = ...
 
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L
 local regionOptions = WeakAuras.regionOptions
 
@@ -1400,7 +1402,7 @@ local function AddCodeOption(args, data, name, prefix, url, order, hiddenFunc, p
 
       if not errorString then
         if options.validator then
-          local ok, validate = xpcall(loadedFunction, function(err) errorString = err end)
+          local ok, validate = Retail.xpcall(loadedFunction, function(err) errorString = err end)
           if ok then
             errorString = options.validator(validate)
           end
@@ -1431,7 +1433,7 @@ local function AddCodeOption(args, data, name, prefix, url, order, hiddenFunc, p
         return false;
       else
         if options.validator then
-          local ok, validate = xpcall(loadedFunction, noop)
+          local ok, validate = Retail.xpcall(loadedFunction, noop)
           if ok then
             return options.validator(validate)
           end

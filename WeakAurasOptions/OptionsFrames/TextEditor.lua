@@ -1,6 +1,8 @@
 if not WeakAuras.IsCorrectVersion() then return end
 local AddonName, OptionsPrivate = ...
 
+local Retail = LibStub("LibRetail")
+
 -- Lua APIs
 local pairs, type, ipairs = pairs, type, ipairs
 local loadstring = loadstring
@@ -612,7 +614,7 @@ local function ConstructTextEditor(frame)
             func, errorString = loadstring("return " .. str)
           end
           if not errorString and validator then
-            local ok, validate = xpcall(func, function(err) errorString = err end)
+            local ok, validate = Retail.xpcall(func, function(err) errorString = err end)
             if ok then
               errorString = validator(validate)
             end

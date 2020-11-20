@@ -613,7 +613,13 @@ local function ConstructFunction(prototype, trigger, skipOptional)
                 test = test..")";
               end
             elseif(trigger["use_"..name]) then -- single selection
+              -- Old WA compatibility check
+              if type(trigger[name]) == "number" then
+                trigger[name] = {single = value};
+              end
+              
               local value = trigger[name] and trigger[name].single;
+
               if not arg.test then
                 test = trigger[name] and trigger[name].single and "("..name.."=="..(tonumber(value) or "[["..value.."]]")..")";
               else

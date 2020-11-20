@@ -2145,6 +2145,7 @@ templates.class.MAGE = {
         { spell = 114923, type = "ability", talent = 13 , usable = true, requiresTarget = true }, -- Nether Tempest
         { spell = 44457, type = "ability", talent = 14 , usable = true, requiresTarget = true }, -- Living Bomb
         { spell = 112948, type = "ability", talent = 15 , usable = true, requiresTarget = true }, -- Frost Bomb
+        { spell = 116011, type = "ability", talent = 17 , usable = true }, -- Rune of Power
         { spell = 1463, type = "ability", talent = 18 , usable = true , buff = true }, -- Incanter's Ward
       },
       icon = "Interface\\Icons\\ability_mage_arcanebarrage"
@@ -2270,6 +2271,7 @@ templates.class.MAGE = {
         { spell = 114923, type = "ability", talent = 13 , usable = true, requiresTarget = true }, -- Nether Tempest
         { spell = 44457, type = "ability", talent = 14 , usable = true, requiresTarget = true }, -- Living Bomb
         { spell = 112948, type = "ability", talent = 15 , usable = true, requiresTarget = true }, -- Frost Bomb
+        { spell = 116011, type = "ability", talent = 17 , usable = true }, -- Rune of Power
         { spell = 1463, type = "ability", talent = 18 , usable = true , buff = true }, -- Incanter's Ward
       },
       icon = "Interface\\Icons\\ability_mage_arcanebarrage"
@@ -2393,6 +2395,7 @@ templates.class.MAGE = {
         { spell = 114923, type = "ability", talent = 13 , usable = true, requiresTarget = true }, -- Nether Tempest
         { spell = 44457, type = "ability", talent = 14 , usable = true, requiresTarget = true }, -- Living Bomb
         { spell = 112948, type = "ability", talent = 15 , usable = true, requiresTarget = true }, -- Frost Bomb
+        { spell = 116011, type = "ability", talent = 17 , usable = true }, -- Rune of Power
         { spell = 1463, type = "ability", talent = 18 , usable = true , buff = true }, -- Incanter's Ward
       },
       icon = "Interface\\Icons\\ability_mage_arcanebarrage"
