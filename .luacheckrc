@@ -57,6 +57,7 @@ globals = {
 	"IndentationLib",
 	"KuiNameplatesCore",
 	"KuiNameplatesPlayerAnchor",
+	"Plater",
 
 	-- FrameXML misc
 	"C_Timer",
