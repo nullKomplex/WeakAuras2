@@ -437,16 +437,19 @@ local function CreateAlphaAnim(group, target, order, duration, fromAlpha, toAlph
     alpha:SetOrder(order)
     alpha:SetDuration(duration)
 
-    if fromAlpha <= toAlpha then
-        alpha:SetChange(toAlpha)
-    else
+
+    if appear then
         alpha:SetChange(-fromAlpha)
+    else
+        alpha:SetChange(toAlpha)
     end
+
     -- alpha:SetFromAlpha(fromAlpha)
     -- alpha:SetToAlpha(toAlpha)
     if delay then
         alpha:SetStartDelay(delay)
     end
+
     if appear then
         table_insert(group.appear, alpha)
     else
@@ -585,16 +588,16 @@ end
 
 local function updateAlphaAnim(f,alpha)
     for _,anim in pairs(f.animIn.appear) do
-        anim:SetChange(alpha)
+        anim:SetChange(-alpha)
     end
     for _,anim in pairs(f.animIn.fade) do
-        anim:SetChange(-alpha)
-    end
-    for _,anim in pairs(f.animOut.appear) do
         anim:SetChange(alpha)
     end
-    for _,anim in pairs(f.animOut.fade) do
+    for _,anim in pairs(f.animOut.appear) do
         anim:SetChange(-alpha)
+    end
+    for _,anim in pairs(f.animOut.fade) do
+        anim:SetChange(alpha)
     end
 end
 
