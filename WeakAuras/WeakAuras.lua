@@ -1571,16 +1571,11 @@ function Private.Resume()
     end
   end
 
-  Private.ResumeAllDynamicGroups();
 
   UnloadAll();
   scanForLoadsImpl();
 
-  for _, regionData in pairs(regions) do
-    if regionData.region.Resume then
-      regionData.region:Resume(true)
-    end
-  end
+  Private.ResumeAllDynamicGroups();
 end
 
 function Private.LoadDisplays(toLoad, ...)
@@ -2561,6 +2556,8 @@ function WeakAuras.PreAdd(data)
     regionValidate(data)
   end
 
+  Private.Modernize(data);
+  WeakAuras.validate(data, WeakAuras.data_stub);
   if data.subRegions then
     local result = {}
     for index, subRegionData in ipairs(data.subRegions) do
@@ -2586,9 +2583,6 @@ function WeakAuras.PreAdd(data)
     end
     data.subRegions = result
   end
-
-  Private.Modernize(data);
-  WeakAuras.validate(data, WeakAuras.data_stub);
   validateUserConfig(data, data.authorOptions, data.config)
   removeSpellNames(data)
   data.init_started = nil

@@ -4519,6 +4519,7 @@ Private.event_prototypes = {
       "GCD_UPDATE",
       "WA_DELAYED_PLAYER_ENTERING_WORLD"
     },
+    force_events = "GCD_UPDATE",
     name = L["Global Cooldown"],
     loadFunc = function(trigger)
       WeakAuras.WatchGCD();
@@ -4953,7 +4954,6 @@ Private.event_prototypes = {
         display = L["Class and Specialization"],
         type = "multiselect",
         values = "spec_types_all",
-        required = true
       },
       {
         hidden = true,
@@ -7248,6 +7248,7 @@ if WeakAuras.IsClassic() then
   Private.event_prototypes["Equipment Set"] = nil
   Private.event_prototypes["Spell Activation Overlay"] = nil
   Private.event_prototypes["Crowd Controlled"] = nil
+  Private.event_prototypes["PvP Talent Selected"] = nil
   Private.event_prototypes["Class/Spec"] = nil
 else
   Private.event_prototypes["Queued Action"] = nil

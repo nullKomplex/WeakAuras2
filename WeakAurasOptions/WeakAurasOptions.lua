@@ -376,6 +376,7 @@ StaticPopupDialogs["WEAKAURAS_CONFIRM_DELETE"] = {
   button2 = L["Cancel"],
   OnAccept = function(self)
     if self.data then
+      OptionsPrivate.Private.PauseAllDynamicGroups()
       OptionsPrivate.massDelete = true
       for _, auraData in pairs(self.data.toDelete) do
         WeakAuras.Delete(auraData)
@@ -398,6 +399,7 @@ StaticPopupDialogs["WEAKAURAS_CONFIRM_DELETE"] = {
           WeakAuras.UpdateDisplayButton(parentData)
         end
       end
+      OptionsPrivate.Private.ResumeAllDynamicGroups()
       WeakAuras.SortDisplayButtons()
     end
   end,

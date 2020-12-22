@@ -2441,6 +2441,9 @@ WeakAuras.data_stub = {
     class = {
       multi = {},
     },
+    talent = {
+      multi = {},
+    },
   },
   actions = {
     init = {},

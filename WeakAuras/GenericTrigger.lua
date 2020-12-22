@@ -1735,7 +1735,7 @@ do
       gcdSpellName, gcdSpellIcon = nil, nil;
       gcdEndCheck = 0;
     end
-    if(event) then
+    if(event and not WeakAuras.IsPaused()) then
       WeakAuras.ScanEvents(event);
     end
   end
@@ -1868,28 +1868,28 @@ do
     cdReadyFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
     cdReadyFrame:SetScript("OnEvent", function(self, event, ...)
       Private.StartProfileSystem("generictrigger cd tracking");
-      if not WeakAuras.IsPaused() then
-        if(event == "SPELL_UPDATE_COOLDOWN" or event == "SPELL_UPDATE_CHARGES"
-          or event == "RUNE_POWER_UPDATE" or event == "ACTIONBAR_UPDATE_COOLDOWN"
-          or event == "PLAYER_TALENT_UPDATE" or event == "CHARACTER_POINTS_CHANGED") then
-          Private.CheckCooldownReady();
-        elseif(event == "SPELLS_CHANGED") then
-          Private.CheckSpellKnown();
-          Private.CheckCooldownReady();
-        elseif(event == "UNIT_SPELLCAST_SENT") then
-          local unit, name = ...;
-          if(unit == "player") then
-            name = GetSpellInfo(name);
-            if(gcdSpellName ~= name) then
-              local icon = GetSpellTexture(name);
-              gcdSpellName = name;
-              gcdSpellIcon = icon;
-              WeakAuras.ScanEvents("GCD_UPDATE");
+      if(event == "SPELL_UPDATE_COOLDOWN" or event == "SPELL_UPDATE_CHARGES"
+        or event == "RUNE_POWER_UPDATE" or event == "ACTIONBAR_UPDATE_COOLDOWN"
+        or event == "PLAYER_TALENT_UPDATE" or event == "CHARACTER_POINTS_CHANGED") then
+        Private.CheckCooldownReady();
+      elseif(event == "SPELLS_CHANGED") then
+        Private.CheckSpellKnown();
+        Private.CheckCooldownReady();
+      elseif(event == "UNIT_SPELLCAST_SENT") then
+        local unit, name = ...;
+        if(unit == "player") then
+          name = GetSpellInfo(name);
+          if(gcdSpellName ~= name) then
+            local icon = GetSpellTexture(name);
+            gcdSpellName = name;
+            gcdSpellIcon = icon;
+            if not WeakAuras.IsPaused() then
+              WeakAuras.ScanEvents("GCD_UPDATE")
             end
           end
-        elseif(event == "UNIT_INVENTORY_CHANGED" or event == "BAG_UPDATE_COOLDOWN" or event == "PLAYER_EQUIPMENT_CHANGED") then
-          Private.CheckItemSlotCooldowns();
         end
+      elseif(event == "UNIT_INVENTORY_CHANGED" or event == "BAG_UPDATE_COOLDOWN" or event == "PLAYER_EQUIPMENT_CHANGED") then
+        Private.CheckItemSlotCooldowns();
       end
       Private.StopProfileSystem("generictrigger cd tracking");
     end);
@@ -2134,8 +2134,10 @@ do
     for id, _ in pairs(spells) do
       local known = WeakAuras.IsSpellKnownIncludingPet(id);
       if (known ~= spellKnown[id]) then
-        spellKnown[id] = known;
-        WeakAuras.ScanEvents("SPELL_COOLDOWN_CHANGED", id);
+        spellKnown[id] = known
+        if not WeakAuras.IsPaused() then
+          WeakAuras.ScanEvents("SPELL_COOLDOWN_CHANGED", id)
+        end
       end
     end
   end
@@ -2185,16 +2187,18 @@ do
     changed = chargeChanged or changed
     nowReady = chargeNowReady or nowReady
 
-    if nowReady then
-      WeakAuras.ScanEvents("SPELL_COOLDOWN_READY", id);
-    end
+    if not WeakAuras.IsPaused() then
+      if nowReady then
+        WeakAuras.ScanEvents("SPELL_COOLDOWN_READY", id);
+      end
 
-    if changed or chargesChanged then
-      WeakAuras.ScanEvents("SPELL_COOLDOWN_CHANGED", id);
-    end
+      if changed or chargesChanged then
+        WeakAuras.ScanEvents("SPELL_COOLDOWN_CHANGED", id);
+      end
 
-    if (chargesDifference ~= 0 ) then
-      WeakAuras.ScanEvents("SPELL_CHARGES_CHANGED", id, chargesDifference, charges or spellCount or 0);
+      if (chargesDifference ~= 0 ) then
+        WeakAuras.ScanEvents("SPELL_CHARGES_CHANGED", id, chargesDifference, charges or spellCount or 0);
+      end
     end
   end
 
@@ -2231,7 +2235,9 @@ do
           itemCdDurs[id] = duration;
           itemCdExps[id] = endTime;
           itemCdHandles[id] = timer:ScheduleTimerFixed(ItemCooldownFinished, endTime - time, id);
-          WeakAuras.ScanEvents("ITEM_COOLDOWN_STARTED", id);
+          if not WeakAuras.IsPaused() then
+            WeakAuras.ScanEvents("ITEM_COOLDOWN_STARTED", id)
+          end
           itemCdEnabledChanged = false;
         elseif(itemCdExps[id] ~= endTime) then
           -- Cooldown is now different
@@ -2241,7 +2247,9 @@ do
           itemCdDurs[id] = duration;
           itemCdExps[id] = endTime;
           itemCdHandles[id] = timer:ScheduleTimerFixed(ItemCooldownFinished, endTime - time, id);
-          WeakAuras.ScanEvents("ITEM_COOLDOWN_CHANGED", id);
+          if not WeakAuras.IsPaused() then
+            WeakAuras.ScanEvents("ITEM_COOLDOWN_CHANGED", id)
+          end
           itemCdEnabledChanged = false;
         end
       elseif(duration > 0) then
@@ -2257,7 +2265,7 @@ do
           itemCdEnabledChanged = false;
         end
       end
-      if (itemCdEnabledChanged) then
+      if (itemCdEnabledChanged and not WeakAuras.IsPaused()) then
         WeakAuras.ScanEvents("ITEM_COOLDOWN_CHANGED", id);
       end
     end
@@ -2282,7 +2290,9 @@ do
           itemSlotsCdDurs[id] = duration;
           itemSlotsCdExps[id] = endTime;
           itemSlotsCdHandles[id] = timer:ScheduleTimerFixed(ItemSlotCooldownFinished, endTime - time, id);
-          WeakAuras.ScanEvents("ITEM_SLOT_COOLDOWN_STARTED", id);
+          if not WeakAuras.IsPaused() then
+            WeakAuras.ScanEvents("ITEM_SLOT_COOLDOWN_STARTED", id)
+          end
         elseif(itemSlotsCdExps[id] ~= endTime) then
           -- Cooldown is now different
           if(itemSlotsCdHandles[id]) then
@@ -2291,7 +2301,9 @@ do
           itemSlotsCdDurs[id] = duration;
           itemSlotsCdExps[id] = endTime;
           itemSlotsCdHandles[id] = timer:ScheduleTimerFixed(ItemSlotCooldownFinished, endTime - time, id);
-          WeakAuras.ScanEvents("ITEM_SLOT_COOLDOWN_CHANGED", id);
+          if not WeakAuras.IsPaused() then
+            WeakAuras.ScanEvents("ITEM_SLOT_COOLDOWN_CHANGED", id)
+          end
         end
       elseif(duration > 0) then
       -- GCD, do nothing
@@ -2308,7 +2320,9 @@ do
 
       local newItemId = GetInventoryItemID("player", id);
       if (itemId ~= newItemId) then
-        WeakAuras.ScanEvents("ITEM_SLOT_COOLDOWN_ITEM_CHANGED");
+        if not WeakAuras.IsPaused() then
+          WeakAuras.ScanEvents("ITEM_SLOT_COOLDOWN_ITEM_CHANGED")
+        end
         itemSlots[id] = newItemId or 0;
       end
     end
