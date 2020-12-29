@@ -40,12 +40,12 @@ local function createOptions(id, data)
       name = L["Desaturate"],
       order = 2,
     },
-    space2 = {
-      type = "execute",
-      name = "",
+    useTooltip = {
+      type = "toggle",
       width = WeakAuras.normalWidth,
-      order = 5,
-      image = function() return "", 0, 0 end,
+      name = L["Tooltip on Mouseover"],
+      hidden = function() return not OptionsPrivate.Private.CanHaveTooltip(data) end,
+      order = 5
     },
     color = {
       type = "color",

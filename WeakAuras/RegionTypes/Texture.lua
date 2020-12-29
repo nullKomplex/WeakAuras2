@@ -88,6 +88,9 @@ local function create(parent)
   return region;
 end
 
+local function noop()
+end
+
 local function modify(parent, region, data)
   WeakAuras.regionPrototype.modify(parent, region, data);
   WeakAuras.SetTextureOrAtlas(region.texture, data.texture, data.textureWrapMode, data.textureWrapMode);
@@ -100,6 +103,24 @@ local function modify(parent, region, data)
   region.scaley = 1;
   region.texture:SetBlendMode(data.blendMode);
   --region.texture:SetRotation((data.rotation / 180) * math.pi);
+
+  local tooltipType = Private.CanHaveTooltip(data);
+  if tooltipType and data.useTooltip then
+    if not region.tooltipFrame then
+      region.tooltipFrame = CreateFrame("frame", nil, region);
+      region.tooltipFrame:SetAllPoints(region);
+      region.tooltipFrame:SetScript("OnEnter", function()
+        Private.ShowMouseoverTooltip(region, region.tooltipFrame);
+      end);
+      region.tooltipFrame:SetScript("OnLeave", Private.HideTooltip);
+    end
+
+    region.tooltipFrame:SetMouseClickEnabled(false)
+  elseif region.tooltipFrame then
+    region.tooltipFrame:SetScript("OnEnter", noop)
+    region.tooltipFrame:SetScript("OnLeave", noop)
+    region.tooltipFrame:SetMouseClickEnabled(false)
+  end
 
   local function GetRotatedPoints(degrees)
     local angle = rad(135 - degrees);

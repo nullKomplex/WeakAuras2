@@ -85,6 +85,19 @@ local function createOptions(id, data)
       name = L["Desaturate"],
       order = 17.6,
     },
+    useTooltip = {
+      type = "toggle",
+      width = WeakAuras.normalWidth,
+      name = L["Tooltip on Mouseover"],
+      hidden = function() return not OptionsPrivate.Private.CanHaveTooltip(data) end,
+      order = 18
+    },
+    space = {
+      type = "description",
+      name = "",
+      width = WeakAuras.normalWidth,
+      order = 19,
+    },
     blendMode = {
       type = "select",
       width = WeakAuras.normalWidth,

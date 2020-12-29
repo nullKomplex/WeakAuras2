@@ -1091,6 +1091,24 @@ local function modify(parent, region, data)
   region.slantMode = data.slantMode;
   region:SetOrientation(data.orientation);
 
+  local tooltipType = Private.CanHaveTooltip(data);
+  if tooltipType and data.useTooltip then
+    if not region.tooltipFrame then
+      region.tooltipFrame = CreateFrame("frame", nil, region);
+      region.tooltipFrame:SetAllPoints(region);
+      region.tooltipFrame:SetScript("OnEnter", function()
+        Private.ShowMouseoverTooltip(region, region.tooltipFrame);
+      end);
+      region.tooltipFrame:SetScript("OnLeave", Private.HideTooltip);
+    end
+
+    region.tooltipFrame:SetMouseClickEnabled(false)
+  elseif region.tooltipFrame then
+    region.tooltipFrame:SetScript("OnEnter", noop)
+    region.tooltipFrame:SetScript("OnLeave", noop)
+    region.tooltipFrame:SetMouseClickEnabled(false)
+  end
+
   local function DoPosition(region)
     local mirror = region.mirror_h
     if region.mirror then
