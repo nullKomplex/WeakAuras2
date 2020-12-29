@@ -71,6 +71,9 @@ local function create(parent)
   return region;
 end
 
+local function noop()
+end
+
 local function modify(parent, region, data)
   WeakAuras.regionPrototype.modify(parent, region, data);
   local text = region.text;
@@ -105,9 +108,11 @@ local function modify(parent, region, data)
       end);
       region.tooltipFrame:SetScript("OnLeave", Private.HideTooltip);
     end
-    region.tooltipFrame:EnableMouse(true);
+    region.tooltipFrame:SetMouseClickEnabled(false)
   elseif region.tooltipFrame then
-    region.tooltipFrame:EnableMouse(false);
+    region.tooltipFrame:SetScript("OnEnter", noop)
+    region.tooltipFrame:SetScript("OnLeave", noop)
+    region.tooltipFrame:SetMouseClickEnabled(false)
   end
 
   text:SetTextHeight(data.fontSize);

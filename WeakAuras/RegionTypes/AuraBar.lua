@@ -1055,6 +1055,9 @@ local function TimerTick(self)
   self:SetTime((duration ~= 0 and (self.adjustedMax or self.adjustedMaxRel) or duration) - adjustMin, expirationTime - adjustMin, state.inverse);
 end
 
+local function noop()
+end
+
 -- Modify a given region/display
 local function modify(parent, region, data)
   region.timer = nil
@@ -1176,13 +1179,15 @@ local function modify(parent, region, data)
       region.tooltipFrame:SetScript("OnEnter", function()
         Private.ShowMouseoverTooltip(region, region.tooltipFrame);
       end);
+      region.tooltipFrame:SetScript("OnEnter", noop)
+      region.tooltipFrame:SetScript("OnLeave", noop)
       region.tooltipFrame:SetScript("OnLeave", Private.HideTooltip);
     end
 
-    region.tooltipFrame:EnableMouse(true);
+    region.tooltipFrame:SetMouseClickEnabled(false)
   elseif region.tooltipFrame then
     -- Disable tooltip
-    region.tooltipFrame:EnableMouse(false);
+    region.tooltipFrame:SetMouseClickEnabled(false)
   end
 
   function region:UpdateMinMax()
@@ -1337,9 +1342,6 @@ WeakAuras.RegisterRegionType("aurabar", create, modify, default, GetProperties, 
 
 local function subSupports(regionType)
   return regionType == "aurabar"
-end
-
-local function noop()
 end
 
 local function SetFrameLevel(self, level)
