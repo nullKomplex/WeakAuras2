@@ -44,7 +44,7 @@ function WeakAurasTimers:ScheduleTimerFixed(func, delay, ...)
       WeakAuras.prettyPrint(WeakAuras.L["Can't schedule timer with %i, due to a World of Warcraft bug with high computer uptime. (Uptime: %i). Please restart your computer."]:format(delay, GetTime()))
       return
     end
-    return self:ScheduleTimer(func, delay, ...);
+    return self:ScheduleTimer(func, delay, ...)
   end
 end
 
@@ -1301,9 +1301,9 @@ local function GetInstanceTypeAndSize()
     if difficultyInfo then
       size, difficulty = difficultyInfo.size, difficultyInfo.difficulty
     end
-    return size, difficulty, instanceType, ZoneMapID
+    return size, difficulty, instanceType, ZoneMapID, difficultyIndex
   end
-  return "none", "none", nil, nil
+  return "none", "none", nil, nil, nil
 end
 
 function WeakAuras.InstanceType()
@@ -1312,6 +1312,10 @@ end
 
 function WeakAuras.InstanceDifficulty()
   return select(2, GetInstanceTypeAndSize())
+end
+
+function WeakAuras.InstanceTypeRaw()
+  return select(5, GetInstanceTypeAndSize())
 end
 
 local toLoad = {}
@@ -1375,7 +1379,7 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
     vehicleUi = UnitHasVehicleUI('player') or HasOverrideActionBar() or HasVehicleActionBar()
   end
 
-  local size, difficulty, instanceType, ZoneMapID = GetInstanceTypeAndSize()
+  local size, difficulty, instanceType, ZoneMapID, difficultyIndex = GetInstanceTypeAndSize()
   Private.UpdateCurrentInstanceType(instanceType)
 
   if (WeakAuras.CurrentEncounter) then
@@ -1402,8 +1406,8 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
       local loadFunc = loadFuncs[id];
       local loadOpt = loadFuncsForOptions[id];
 
-      shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, encounter_id, size, difficulty, role);
-      couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, encounter_id, size, difficulty, role);
+      shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, encounter_id, size, difficulty, difficultyIndex, role);
+      couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, encounter_id, size, difficulty, difficultyIndex, role);
 
       if(shouldBeLoaded and not loaded[id]) then
         changed = changed + 1;
@@ -3382,7 +3386,15 @@ end
 function Private.HideTooltip()
   currentTooltipRegion = nil;
   currentTooltipOwner = nil;
-  GameTooltip:Hide();
+  -- If a tooltip was shown for a "restricted" frame, that is e.g. for a aura
+  -- anchored to a nameplate, then that frame is no longer clamped to the screen,
+  -- because restricted frames can't be clamped. So dance to make the tooltip
+  -- unrestricted and then clamp it again.
+  GameTooltip:ClearAllPoints()
+  GameTooltip:SetPoint("RIGHT", UIParent, "LEFT");
+  GameTooltip:SetClampedToScreen(true)
+
+  GameTooltip:Hide()
 end
 
 do

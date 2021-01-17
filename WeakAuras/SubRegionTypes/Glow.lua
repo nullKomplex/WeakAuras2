@@ -173,12 +173,12 @@ local funcs = {
     local color
     self.glow = visible
 
-    if not self:IsRectValid() then
+    -- if not self:IsRectValid() then
       -- This ensures that WoW tries to make the rect valid
       -- which helps the glow lib to apply the glow in the right size
       -- See Ticket: #2818
-      self:GetWidth()
-    end
+      -- self:GetWidth()
+    -- end
 
     if self.useGlowColor then
       color = self.glowColor

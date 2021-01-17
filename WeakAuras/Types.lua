@@ -1187,6 +1187,32 @@ Private.totem_types = {
   [4] = L["Air"]
 };
 
+Private.loss_of_control_types = {
+  CHARM = "CHARM",
+  CONFUSE = "CONFUSE",
+  DISARM = "DISARM",
+  FEAR = "FEAR",
+  FEAR_MECHANIC = "FEAR_MECHANIC",
+  PACIFY = "PACIFY",
+  SILENCE = "SILENCE",
+  PACIFYSILENCE = "PACIFYSILENCE",
+  POSSESS = "POSSESS",
+  ROOT = "ROOT",
+  SCHOOL_INTERRUPT = "SCHOOL_INTERRUPT",
+  STUN = "STUN",
+  STUN_MECHANIC = "STUN_MECHANIC",
+}
+
+Private.main_spell_schools = {
+  [1] = GetSchoolString(1),
+  [2] = GetSchoolString(2),
+  [4] = GetSchoolString(4),
+  [8] = GetSchoolString(8),
+  [16] = GetSchoolString(16),
+  [32] = GetSchoolString(32),
+  [64] = GetSchoolString(64),
+}
+
 Private.texture_types = {
   ["Blizzard Alerts"] = {
     ["Textures\\SpellActivationOverlays\\Arcane_Missiles"] = "Arcane Missiles",
@@ -1907,6 +1933,55 @@ Private.instance_types = {
   pvp = L["Battleground"],
   arena = L["Arena"]
 }
+
+Private.instance_difficulty_types = {
+
+}
+
+if not WeakAuras.IsClassic() then
+  -- Fill out instance_difficulty_types automatically.
+  -- Unfourtunately the names BLizzard gives are not entirely unique,
+  -- so try hard to disambiguate them via the type, and if nothing works by
+  -- including the plain id.
+
+  local unused = {}
+
+  local instance_difficulty_names = {
+    [1] = L["Dungeon (Normal)"],
+    [2] = L["Dungeon (Heroic)"],
+    [3] = L["10 Player Raid (Normal)"],
+    [4] = L["25 Player Raid (Normal)"],
+    [5] = L["10 Player Raid (Heroic)"],
+    [6] = L["25 Player Raid (Heroic)"],
+    [7] = L["Looking for Raid"],
+    [8] = L["Challenge Mode"],
+    [9] = L["40 Player Raid"],
+    [11] = L["Scenario (Heroic)"],
+    [12] = L["Scenario (Normal)"],
+    [14] = L["Raid (Normal)"],
+    [15] = L["Raid (Heroic)"],
+  }
+
+  local names = {}
+  local ids = {}
+
+  for i = 1, 200 do
+    local name, type = GetDifficultyInfo(i)
+    if name then
+      if instance_difficulty_names[i] then
+        if instance_difficulty_names[i] ~= unused then
+          Private.instance_difficulty_types[i] = instance_difficulty_names[i]
+        end
+      else
+        Private.instance_difficulty_types[i] = name
+        WeakAuras.prettyPrint(string.format("Unknown difficulty id found. Please report as a bug: %s %s %s", i, name, type))
+      end
+    end
+  end
+
+
+end
+
 
 Private.group_types = {
   solo = L["Not in Group"],
@@ -2786,9 +2861,9 @@ Private.reset_ranged_swing_spells = {
 }
 
 
--- Private.item_weapon_types = {}
+Private.item_weapon_types = {}
 
--- local skippedWeaponTypes = {}
+local skippedWeaponTypes = {}
 -- skippedWeaponTypes[11] = true -- Bear Claws
 -- skippedWeaponTypes[12] = true -- Cat Claws
 -- skippedWeaponTypes[14] = true -- Misc
@@ -2799,15 +2874,15 @@ Private.reset_ranged_swing_spells = {
 --   skippedWeaponTypes[16] = true -- Thrown
 -- end
 
--- for i = 0, 20 do
---   if not skippedWeaponTypes[i] then
---     Private.item_weapon_types[2 * 256 + i] = GetItemSubClassInfo(2, i)
---   end
--- end
+for i, subClass in ipairs({GetAuctionItemSubClasses(1)}) do
+  if not skippedWeaponTypes[i] then
+    Private.item_weapon_types[1 * 256 + i] = subClass
+  end
+end
 
--- -- Shields
--- Private.item_weapon_types[4 * 256 + 6] = GetItemSubClassInfo(4, 6)
--- WeakAuras.item_weapon_types = Private.item_weapon_types
+-- Shields
+Private.item_weapon_types[2 * 256 + 7] = select(7, GetAuctionItemSubClasses(2))
+WeakAuras.item_weapon_types = Private.item_weapon_types
 
 WeakAuras.StopMotion = {}
 WeakAuras.StopMotion.texture_types = {

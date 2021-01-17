@@ -1163,7 +1163,7 @@ Private.load_prototype = {
     },
     {
       name = "size",
-      display = L["Instance Type"],
+      display = L["Instance Size Type"],
       type = "multiselect",
       values = "instance_types",
       init = "arg",
@@ -1179,6 +1179,17 @@ Private.load_prototype = {
       enable = not WeakAuras.IsClassic(),
       hidden = WeakAuras.IsClassic(),
       events = {"PLAYER_DIFFICULTY_CHANGED", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "ZONE_CHANGED_NEW_AREA"}
+    },
+    {
+      name = "instance_type",
+      display = L["Instance Type"],
+      type = "multiselect",
+      values = "instance_difficulty_types",
+      init = "arg",
+      control = "WeakAurasSortedDropdown",
+      events = {"PLAYER_DIFFICULTY_CHANGED", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "ZONE_CHANGED_NEW_AREA"},
+      enable = not WeakAuras.IsClassic(),
+      hidden = WeakAuras.IsClassic(),
     },
     {
       name = "role",
@@ -1197,14 +1208,40 @@ Private.load_prototype = {
       test = "IsEquippedItem(%s)",
       events = { "UNIT_INVENTORY_CHANGED", "PLAYER_EQUIPMENT_CHANGED"}
     },
-    -- {
-    --   name = "itemtypeequipped",
-    --   display = WeakAuras.newFeatureString .. L["Item Type Equipped"],
-    --   type = "multiselect",
-    --   test = "IsEquippedItemType(WeakAuras.GetItemSubClassInfo(%s))",
-    --   events = { "UNIT_INVENTORY_CHANGED", "PLAYER_EQUIPMENT_CHANGED"},
-    --   values = "item_weapon_types"
-    -- },
+    {
+      name = "itemtypeequipped",
+      display = WeakAuras.newFeatureString .. L["Item Type Equipped"],
+      type = "multiselect",
+      test = "IsEquippedItemType(WeakAuras.GetItemSubClassInfo(%s))",
+      events = { "UNIT_INVENTORY_CHANGED", "PLAYER_EQUIPMENT_CHANGED"},
+      values = "item_weapon_types"
+    },
+    {
+      name = "item_bonusid_equipped",
+      display =  WeakAuras.newFeatureString .. L["Item Bonus Id Equipped"],
+      type = "string",
+      test = "WeakAuras.CheckForItemBonusId(%q)",
+      events = { "UNIT_INVENTORY_CHANGED", "PLAYER_EQUIPMENT_CHANGED"},
+      enable = false,
+      hidden = true,
+      desc = function()
+        return WeakAuras.GetLegendariesBonusIds()
+               .. L["\n\nSupports multiple entries, separated by commas"]
+      end
+    },
+    {
+      name = "not_item_bonusid_equipped",
+      display =  WeakAuras.newFeatureString .. L["|cFFFF0000Not|r Item Bonus Id Equipped"],
+      type = "string",
+      test = "not WeakAuras.CheckForItemBonusId(%q)",
+      events = { "UNIT_INVENTORY_CHANGED", "PLAYER_EQUIPMENT_CHANGED"},
+      enable = false,
+      hidden = true,
+      desc = function()
+        return WeakAuras.GetLegendariesBonusIds()
+               .. L["\n\nSupports multiple entries, separated by commas"]
+      end
+    }
   }
 };
 
@@ -4351,7 +4388,6 @@ Private.event_prototypes = {
           local extendTimer = %s
           local triggerUseRemaining = %s
           local triggerRemaining = %s
-          local triggerEmphasized = %s
           local triggerCount = %q
           local triggerCast = %s
           local cloneId = useClone and id or ""
@@ -4379,7 +4415,7 @@ Private.event_prototypes = {
 
           if useClone then
             if event == "BigWigs_StartBar" then
-              if WeakAuras.BigWigsTimerMatches(id, triggerText, triggerTextOperator, triggerSpellId, triggerEmphasized, triggerCount, triggerCast) then
+              if WeakAuras.BigWigsTimerMatches(id, triggerText, triggerTextOperator, triggerSpellId, triggerCount, triggerCast) then
                 local bar = WeakAuras.GetBigWigsTimerById(id)
                 if bar then
                   copyOrSchedule(bar, cloneId)
@@ -4393,14 +4429,14 @@ Private.event_prototypes = {
               end
             elseif event == "BigWigs_Timer_Update" then
               for id, bar in pairs(WeakAuras.GetAllBigWigsTimers()) do
-                if WeakAuras.BigWigsTimerMatches(id, triggerText, triggerTextOperator, triggerSpellId, triggerEmphasized, triggerCount, triggerCast) then
+                if WeakAuras.BigWigsTimerMatches(id, triggerText, triggerTextOperator, triggerSpellId, triggerCount, triggerCast) then
                   copyOrSchedule(bar, id)
                 end
               end
             elseif event == "BigWigs_Timer_Force" then
               wipe(states)
               for id, bar in pairs(WeakAuras.GetAllBigWigsTimers()) do
-                if WeakAuras.BigWigsTimerMatches(id, triggerText, triggerTextOperator, triggerSpellId, triggerEmphasized, triggerCount, triggerCast) then
+                if WeakAuras.BigWigsTimerMatches(id, triggerText, triggerTextOperator, triggerSpellId, triggerCount, triggerCast) then
                   copyOrSchedule(bar, id)
                 end
               end
@@ -4408,13 +4444,13 @@ Private.event_prototypes = {
           else
             if event == "BigWigs_StartBar" then
               if extendTimer ~= 0 then
-                if WeakAuras.BigWigsTimerMatches(id, triggerText, triggerTextOperator, triggerSpellId, triggerEmphasized, triggerCount, triggerCast) then
+                if WeakAuras.BigWigsTimerMatches(id, triggerText, triggerTextOperator, triggerSpellId, triggerCount, triggerCast) then
                   local bar = WeakAuras.GetBigWigsTimerById(id)
                   WeakAuras.ScheduleBigWigsCheck(bar.expirationTime + extendTimer)
                 end
               end
             end
-            local bar = WeakAuras.GetBigWigsTimer(triggerText, triggerTextOperator, triggerSpellId, extendTimer, triggerEmphasized, triggerCount, triggerCast)
+            local bar = WeakAuras.GetBigWigsTimer(triggerText, triggerTextOperator, triggerSpellId, extendTimer, triggerCount, triggerCast)
             if bar then
               if extendTimer == 0
                 or not (state and state.show)
@@ -4443,7 +4479,6 @@ Private.event_prototypes = {
         trigger.use_extend and tonumber(trigger.extend or 0) or 0,
         trigger.use_remaining and "true" or "false",
         trigger.remaining or 0,
-        trigger.use_emphasized == nil and "nil" or trigger.use_emphasized and "true" or "false",
         trigger.use_count and trigger.count or "",
         trigger.use_cast == nil and "nil" or trigger.use_cast and "true" or "false",
         trigger.remaining_operator or "<"
@@ -4480,15 +4515,6 @@ Private.event_prototypes = {
         desc = L["Only if BigWigs shows it on it's bar"],
         type = "string",
         conditionType = "string",
-      },
-      {
-        name = "emphasized",
-        display = L["Emphasized"],
-        type = "tristate",
-        desc = L["Emphasized option checked in BigWigs's spell options"],
-        test = "true",
-        init = "false",
-        conditionType = "bool"
       },
       {
         name = "cast",
@@ -5784,28 +5810,134 @@ Private.event_prototypes = {
     hasItemID = true,
     automaticrequired = true
   },
-  -- ["Item Type Equipped"] = {
-  --   type = "status",
-  --   events = {
-  --     ["events"] = {
-  --       "UNIT_INVENTORY_CHANGED",
-  --       "PLAYER_EQUIPMENT_CHANGED",
-  --     }
-  --   },
-  --   internal_events = { "WA_DELAYED_PLAYER_ENTERING_WORLD", },
-  --   force_events = "UNIT_INVENTORY_CHANGED",
-  --   name = L["Item Type Equipped"],
-  --   args = {
-  --     {
-  --       name = "itemTypeName",
-  --       display = L["Item Type"],
-  --       type = "multiselect",
-  --       values = "item_weapon_types",
-  --       test = "IsEquippedItemType(WeakAuras.GetItemSubClassInfo(%s))"
-  --     },
-  --   },
-  --   automaticrequired = true
-  -- },
+  ["Item Type Equipped"] = {
+    type = "status",
+    events = {
+      ["events"] = {
+        "UNIT_INVENTORY_CHANGED",
+        "PLAYER_EQUIPMENT_CHANGED",
+      }
+    },
+    internal_events = { "WA_DELAYED_PLAYER_ENTERING_WORLD", },
+    force_events = "UNIT_INVENTORY_CHANGED",
+    name = L["Item Type Equipped"],
+    args = {
+      {
+        name = "itemTypeName",
+        display = L["Item Type"],
+        type = "multiselect",
+        values = "item_weapon_types",
+        test = "IsEquippedItemType(WeakAuras.GetItemSubClassInfo(%s))"
+      },
+    },
+    automaticrequired = true
+  },
+  ["Item Bonus Id Equipped"] = {
+    type = "status",
+    events = {
+      ["events"] = {
+        "UNIT_INVENTORY_CHANGED",
+        "PLAYER_EQUIPMENT_CHANGED",
+      }
+    },
+    internal_events = { "WA_DELAYED_PLAYER_ENTERING_WORLD", },
+    force_events = "UNIT_INVENTORY_CHANGED",
+    name = L["Item Bonus Id Equipped"],
+    statesParameter = "one",
+    init = function(trigger)
+      local ret = [=[
+        local fetchLegendaryPower = %s
+        local item = %q
+        local inverse = %s
+        local useItemSlot, slotSelected = %s, %d
+
+        local itemBonusId, itemId, itemName, icon, itemSlot, itemSlotString = WeakAuras.GetBonusIdInfo(item, useItemSlot and slotSelected)
+        local itemBonusId = tonumber(itemBonusId)
+        if fetchLegendaryPower then
+          itemName, icon = WeakAuras.GetLegendaryData(itemBonusId or item)
+        end
+
+        local slotValidation = (useItemSlot and itemSlot == slotSelected) or (not useItemSlot)
+      ]=]
+      return ret:format(trigger.use_legendaryIcon and "true" or "false", trigger.itemBonusId or "", trigger.use_inverse and "true" or "false",
+                        trigger.use_itemSlot and "true" or "false", trigger.itemSlot)
+    end,
+    args = {
+      {
+        name = "itemBonusId",
+        display = L["Item Bonus Id"],
+        type = "string",
+        store = "true",
+        test = "true",
+        required = true,
+        desc = function()
+          return WeakAuras.GetLegendariesBonusIds()
+          .. L["\n\nSupports multiple entries, separated by commas"]
+        end,
+        conditionType = "number",
+      },
+      {
+        name = "legendaryIcon",
+        display = L["Fetch Legendary Power"],
+        type = "toggle",
+        test = "true",
+        desc = L["Fetches the name and icon of the Legendary Power that matches this bonus id."],
+        enable = not WeakAuras.IsClassic(),
+        hidden = WeakAuras.IsClassic(),
+      },
+      {
+        name = "name",
+        display = L["Item Name"],
+        hidden = "true",
+        init = "itemName",
+        store = "true",
+        test = "true",
+      },
+      {
+        name = "icon",
+        hidden = "true",
+        init = "icon or 'Interface/Icons/INV_Misc_QuestionMark'",
+        store = "true",
+        test = "true",
+      },
+      {
+        name = "itemId",
+        display = L["Item Id"],
+        hidden = "true",
+        store = "true",
+        test = "true",
+        conditionType = "number",
+        operator_types = "only_equal",
+      },
+      {
+        name = "itemSlot",
+        display = L["Item Slot"],
+        type = "select",
+        store = "true",
+        conditionType = "select",
+        values = "item_slot_types",
+        test = "true",
+      },
+      {
+        name = "inverse",
+        display = L["Inverse"],
+        type = "toggle",
+        test = "true",
+      },
+      {
+        name = "itemSlotString",
+        display = L["Item Slot String"],
+        hidden = "true",
+        store = "true",
+        test = "true",
+      },
+      {
+        hidden = true,
+        test = "not inverse == (itemBonusId and slotValidation or false)",
+      }
+    },
+    automaticrequired = true
+  },
   ["Item Set"] = {
     type = "status",
     events = {
@@ -6042,21 +6174,147 @@ Private.event_prototypes = {
   ["Crowd Controlled"] = {
     type = "status",
     events = {
-      ["unit_events"] = {
-        ["player"] = {"UNIT_AURA"}
+      ["events"] = {
+        "LOSS_OF_CONTROL_UPDATE"
       }
     },
-    force_events = "UNIT_AURA",
+    force_events = "LOSS_OF_CONTROL_UPDATE",
     name = L["Crowd Controlled"],
+    canHaveDuration = true,
+    statesParameter = "one",
+    init = function(trigger)
+      local ret = [=[
+          local show = false
+          local use_controlType = %s
+          local controlType = %s
+          local inverse = %s
+          local use_interruptSchool = %s
+          local interruptSchool = tonumber(%q)
+          local duration, expirationTime, spellName, icon, spellName, spellId, locType, lockoutSchool, name, _
+          for i = 1, C_LossOfControl.GetNumEvents() do
+            local dataLocType, dataSpellID, dataText, dataIconTexture, dataStartTime, dataTimeRemaining, dataDuration, dataLockoutSchool, dataPriority, dataDisplayType = C_LossOfControl.GetEventInfo(i)
+            if dataLocType then
+              if (not use_controlType)
+              or (dataLocType == controlType and (controlType ~= "SCHOOL_INTERRUPT" or ((not use_interruptSchool) or bit.band(dataLockoutSchool, interruptSchool) > 0)))
+              then
+                spellId = dataSpellID
+                spellName, _, icon = GetSpellInfo(dataSpellID)
+                duration = dataDuration
+                if dataStartTime and dataDuration then
+                  expirationTime = dataStartTime + dataDuration
+                end
+                locType = dataLocType
+                lockoutSchool = dataLockoutSchool
+                name = dataText
+                show = true
+                break
+              end
+            end
+          end
+      ]=]
+      ret = ret:format(
+        trigger.use_controlType and "true" or "false",
+        type(trigger.controlType) == "string" and "[["..trigger.controlType.."]]" or [["STUN"]],
+        trigger.use_inverse and "true" or "false",
+        trigger.use_interruptSchool and "true" or "false",
+        trigger.interruptSchool or 0
+      )
+      return ret
+    end,
     args = {
       {
-        name = "controlled",
-        display = L["Crowd Controlled"],
-        type = "tristate",
-        init = "not HasFullControl()"
-      }
+        name = "controlType",
+        display = L["Specific Type"],
+        type = "select",
+        values = "loss_of_control_types",
+        conditionType = "select",
+        test = "true",
+        default = "STUN",
+        init = "locType",
+        store = true,
+      },
+      {
+        name = "interruptSchool",
+        display = L["Interrupt School"],
+        type = "select",
+        values = "main_spell_schools",
+        conditionType = "select",
+        default = 1,
+        test = "true",
+        enable = function(trigger) return trigger.controlType == "SCHOOL_INTERRUPT" end,
+        init = "lockoutSchool",
+        store = true,
+      },
+      {
+        name = "inverse",
+        display = L["Inverse"],
+        type = "toggle",
+        test = "true",
+      },
+      {
+        name = "name",
+        display = L["Name"],
+        hidden = true,
+        conditionType = "string",
+        store = true,
+        test = "true",
+      },
+      {
+        name = "spellName",
+        display = L["Spell Name"],
+        hidden = true,
+        conditionType = "string",
+        store = true,
+        test = "true",
+      },
+      {
+        name = "spellId",
+        display = L["Spell Id"],
+        hidden = true,
+        conditionType = "number",
+        operator_types = "only_equal",
+        store = true,
+        test = "true",
+      },
+      {
+        name = "lockoutSchool",
+        display = L["Interrupted School Text"],
+        hidden = true,
+        init = "lockoutSchool and lockoutSchool > 0 and GetSchoolString(lockoutSchool) or nil",
+        store = true,
+        test = "true",
+      },
+      {
+        name = "icon",
+        hidden = true,
+        store = true,
+        test = "true",
+      },
+      {
+        name = "duration",
+        hidden = true,
+        store = true,
+        test = "true",
+      },
+      {
+        name = "expirationTime",
+        hidden = true,
+        store = true,
+        test = "true",
+      },
+      {
+        name = "progressType",
+        hidden = true,
+        init = "'timed'",
+        store = true,
+        test = "true",
+      },
+      {
+        hidden = true,
+        test = "inverse ~= show",
+      },
     },
-    automaticrequired = true
+    automaticrequired = true,
   },
   ["Cast"] = {
     type = "status",
@@ -6817,7 +7075,7 @@ Private.event_prototypes = {
         tinsert(events, "ZONE_CHANGED_NEW_AREA")
       end
 
-      if trigger.use_instance_difficulty ~= nil then
+      if trigger.use_instance_difficulty ~= nil or trigger.use_instance_type then
         tinsert(events, "PLAYER_DIFFICULTY_CHANGED")
         tinsert(events, "ZONE_CHANGED")
         tinsert(events, "ZONE_CHANGED_INDOORS")
@@ -6927,7 +7185,7 @@ Private.event_prototypes = {
       },
       {
         name = "instance_size",
-        display = L["Instance Type"],
+        display = L["Instance Size Type"],
         type = "multiselect",
         values = "instance_types",
         init = "WeakAuras.InstanceType()",
@@ -6939,6 +7197,15 @@ Private.event_prototypes = {
         type = "multiselect",
         values = "difficulty_types",
         init = "WeakAuras.InstanceDifficulty()",
+        enable = not WeakAuras.IsClassic(),
+        hidden = WeakAuras.IsClassic(),
+      },
+      {
+        name = "instance_type",
+        display = L["Instance Type"],
+        type = "multiselect",
+        values = "instance_difficulty_types",
+        init = "WeakAuras.InstanceTypeRaw()",
         enable = not WeakAuras.IsClassic(),
         hidden = WeakAuras.IsClassic(),
       },
