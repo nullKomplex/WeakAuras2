@@ -46,7 +46,7 @@ local powerTypes =
     [13] = {name = SHADOW_ORBS, icon = "Interface\\Icons\\spell_priest_shadoworbs"},
     [14] = {name = BURNING_EMBERS, icon = "Interface\\Icons\\ability_warlock_burningembers"},
     [15] = {name = DEMONIC_FURY, icon = "Interface\\Icons\\Ability_Warlock_Eradication"},
-    [99] = {name = STAGGER, icon = "Interface\\Icons\\monk_stance_drunkenox"}
+    [99] = {name = L["Stagger"], icon = "Interface\\Icons\\monk_stance_drunkenox"}
   }
 
 -- Collected by WeakAurasTemplateCollector:

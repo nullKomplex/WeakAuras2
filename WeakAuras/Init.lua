@@ -32,21 +32,11 @@ function WeakAuras.IsClassic()
 end
 
 function WeakAuras.IsCorrectVersion()
-  return isDevVersion or intendedWoWProject == WOW_PROJECT_ID
+  return true
 end
 
 WeakAuras.prettyPrint = function(msg)
   print("|cff9900ffWeakAuras:|r " .. msg)
-end
-
-Private.wrongTargetMessage = "This version of WeakAuras was packaged for World of Warcraft " ..
-                              (intendedWoWProject == WOW_PROJECT_MAINLINE and "Retail" or "Classic") ..
-                              ". Please install the " .. (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and "Retail" or "Classic") ..
-                              " version instead.\nIf you are using the CurseForge Client, then " ..
-                              " contact CurseForge support for further assistance and reinstall WeakAuras manually."
-
-if not WeakAuras.IsCorrectVersion() then
-  C_Timer.After(1, function() WeakAuras.prettyPrint(Private.wrongTargetMessage) end)
 end
 
 -- Force enable WeakAurasCompanion and Archive because some addon managers interfere with it

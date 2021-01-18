@@ -1032,7 +1032,7 @@ Private.power_types_with_stagger = {
   [13] = SHADOW_ORBS,
   [14] = BURNING_EMBERS,
   [15] = DEMONIC_FURY,
-  [99] = STAGGER
+  [99] = L["Stagger"]
 }
 
 Private.miss_types = {

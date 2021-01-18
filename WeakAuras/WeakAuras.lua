@@ -107,11 +107,6 @@ end
 
 SLASH_WEAKAURAS1, SLASH_WEAKAURAS2 = "/weakauras", "/wa";
 function SlashCmdList.WEAKAURAS(input)
-  if not WeakAuras.IsCorrectVersion() then
-    prettyPrint(Private.wrongTargetMessage)
-    return
-  end
-
   local args, msg = {}, nil
 
   for v in string.gmatch(input, "%S+") do

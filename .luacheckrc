@@ -60,6 +60,9 @@ globals = {
 	"Plater",
 
 	-- FrameXML misc
+	"MAX_BOSS_FRAMES",
+	"GetFileIDFromPath",
+	"BackdropTemplateMixin",
 	"C_Timer",
 	"ChatFrame_AddMessageEventFilter",
 	"COMBAT_TEXT_SCROLL_FUNCTION",
