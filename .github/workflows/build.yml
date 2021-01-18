@@ -9,17 +9,14 @@ on:
       - "!**-alpha**"
 
 jobs:
-  setup:
+  luacheck:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
       - uses: actions/checkout@v1
         with:
           fetch-depth: 500
 
-  luacheck:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
       - name: Install and run Luacheck
         uses: nebularg/actions-luacheck@v1
         with:
@@ -29,10 +26,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs:
-      - setup
       - luacheck
     if: startsWith(github.ref, 'refs/tags/')
     steps:
+      - name: Checkout
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 500
+
       - name: Generate Changelog
         run: ./generate_changelog.sh
 
