@@ -44,7 +44,9 @@ jobs:
         run: sed -i "s/@build-time@/`date +%Y%m%d%H%M%S`/" WeakAuras/Init.lua
 
       - name: Update Version
-        run: sed -i "s/@project-version@/${{ env.RELEASE_VERSION }}/" WeakAuras/Init.lua
+        run: |
+          sed -i "s/@project-version-lua@/${{ env.RELEASE_VERSION }}/" WeakAuras/Init.lua
+          sed -i "s/@project-version@/${{ env.RELEASE_VERSION }}/" Weak*/*.toc
 
       - name: ZIP addon files
         run: zip -r Release.zip WeakAuras WeakAurasArchive WeakAurasModelPaths WeakAurasOptions WeakAurasTemplates
