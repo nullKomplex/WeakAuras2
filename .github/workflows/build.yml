@@ -12,8 +12,8 @@ jobs:
   luacheck:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
       - uses: actions/checkout@v1
+        name: Checkout
         with:
           fetch-depth: 500
 
@@ -29,8 +29,8 @@ jobs:
       - luacheck
     if: startsWith(github.ref, 'refs/tags/')
     steps:
-      - name: Checkout
       - uses: actions/checkout@v1
+        name: Checkout
         with:
           fetch-depth: 500
 
