@@ -34,6 +34,9 @@ jobs:
         with:
           fetch-depth: 500
 
+      - name: Set version env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
       - name: Generate Changelog
         run: ./generate_changelog.sh
 
@@ -41,7 +44,7 @@ jobs:
         run: sed -i "s/@build-time@/`date +%Y%m%d%H%M%S`/" WeakAuras/Init.lua
 
       - name: Update Version
-        run: sed -i "s/@project-version@/${{ github.ref }}/" WeakAuras/Init.lua
+        run: sed -i "s/@project-version@/${{ env.RELEASE_VERSION }}/" WeakAuras/Init.lua
 
       - name: ZIP addon files
         run: zip -r Release.zip WeakAuras WeakAurasArchive WeakAurasModelPaths WeakAurasOptions WeakAurasTemplates
@@ -66,5 +69,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./Release.zip
-          asset_name: WeakAuras-MoP-${{ github.ref }}.zip
+          asset_name: WeakAuras-MoP-${{ env.RELEASE_VERSION }}.zip
           asset_content_type: application/zip
