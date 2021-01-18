@@ -51,16 +51,8 @@ local function CorrectSpellName(input)
     if(link) and link ~= "" then
       local itemId = link:match("spell:(%d+)");
       return tonumber(itemId);
-    elseif not WeakAuras.IsClassic() then
-      for tier = 1, MAX_NUM_TALENT_TIERS do
-        for column = 1, NUM_TALENT_COLUMNS do
-          local name = WeakAuras.GetMoPTalentInfo(tier, column)
-          local extractedSpellId = WeakAuras.ExtractSpellId(spellId);
-          if name == input then
-            return extractedSpellId;
-          end
-        end
-      end
+    else
+      return nil;
     end
   end
 end
