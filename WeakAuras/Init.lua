@@ -10,17 +10,13 @@ WeakAuras.doubleWidth = WeakAuras.normalWidth * 2
 local versionStringFromToc = GetAddOnMetadata("WeakAuras", "Version")
 local versionString = "@project-version@"
 local buildTime = "@build-time@"
-local isDevVersion = false
 
 --@debug@
 if versionStringFromToc == "@project-version@" then
   versionStringFromToc = "Dev"
   buildTime = "Dev"
-  isDevVersion = true
 end
 --@end-debug@
-
-local intendedWoWProject = WOW_PROJECT_MAINLINE
 
 WeakAuras.versionString = versionStringFromToc
 WeakAuras.buildTime = buildTime

@@ -359,7 +359,7 @@ function OptionsPrivate.AddTriggerMetaFunctions(options, data, triggernum)
     end
   }
     local enabled = select(4, GetAddOnInfo("WeakAurasTemplates"))
-    
+
   local enabled = select(4, GetAddOnInfo("WeakAurasTemplates"))
   if(enabled ~= 0) then
     options.__applyTemplate = function()

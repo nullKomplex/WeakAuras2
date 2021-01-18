@@ -18,7 +18,6 @@ local SendChatMessage, GetChannelName, UnitInBattleground, UnitInRaid, UnitInPar
 local CreateFrame, IsShiftKeyDown, GetScreenWidth, GetScreenHeight, GetCursorPosition, UpdateAddOnCPUUsage, GetFrameCPUUsage, debugprofilestop
   = CreateFrame, IsShiftKeyDown, GetScreenWidth, GetScreenHeight, GetCursorPosition, UpdateAddOnCPUUsage, GetFrameCPUUsage, debugprofilestop
 local debugstack, IsSpellKnown, GetFileIDFromPath = debugstack, IsSpellKnown, GetFileIDFromPath
-local GetNumTalentTabs, GetNumTalents = GetNumTalentTabs, GetNumTalents
 
 local ADDON_NAME = "WeakAuras"
 local WeakAuras = WeakAuras
@@ -612,7 +611,7 @@ local function ConstructFunction(prototype, trigger, skipOptional)
               if type(trigger[name]) == "number" then
                 trigger[name] = {single = value};
               end
-              
+
               local value = trigger[name] and trigger[name].single;
 
               if not arg.test then
@@ -5009,7 +5008,7 @@ function WeakAuras.ReplaceRaidMarkerSymbols(txt)
   if not txt or txt == "" then
     return ""
   end
-  
+
   while true do
     local firstChar = txt:find("{", start, true)
     if not firstChar then
@@ -5171,7 +5170,7 @@ function WeakAuras.GetMoPTalentInfo(tier, column)
   return GetTalentInfo(talentId);
 end
 
-function WeakAuras.GetSpecializationId() 
+function WeakAuras.GetSpecializationId()
   return GetSpecializationInfo(GetSpecialization() or 0) or 0
 end
 
@@ -5318,8 +5317,8 @@ function WeakAuras.GetCritChance(specId)
     return GetRangedCritChance()
   elseif combatType == "SPELL" then
     local holySchool = 2;
-    return GetSpellCritChance(holySchool) 
+    return GetSpellCritChance(holySchool)
   else
-    return GetCritChance() 
+    return GetCritChance()
   end
 end

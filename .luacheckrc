@@ -60,6 +60,9 @@ globals = {
 	"Plater",
 
 	-- FrameXML misc
+	"ICON_TAG_LIST",
+	"MAX_NUM_TALENTS",
+	"MAX_NUM_TALENT_TIERS",
 	"MAX_BOSS_FRAMES",
 	"GetFileIDFromPath",
 	"BackdropTemplateMixin",

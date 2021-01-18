@@ -625,7 +625,7 @@ Private.sound_channel_types = {
   SFX = ENABLE_SOUNDFX,
   Ambience = ENABLE_AMBIENCE,
   Music = ENABLE_MUSIC,
-  Dialog = ENABLE_DIALOG
+  -- Dialog = ENABLE_DIALOG
 }
 
 Private.sound_condition_types = {
@@ -1995,7 +1995,7 @@ Private.difficulty_types = {
   heroic = PLAYER_DIFFICULTY2,
   lfr = PLAYER_DIFFICULTY3,
   flex = PLAYER_DIFFICULTY4,
-  challenge = PLAYER_DIFFICULTY5
+  challenge = L["Challenge"]
 }
 
 Private.role_types = {

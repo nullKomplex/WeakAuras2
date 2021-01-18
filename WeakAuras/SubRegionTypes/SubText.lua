@@ -209,7 +209,7 @@ local function modify(parent, region, parentData, data, first)
       parent.stacks = text
     end
   end
-  
+
   if not data.text_font then
     data.text_font = defaultFont
   end
@@ -222,7 +222,7 @@ local function modify(parent, region, parentData, data, first)
   if not data.text_text then
     data.text_text = "%p"
   end
-  
+
   local fontPath = SharedMedia:Fetch("font", data.text_font);
   text:SetFont(fontPath, data.text_fontSize, data.text_fontType);
   if not text:GetFont() then -- Font invalid, set the font but keep the setting

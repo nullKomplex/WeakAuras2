@@ -90,26 +90,26 @@ if WeakAuras.IsClassic() then
   LibClassicCasterino = LibStub("LibClassicCasterino")
 end
 
-if not WeakAuras.IsClassic() then
+-- if not WeakAuras.IsClassic() then
   WeakAuras.UnitCastingInfo = UnitCastingInfo
-else
-  WeakAuras.UnitCastingInfo = function(unit)
-    if UnitIsUnit(unit, "player") then
-      return CastingInfo()
-    else
-      return LibClassicCasterino:UnitCastingInfo(unit)
-    end
-  end
-end
+-- else
+--   WeakAuras.UnitCastingInfo = function(unit)
+--     if UnitIsUnit(unit, "player") then
+--       return CastingInfo()
+--     else
+--       return LibClassicCasterino:UnitCastingInfo(unit)
+--     end
+--   end
+-- end
 
 function WeakAuras.UnitChannelInfo(unit)
-  if not WeakAuras.IsClassic() then
+  -- if not WeakAuras.IsClassic() then
     return UnitChannelInfo(unit)
-  elseif UnitIsUnit(unit, "player") then
-    return ChannelInfo()
-  else
-    return LibClassicCasterino:UnitChannelInfo(unit)
-  end
+  -- elseif UnitIsUnit(unit, "player") then
+  --   return ChannelInfo()
+  -- else
+  --   return LibClassicCasterino:UnitChannelInfo(unit)
+  -- end
 end
 
 local constants = {
@@ -4878,7 +4878,7 @@ Private.event_prototypes = {
         local ret = [[
           local index = %s;
           local active, _, activeName, activeIcon, selected, known
-          
+
           activeName, activeIcon, _, _, selected, known  = GetTalentInfo(index)
           active = selected or known;
         ]]
