@@ -26,18 +26,18 @@ jobs:
       - name: Generate Changelog
         run: ./generate_changelog.sh
 
-      - name: ZIP addon files
-        run: zip -r Release.zip WeakAuras WeakAurasArchive WeakAurasModelPaths WeakAurasOptions WeakAurasTemplates CHANGELOG.md
-
       - name: Update Build Date
         run: sed -i "s/@build-time@/`date +%Y%m%d%H%M%S`/" WeakAuras/Init.lua
 
-      - name: Create Retail Package
-        uses: BigWigsMods/packager@master
-        env:
-          CF_API_KEY: ${{ secrets.CF_API_KEY }}
-          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
+      - name: ZIP addon files
+        run: zip -r Release.zip WeakAuras WeakAurasArchive WeakAurasModelPaths WeakAurasOptions WeakAurasTemplates CHANGELOG.md
+
+      # - name: Create Retail Package
+      #   uses: BigWigsMods/packager@master
+      #   env:
+      #     CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      #     GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+      #     WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
 
       - name: Create Release
         id: create_release
@@ -50,3 +50,10 @@ jobs:
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
+
+      - name: Upload ZIP to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: Release.zip
+          tag: ${{ github.ref }}
