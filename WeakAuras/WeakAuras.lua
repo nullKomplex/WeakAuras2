@@ -609,7 +609,7 @@ local function ConstructFunction(prototype, trigger, skipOptional)
             elseif(trigger["use_"..name]) then -- single selection
               -- Old WA compatibility check
               if type(trigger[name]) == "number" then
-                trigger[name] = {single = value};
+                trigger[name] = {single = trigger[name]};
               end
 
               local value = trigger[name] and trigger[name].single;
@@ -1348,7 +1348,7 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
   end
 
   local player, realm, zone = UnitName("player"), GetRealmName(), GetRealZoneText()
-  local spec, specId, role, raidRole = false, false, false, false
+  local spec, specId, role = false, false, false
   local inPetBattle, vehicle, vehicleUi = false, false, false
   local _, race = UnitRace("player")
   local faction = UnitFactionGroup("player")
@@ -1357,13 +1357,13 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
   local inEncounter = encounter_id ~= 0;
 
   if WeakAuras.IsClassic() then
-    local raidID = UnitInRaid("player")
-    if raidID then
-      raidRole = select(10, GetRaidRosterInfo(raidID))
-    end
-    spec = 1
-    vehicle = UnitOnTaxi('player')
-    role = "none"
+    -- local raidID = UnitInRaid("player")
+    -- if raidID then
+    --   raidRole = select(10, GetRaidRosterInfo(raidID))
+    -- end
+    -- spec = 1
+    -- vehicle = UnitOnTaxi('player')
+    -- role = "none"
   else
     spec = GetSpecialization() or 0
     specId = GetSpecializationInfo(spec)
@@ -4545,10 +4545,6 @@ end
 
 local personalRessourceDisplayFrame;
 function Private.ensurePRDFrame()
-  if true then
-    return
-  end
-
   if (personalRessourceDisplayFrame) then
     return;
   end

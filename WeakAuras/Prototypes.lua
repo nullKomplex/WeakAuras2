@@ -15,7 +15,7 @@ local GetSpellInfo, GetItemInfo, GetItemCount, GetItemIcon = GetSpellInfo, GetIt
 local GetShapeshiftFormInfo, GetShapeshiftForm = GetShapeshiftFormInfo, GetShapeshiftForm
 local GetRuneCooldown, UnitCastingInfo, UnitChannelInfo = GetRuneCooldown, UnitCastingInfo, UnitChannelInfo
 local UnitDetailedThreatSituation, UnitThreatSituation = UnitDetailedThreatSituation, UnitThreatSituation
-local CastingInfo, ChannelInfo = CastingInfo, ChannelInfo
+-- local CastingInfo, ChannelInfo = CastingInfo, ChannelInfo
 
 local WeakAuras = WeakAuras
 local L = WeakAuras.L

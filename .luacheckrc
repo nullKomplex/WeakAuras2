@@ -47,6 +47,7 @@ globals = {
 	"WeakAurasOptionsSaved",
 	"WeakAurasSaved",
 	"WeakAurasTimers",
+	"WeakAurasArchive",
 
 	-- Third Party Addons/Libs
 	"BigWigs",
@@ -66,6 +67,8 @@ globals = {
 	"MAX_BOSS_FRAMES",
 	"GetFileIDFromPath",
 	"BackdropTemplateMixin",
+	"WrapTextInColorCode",
+	"AbbreviateNumbers",
 	"C_Timer",
 	"ChatFrame_AddMessageEventFilter",
 	"COMBAT_TEXT_SCROLL_FUNCTION",

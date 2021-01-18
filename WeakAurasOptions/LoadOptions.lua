@@ -55,9 +55,9 @@ local function CorrectSpellName(input)
       for tier = 1, MAX_NUM_TALENT_TIERS do
         for column = 1, NUM_TALENT_COLUMNS do
           local name = WeakAuras.GetMoPTalentInfo(tier, column)
-          local spellId = WeakAuras.ExtractSpellId(spellId);
+          local extractedSpellId = WeakAuras.ExtractSpellId(spellId);
           if name == input then
-            return spellId;
+            return extractedSpellId;
           end
         end
       end

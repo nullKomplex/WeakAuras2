@@ -312,7 +312,7 @@ templates.class.WARRIOR = {
         { spell = 145674, type = "buff", unit = "player"}, -- Riposte
         { spell = 132365, type = "buff", unit = "player"}, -- Vengeance
         { spell = 50227, type = "buff", unit = "player"}, -- Sword and Board
-        
+
         { spell = 114192, type = "buff", unit = "player"}, -- Mocking Banner
         { spell = 18499, type = "buff", unit = "player"}, -- Berserker Rage
         { spell = 1719, type = "buff", unit = "player"}, -- Recklessness
@@ -3735,7 +3735,7 @@ templates.class.DEATHKNIGHT = {
         { spell = 49020, type = "ability", usable = true, requiresTarget = true }, -- Obliterate
         { spell = 49143, type = "ability", usable = true, requiresTarget = true }, -- Frost Strike
         { spell = 51271, type = "ability", usable = true , buff = true }, -- Pillar of Frost
-        { spell = 49184, type = "ability", usable = true, requiresTarget = true }, -- Howling Blast        
+        { spell = 49184, type = "ability", usable = true, requiresTarget = true }, -- Howling Blast
         { spell = 3714, type = "ability", usable = true , buff = true }, -- Path of Frost
         { spell = 42650, type = "ability", usable = true , buff = true }, -- Army of the Dead
         { spell = 43265, type = "ability", usable = true }, -- Death and Decay
@@ -3924,7 +3924,7 @@ templates.items[1] = {
     { spell = 142535, type = "buff", unit = "player"}, -- Spirit of Conquest
     { spell = 116660, type = "buff", unit = "player"}, -- River's Song
     { spell = 104993, type = "buff", unit = "player"}, -- Jade Spirit
-    
+
     { spell = 126734, type = "buff", unit = "player"}, -- Synapse Springs
   }
 }
