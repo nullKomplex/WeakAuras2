@@ -4388,10 +4388,10 @@ enrichDatabase();
 itemInfoReceived:SetScript("OnEvent", function()
   if (not delayedEnrichDatabase) then
     delayedEnrichDatabase = true;
-    C_Timer.After(2, function()
+    -- C_Timer.After(2, function()
       enrichDatabase();
       delayedEnrichDatabase = false;
-    end)
+    -- end)
   end
 end);
 

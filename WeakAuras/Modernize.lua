@@ -284,26 +284,26 @@ function Private.Modernize(data)
   -- Version 16 was introduced May 2019 in BfA
   if data.internalVersion < 16 then
     -- first conversion: attempt to migrate texture paths to file ids
-    if data.regionType == "texture" and type(data.texture) == "string" then
-      local textureId = GetFileIDFromPath(data.texture:gsub("\\\\", "\\"))
-      if textureId and textureId > 0 then
-        data.texture = tostring(textureId)
-      end
-    end
-    if data.regionType == "progresstexture" then
-      if type(data.foregroundTexture) == "string" then
-        local textureId = GetFileIDFromPath(data.foregroundTexture:gsub("\\\\", "\\"))
-        if textureId and textureId > 0 then
-          data.foregroundTexture = tostring(textureId)
-        end
-      end
-      if type(data.backgroundTexture) == "string" then
-        local textureId = GetFileIDFromPath(data.backgroundTexture:gsub("\\\\", "\\"))
-        if textureId and textureId > 0 then
-          data.backgroundTexture = tostring(textureId)
-        end
-      end
-    end
+    -- if data.regionType == "texture" and type(data.texture) == "string" then
+    --   local textureId = GetFileIDFromPath(data.texture:gsub("\\\\", "\\"))
+    --   if textureId and textureId > 0 then
+    --     data.texture = tostring(textureId)
+    --   end
+    -- end
+    -- if data.regionType == "progresstexture" then
+    --   if type(data.foregroundTexture) == "string" then
+    --     local textureId = GetFileIDFromPath(data.foregroundTexture:gsub("\\\\", "\\"))
+    --     if textureId and textureId > 0 then
+    --       data.foregroundTexture = tostring(textureId)
+    --     end
+    --   end
+    --   if type(data.backgroundTexture) == "string" then
+    --     local textureId = GetFileIDFromPath(data.backgroundTexture:gsub("\\\\", "\\"))
+    --     if textureId and textureId > 0 then
+    --       data.backgroundTexture = tostring(textureId)
+    --     end
+    --   end
+    -- end
     -- second conversion: migrate name/realm conditions to tristate
     if data.load.use_name == false then
       data.load.use_name = nil

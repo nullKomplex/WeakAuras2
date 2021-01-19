@@ -17,7 +17,7 @@ local SendChatMessage, GetChannelName, UnitInBattleground, UnitInRaid, UnitInPar
   = SendChatMessage, GetChannelName, UnitInBattleground, UnitInRaid, UnitInParty, GetTime, GetSpellLink, GetItemInfo
 local CreateFrame, IsShiftKeyDown, GetScreenWidth, GetScreenHeight, GetCursorPosition, UpdateAddOnCPUUsage, GetFrameCPUUsage, debugprofilestop
   = CreateFrame, IsShiftKeyDown, GetScreenWidth, GetScreenHeight, GetCursorPosition, UpdateAddOnCPUUsage, GetFrameCPUUsage, debugprofilestop
-local debugstack, IsSpellKnown, GetFileIDFromPath = debugstack, IsSpellKnown, GetFileIDFromPath
+local debugstack, IsSpellKnown = debugstack, IsSpellKnown
 
 local ADDON_NAME = "WeakAuras"
 local WeakAuras = WeakAuras
@@ -4635,7 +4635,7 @@ function Private.ensurePRDFrame()
     else
       local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"));
       local zeroBasedScale = namePlateVerticalScale - 1.0;
-      local clampedZeroBasedScale = Saturate(zeroBasedScale);
+      local clampedZeroBasedScale = Retail.Saturate(zeroBasedScale);
       local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"));
       local baseNamePlateWidth = NamePlateDriverFrame.baseNamePlateWidth;
       prdWidth = baseNamePlateWidth * horizontalScale * Retail.Lerp(1.1, 1.0, clampedZeroBasedScale) - 24;

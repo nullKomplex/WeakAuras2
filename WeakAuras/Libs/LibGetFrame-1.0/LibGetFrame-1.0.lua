@@ -127,9 +127,9 @@ local function ScanForUnitFrames(noDelay)
         doScanForUnitFrames()
     elseif not wait then
         wait = true
-        C_Timer.After(1, function()
+        -- C_Timer.After(1, function()
             doScanForUnitFrames()
-        end)
+        -- end)
     end
 end
 
