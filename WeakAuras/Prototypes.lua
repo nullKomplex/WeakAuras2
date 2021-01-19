@@ -870,16 +870,17 @@ function WeakAuras.UseUnitPowerThirdArg(powerType)
 end
 
 function WeakAuras.GetNumSetItemsEquipped(setID)
-  if not setID or not type(setID) == "number" then return end
-  local equipped = 0
-  local setName = GetItemSetInfo(setID)
-  for i = 1, 18 do
-    local item = GetInventoryItemID("player", i)
-    if item and select(16, GetItemInfo(item)) == setID then
-      equipped = equipped + 1
-    end
-  end
-  return equipped, 18, setName
+  return false, 0, ""
+  -- if not setID or not type(setID) == "number" then return end
+  -- local equipped = 0
+  -- local setName = GetItemSetInfo(setID)
+  -- for i = 1, 18 do
+  --   local item = GetInventoryItemID("player", i)
+  --   if item and select(16, GetItemInfo(item)) == setID then
+  --     equipped = equipped + 1
+  --   end
+  -- end
+  -- return equipped, 18, setName
 end
 
 function WeakAuras.GetEffectiveAttackPower()
@@ -5882,8 +5883,8 @@ Private.event_prototypes = {
         type = "toggle",
         test = "true",
         desc = L["Fetches the name and icon of the Legendary Power that matches this bonus id."],
-        enable = not WeakAuras.IsClassic(),
-        hidden = WeakAuras.IsClassic(),
+        enable = false,
+        hidden = true
       },
       {
         name = "name",
@@ -7506,6 +7507,7 @@ Private.event_prototypes = {
 
 };
 
+Private.event_prototypes["Item Set"] = nil
 if WeakAuras.IsClassic() then
   if not UnitDetailedThreatSituation then
     Private.event_prototypes["Threat Situation"] = nil

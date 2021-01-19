@@ -4543,7 +4543,7 @@ local function ensureMouseFrame()
   Private.mouseFrame = mouseFrame;
 end
 
-local personalRessourceDisplayFrame;
+-- local personalRessourceDisplayFrame;
 -- function Private.ensurePRDFrame()
 --   if (personalRessourceDisplayFrame) then
 --     return;
