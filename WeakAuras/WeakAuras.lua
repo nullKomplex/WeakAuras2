@@ -5153,7 +5153,7 @@ end
 -- Custom and ported functions
 function WeakAuras.ExtractSpellId(spellName)
   if type(spellName) == "number" then
-    return number
+    return tonumber(spellName)
   end
 
   local link = GetSpellLink(spellName);
