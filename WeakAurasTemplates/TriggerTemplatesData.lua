@@ -1,6 +1,6 @@
 local WeakAuras = WeakAuras
 local L = WeakAuras.L
-local GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription, Spell = GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription, Spell
+local GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription = GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription
 
 -- The templates tables are created on demand
 local templates =

@@ -180,9 +180,9 @@ local function filterFunc(_, event, msg, player, l, cs, t, flag, channelId, ...)
         --     end
         --   end
         -- else -- keep old method for 8.2 and Classic
-          local toon = BNGetNumFriendGameAccounts(i)
+          local toon = BNGetNumFriendToons(i)
           for j=1, toon do
-            local _, rName, rGame = BNGetFriendGameAccountInfo(i, j)
+            local _, rName, rGame = BNGetFriendToonInfo(i, j)
             if rName == trimmedPlayer and rGame == "WoW" then
               return false, newMsg, player, l, cs, t, flag, channelId, ...; -- Player is a real id friend, allow it
             end

@@ -57,9 +57,6 @@ local tinsert, tconcat, wipe = table.insert, table.concat, wipe
 local tostring, pairs, type = tostring, pairs, type
 local error, setmetatable = error, setmetatable
 
--- WoW APIs
-local IsPlayerMoving = IsPlayerMoving
-
 WeakAurasAceEvents = setmetatable({}, {__tostring=function() return "WeakAuras" end});
 LibStub("AceEvent-3.0"):Embed(WeakAurasAceEvents);
 local Retail = LibStub("LibRetail")
@@ -822,11 +819,11 @@ end
 
 function HandleEvent(frame, event, arg1, arg2, ...)
   Private.StartProfileSystem("generictrigger " .. event);
-  if event == "NAME_PLATE_UNIT_ADDED" then
-    nameplateExists[arg1] = true
-  elseif event == "NAME_PLATE_UNIT_REMOVED" then
-    nameplateExists[arg1] = false
-  end
+  -- if event == "NAME_PLATE_UNIT_ADDED" then
+  --   nameplateExists[arg1] = true
+  -- elseif event == "NAME_PLATE_UNIT_REMOVED" then
+  --   nameplateExists[arg1] = false
+  -- end
 
   if not(WeakAuras.IsPaused()) then
     if(event == "COMBAT_LOG_EVENT_UNFILTERED") then
@@ -900,11 +897,11 @@ local frame = CreateFrame("FRAME");
 frame.unitFrames = {};
 WeakAuras.frames["WeakAuras Generic Trigger Frame"] = frame;
 frame:RegisterEvent("PLAYER_ENTERING_WORLD");
-frame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-frame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+-- frame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+-- frame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 genericTriggerRegisteredEvents["PLAYER_ENTERING_WORLD"] = true;
-genericTriggerRegisteredEvents["NAME_PLATE_UNIT_ADDED"] = true;
-genericTriggerRegisteredEvents["NAME_PLATE_UNIT_REMOVED"] = true;
+-- genericTriggerRegisteredEvents["NAME_PLATE_UNIT_ADDED"] = true;
+-- genericTriggerRegisteredEvents["NAME_PLATE_UNIT_REMOVED"] = true;
 frame:SetScript("OnEvent", HandleEvent);
 
 function GenericTrigger.Delete(id)
@@ -2534,23 +2531,24 @@ function WeakAuras.WatchUnitChange(unit)
     watchUnitChange:RegisterEvent("UNIT_TARGET");
     watchUnitChange:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT");
     watchUnitChange:RegisterEvent("GROUP_ROSTER_UPDATE");
-    watchUnitChange:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-    watchUnitChange:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+    -- watchUnitChange:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+    -- watchUnitChange:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
     watchUnitChange:RegisterEvent("UNIT_FACTION")
     watchUnitChange:RegisterEvent("PLAYER_ENTERING_WORLD")
 
     watchUnitChange:SetScript("OnEvent", function(self, event, unit)
       Private.StartProfileSystem("generictrigger unit change");
-      if event == "NAME_PLATE_UNIT_ADDED" or event == "NAME_PLATE_UNIT_REMOVED" then
-        local newGuid = WeakAuras.UnitExistsFixed(unit) and UnitGUID(unit) or ""
-        if newGuid ~= watchUnitChange.unitChangeGUIDS[unit] then
-          WeakAuras.ScanEvents("UNIT_CHANGED_" .. unit, unit)
-          watchUnitChange.unitChangeGUIDS[unit] = newGuid
-        end
-        if event == "NAME_PLATE_UNIT_ADDED" then
-          watchUnitChange.nameplateFaction[unit] = WeakAuras.GetPlayerReaction(unit)
-        end
-      elseif event == "UNIT_FACTION" then
+      -- if event == "NAME_PLATE_UNIT_ADDED" or event == "NAME_PLATE_UNIT_REMOVED" then
+      --   local newGuid = WeakAuras.UnitExistsFixed(unit) and UnitGUID(unit) or ""
+      --   if newGuid ~= watchUnitChange.unitChangeGUIDS[unit] then
+      --     WeakAuras.ScanEvents("UNIT_CHANGED_" .. unit, unit)
+      --     watchUnitChange.unitChangeGUIDS[unit] = newGuid
+      --   end
+      --   if event == "NAME_PLATE_UNIT_ADDED" then
+      --     watchUnitChange.nameplateFaction[unit] = WeakAuras.GetPlayerReaction(unit)
+      --   end
+      -- else
+      if event == "UNIT_FACTION" then
         if unit:sub(1, 9) == "nameplate" then
           local reaction = WeakAuras.GetPlayerReaction(unit)
           if reaction ~= watchUnitChange.nameplateFaction[unit] then
@@ -2603,9 +2601,9 @@ function WeakAuras.GetEquipmentSetInfo(itemSetName, partial)
   local bestMatchName = nil;
   local bestMatchIcon = nil;
 
-  local equipmentSetIds = C_EquipmentSet.GetEquipmentSetIDs();
-  for index, id in pairs(equipmentSetIds) do
-    local name, icon, _, _, numItems, numEquipped = C_EquipmentSet.GetEquipmentSetInfo(id);
+  local equipmentSetIds = GetNumEquipmentSets();
+  for id = 1, GetNumEquipmentSets() do
+    local name, icon, _, _, numItems, numEquipped = GetEquipmentSetInfo(id);
     if (itemSetName == nil or (name and itemSetName == name)) then
       if (name ~= nil) then
         local match = (not partial and numItems == numEquipped)
@@ -3050,13 +3048,11 @@ function WeakAuras.CheckTotemName(totemName, triggerTotemName, triggerTotemPatte
 end
 
 function WeakAuras.GetSpellCost(powerTypeToCheck)
-  local spellID = select(9, WeakAuras.UnitCastingInfo("player"))
-  if spellID then
-    local costTable = GetSpellPowerCost(spellID);
-    for _, costInfo in pairs(costTable) do
-      if costInfo.type == powerTypeToCheck then
-        return costInfo.cost;
-      end
+  local spellName = WeakAuras.UnitCastingInfo("player")
+  if spellName then
+		local _, _, _, cost, _, powerType = GetSpellInfo(spellName);
+    if powerType == powerTypeToCheck then
+      return cost;
     end
   end
 end
@@ -3178,17 +3174,13 @@ do
 
   local function PlayerMoveUpdate(self, event)
     Private.StartProfileSystem("generictrigger");
-    -- channeling e.g. Mind Flay results in lots of PLAYER_STARTED_MOVING, PLAYER_STOPPED_MOVING
-    -- for each frame
-    -- So check after 0.01 s if IsPlayerMoving() actually returns something different.
-    timer:ScheduleTimer(function()
-      Private.StartProfileSystem("generictrigger");
-      if (moving ~= IsPlayerMoving() or moving == nil) then
-        moving = IsPlayerMoving();
-        WeakAuras.ScanEvents("PLAYER_MOVING_UPDATE")
-      end
-      Private.StopProfileSystem("generictrigger");
-    end, 0.01);
+
+    local isPlayerMoving = (GetUnitSpeed("player") or 0) > 0
+    if (moving ~= isPlayerMoving or moving == nil) then
+      moving = isPlayerMoving;
+      -- WeakAuras.ScanEvents("PLAYER_MOVING_UPDATE")
+    end
+
     Private.StopProfileSystem("generictrigger");
   end
 
@@ -3197,7 +3189,7 @@ do
     local speed = GetUnitSpeed("player")
     if speed ~= playerMovingFrame.speed then
       playerMovingFrame.speed = speed
-      WeakAuras.ScanEvents("PLAYER_MOVE_SPEED_UPDATE")
+      WeakAuras.ScanEvents("FRAME_UPDATE")
     end
     Private.StopProfileSystem("generictrigger");
   end
@@ -3207,8 +3199,9 @@ do
       playerMovingFrame = CreateFrame("frame");
       WeakAuras.frames["Player Moving Frame"] =  playerMovingFrame;
     end
-    playerMovingFrame:RegisterEvent("PLAYER_STARTED_MOVING");
-    playerMovingFrame:RegisterEvent("PLAYER_STOPPED_MOVING");
+
+    -- playerMovingFrame:RegisterEvent("PLAYER_STARTED_MOVING");
+    -- playerMovingFrame:RegisterEvent("PLAYER_STOPPED_MOVING");
     playerMovingFrame:SetScript("OnEvent", PlayerMoveUpdate)
   end
 
@@ -3838,7 +3831,8 @@ WeakAuras.GetBonusIdInfo = function(ids, specificSlot)
     for slot in pairs(checkSlots) do
       local itemLink = GetInventoryItemLink('player', slot)
       if itemLink and itemLink:find(findID, 1, true) then
-        local itemID, _, _, _, icon = GetItemInfoInstant(itemLink)
+        local itemID = GetInventoryItemID("player", slot);
+        local icon = GetInventoryItemTexture("player", slot);
         local itemName = itemLink:match("%[(.*)%]")
         return id, itemID, itemName, icon, slot, Private.item_slot_types[slot]
       end

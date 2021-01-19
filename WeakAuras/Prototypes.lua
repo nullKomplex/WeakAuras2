@@ -6690,7 +6690,7 @@ Private.event_prototypes = {
     internal_events = function(trigger, untrigger)
       local events = { "WA_DELAYED_PLAYER_ENTERING_WORLD", "PLAYER_MOVING_UPDATE" }
       if trigger.use_moveSpeed then
-        tinsert(events, "PLAYER_MOVE_SPEED_UPDATE")
+        tinsert(events, "FRAME_UPDATE")
       end
       return events
     end,
@@ -7094,7 +7094,7 @@ Private.event_prototypes = {
       local events = { "CONDITIONS_CHECK"};
 
       if (trigger.use_ismoving ~= nil) then
-        tinsert(events, "PLAYER_MOVING_UPDATE");
+        tinsert(events, "FRAME_UPDATE");
       end
 
       if (trigger.use_HasPet ~= nil) then
@@ -7164,12 +7164,12 @@ Private.event_prototypes = {
         type = "tristate",
         init = "UnitExists('pet') and not UnitIsDead('pet')"
       },
-      -- {
-      --   name = "ismoving",
-      --   display = L["Is Moving"],
-      --   type = "tristate",
-      --   init = "IsPlayerMoving()"
-      -- },
+      {
+        name = "ismoving",
+        display = L["Is Moving"],
+        type = "tristate",
+        init = "(GetUnitSpeed('player') or 0) > 0"
+      },
       {
         name = "afk",
         display = L["Is Away from Keyboard"],

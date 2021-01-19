@@ -4544,231 +4544,231 @@ local function ensureMouseFrame()
 end
 
 local personalRessourceDisplayFrame;
-function Private.ensurePRDFrame()
-  if (personalRessourceDisplayFrame) then
-    return;
-  end
-  personalRessourceDisplayFrame = CreateFrame("FRAME", "WeakAurasAttachToPRD", UIParent);
-  personalRessourceDisplayFrame:Hide();
-  personalRessourceDisplayFrame.attachedVisibleFrames = {};
-  Private.personalRessourceDisplayFrame = personalRessourceDisplayFrame;
+-- function Private.ensurePRDFrame()
+--   if (personalRessourceDisplayFrame) then
+--     return;
+--   end
+--   personalRessourceDisplayFrame = CreateFrame("FRAME", "WeakAurasAttachToPRD", UIParent);
+--   personalRessourceDisplayFrame:Hide();
+--   personalRessourceDisplayFrame.attachedVisibleFrames = {};
+--   Private.personalRessourceDisplayFrame = personalRessourceDisplayFrame;
 
-  local moverFrame = CreateFrame("FRAME", "WeakAurasPRDMoverFrame", personalRessourceDisplayFrame);
-  personalRessourceDisplayFrame.moverFrame = moverFrame;
-  moverFrame:SetPoint("TOPLEFT", personalRessourceDisplayFrame, "TOPLEFT", -2, 2);
-  moverFrame:SetPoint("BOTTOMRIGHT", personalRessourceDisplayFrame, "BOTTOMRIGHT", 2, -2);
-  moverFrame:SetFrameStrata("FULLSCREEN"); -- above settings dialog
+--   local moverFrame = CreateFrame("FRAME", "WeakAurasPRDMoverFrame", personalRessourceDisplayFrame);
+--   personalRessourceDisplayFrame.moverFrame = moverFrame;
+--   moverFrame:SetPoint("TOPLEFT", personalRessourceDisplayFrame, "TOPLEFT", -2, 2);
+--   moverFrame:SetPoint("BOTTOMRIGHT", personalRessourceDisplayFrame, "BOTTOMRIGHT", 2, -2);
+--   moverFrame:SetFrameStrata("FULLSCREEN"); -- above settings dialog
 
-  moverFrame:EnableMouse(true)
-  moverFrame:SetScript("OnMouseDown", function()
-    personalRessourceDisplayFrame:SetMovable(true);
-    personalRessourceDisplayFrame:StartMoving()
-  end);
-  moverFrame:SetScript("OnMouseUp", function()
-    personalRessourceDisplayFrame:StopMovingOrSizing();
-    personalRessourceDisplayFrame:SetMovable(false);
-    local xOffset = personalRessourceDisplayFrame:GetRight();
-    local yOffset = personalRessourceDisplayFrame:GetTop();
+--   moverFrame:EnableMouse(true)
+--   moverFrame:SetScript("OnMouseDown", function()
+--     personalRessourceDisplayFrame:SetMovable(true);
+--     personalRessourceDisplayFrame:StartMoving()
+--   end);
+--   moverFrame:SetScript("OnMouseUp", function()
+--     personalRessourceDisplayFrame:StopMovingOrSizing();
+--     personalRessourceDisplayFrame:SetMovable(false);
+--     local xOffset = personalRessourceDisplayFrame:GetRight();
+--     local yOffset = personalRessourceDisplayFrame:GetTop();
 
-    db.personalRessourceDisplayFrame = db.personalRessourceDisplayFrame or {};
-    local scale = UIParent:GetEffectiveScale() / personalRessourceDisplayFrame:GetEffectiveScale();
-    db.personalRessourceDisplayFrame.xOffset = xOffset / scale - GetScreenWidth();
-    db.personalRessourceDisplayFrame.yOffset = yOffset / scale - GetScreenHeight();
-  end);
-  moverFrame:Hide();
+--     db.personalRessourceDisplayFrame = db.personalRessourceDisplayFrame or {};
+--     local scale = UIParent:GetEffectiveScale() / personalRessourceDisplayFrame:GetEffectiveScale();
+--     db.personalRessourceDisplayFrame.xOffset = xOffset / scale - GetScreenWidth();
+--     db.personalRessourceDisplayFrame.yOffset = yOffset / scale - GetScreenHeight();
+--   end);
+--   moverFrame:Hide();
 
-  local texture = moverFrame:CreateTexture(nil, "BACKGROUND");
-  personalRessourceDisplayFrame.texture = texture;
-  texture:SetAllPoints(moverFrame);
-  texture:SetTexture("Interface\\AddOns\\WeakAuras\\Media\\Textures\\PRDFrame");
+--   local texture = moverFrame:CreateTexture(nil, "BACKGROUND");
+--   personalRessourceDisplayFrame.texture = texture;
+--   texture:SetAllPoints(moverFrame);
+--   texture:SetTexture("Interface\\AddOns\\WeakAuras\\Media\\Textures\\PRDFrame");
 
-  local label = moverFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlight")
-  label:SetPoint("CENTER", moverFrame, "CENTER");
-  label:SetText("WeakAuras Anchor");
+--   local label = moverFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlight")
+--   label:SetPoint("CENTER", moverFrame, "CENTER");
+--   label:SetText("WeakAuras Anchor");
 
-  personalRessourceDisplayFrame:RegisterEvent('NAME_PLATE_UNIT_ADDED');
-  personalRessourceDisplayFrame:RegisterEvent('NAME_PLATE_UNIT_REMOVED');
+--   personalRessourceDisplayFrame:RegisterEvent('NAME_PLATE_UNIT_ADDED');
+--   personalRessourceDisplayFrame:RegisterEvent('NAME_PLATE_UNIT_REMOVED');
 
-  personalRessourceDisplayFrame.Attach = function(self, frame, frameTL, frameBR)
-    self:SetParent(frame);
-    self:ClearAllPoints();
-    self:SetPoint("TOPLEFT", frameTL, "TOPLEFT");
-    self:SetPoint("BOTTOMRIGHT", frameBR, "BOTTOMRIGHT");
-    self:Show()
-  end
+--   personalRessourceDisplayFrame.Attach = function(self, frame, frameTL, frameBR)
+--     self:SetParent(frame);
+--     self:ClearAllPoints();
+--     self:SetPoint("TOPLEFT", frameTL, "TOPLEFT");
+--     self:SetPoint("BOTTOMRIGHT", frameBR, "BOTTOMRIGHT");
+--     self:Show()
+--   end
 
-  personalRessourceDisplayFrame.Detach = function(self, frame)
-    self:ClearAllPoints();
-    self:Hide()
-    self:SetParent(UIParent)
-  end
+--   personalRessourceDisplayFrame.Detach = function(self, frame)
+--     self:ClearAllPoints();
+--     self:Hide()
+--     self:SetParent(UIParent)
+--   end
 
-  personalRessourceDisplayFrame.OptionsOpened = function()
-    personalRessourceDisplayFrame:Detach();
-    personalRessourceDisplayFrame:SetScript("OnEvent", nil);
-    personalRessourceDisplayFrame:ClearAllPoints();
-    personalRessourceDisplayFrame:Show()
-    local xOffset, yOffset;
-    if (db.personalRessourceDisplayFrame) then
-      xOffset = db.personalRessourceDisplayFrame.xOffset;
-      yOffset = db.personalRessourceDisplayFrame.yOffset;
-    end
+--   personalRessourceDisplayFrame.OptionsOpened = function()
+--     personalRessourceDisplayFrame:Detach();
+--     personalRessourceDisplayFrame:SetScript("OnEvent", nil);
+--     personalRessourceDisplayFrame:ClearAllPoints();
+--     personalRessourceDisplayFrame:Show()
+--     local xOffset, yOffset;
+--     if (db.personalRessourceDisplayFrame) then
+--       xOffset = db.personalRessourceDisplayFrame.xOffset;
+--       yOffset = db.personalRessourceDisplayFrame.yOffset;
+--     end
 
-    -- Calculate size of self nameplate
-    local prdWidth;
-    local prdHeight;
+--     -- Calculate size of self nameplate
+--     local prdWidth;
+--     local prdHeight;
 
-    if (KuiNameplatesCore and KuiNameplatesCore.profile) then
-      prdWidth = KuiNameplatesCore.profile.frame_width_personal;
-      prdHeight = KuiNameplatesCore.profile.frame_height_personal;
-      if (KuiNameplatesCore.profile.ignore_uiscale) then
-        local _, screenWidth = GetPhysicalScreenSize();
-        local uiScale = 1;
-        if (screenWidth) then
-          uiScale = 768 / screenWidth;
-        end
-        personalRessourceDisplayFrame:SetScale(uiScale / UIParent:GetEffectiveScale());
-      else
-        personalRessourceDisplayFrame:SetScale(1);
-      end
-      personalRessourceDisplayFrame.texture:SetTexture("Interface\\AddOns\\WeakAuras\\Media\\Textures\\PRDFrameKui");
-    else
-      local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"));
-      local zeroBasedScale = namePlateVerticalScale - 1.0;
-      local clampedZeroBasedScale = Retail.Saturate(zeroBasedScale);
-      local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"));
-      local baseNamePlateWidth = NamePlateDriverFrame.baseNamePlateWidth;
-      prdWidth = baseNamePlateWidth * horizontalScale * Retail.Lerp(1.1, 1.0, clampedZeroBasedScale) - 24;
-      prdHeight = 4 * namePlateVerticalScale * Retail.Lerp(1.2, 1.0, clampedZeroBasedScale) * 2  + 1;
-      personalRessourceDisplayFrame:SetScale(1 / UIParent:GetEffectiveScale());
-      personalRessourceDisplayFrame.texture:SetTexture("Interface\\AddOns\\WeakAuras\\Media\\Textures\\PRDFrame");
-    end
+--     if (KuiNameplatesCore and KuiNameplatesCore.profile) then
+--       prdWidth = KuiNameplatesCore.profile.frame_width_personal;
+--       prdHeight = KuiNameplatesCore.profile.frame_height_personal;
+--       if (KuiNameplatesCore.profile.ignore_uiscale) then
+--         local _, screenWidth = GetPhysicalScreenSize();
+--         local uiScale = 1;
+--         if (screenWidth) then
+--           uiScale = 768 / screenWidth;
+--         end
+--         personalRessourceDisplayFrame:SetScale(uiScale / UIParent:GetEffectiveScale());
+--       else
+--         personalRessourceDisplayFrame:SetScale(1);
+--       end
+--       personalRessourceDisplayFrame.texture:SetTexture("Interface\\AddOns\\WeakAuras\\Media\\Textures\\PRDFrameKui");
+--     else
+--       local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"));
+--       local zeroBasedScale = namePlateVerticalScale - 1.0;
+--       local clampedZeroBasedScale = Retail.Saturate(zeroBasedScale);
+--       local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"));
+--       local baseNamePlateWidth = NamePlateDriverFrame.baseNamePlateWidth;
+--       prdWidth = baseNamePlateWidth * horizontalScale * Retail.Lerp(1.1, 1.0, clampedZeroBasedScale) - 24;
+--       prdHeight = 4 * namePlateVerticalScale * Retail.Lerp(1.2, 1.0, clampedZeroBasedScale) * 2  + 1;
+--       personalRessourceDisplayFrame:SetScale(1 / UIParent:GetEffectiveScale());
+--       personalRessourceDisplayFrame.texture:SetTexture("Interface\\AddOns\\WeakAuras\\Media\\Textures\\PRDFrame");
+--     end
 
-    local scale = UIParent:GetEffectiveScale() / personalRessourceDisplayFrame:GetEffectiveScale();
-    if (not xOffset or not yOffset) then
-      local optionsFrame = WeakAuras.OptionsFrame();
-      yOffset = optionsFrame:GetBottom() + prdHeight / scale - GetScreenHeight();
-      xOffset = xPositionNextToOptions() + prdWidth / 2 / scale - GetScreenWidth();
-    end
+--     local scale = UIParent:GetEffectiveScale() / personalRessourceDisplayFrame:GetEffectiveScale();
+--     if (not xOffset or not yOffset) then
+--       local optionsFrame = WeakAuras.OptionsFrame();
+--       yOffset = optionsFrame:GetBottom() + prdHeight / scale - GetScreenHeight();
+--       xOffset = xPositionNextToOptions() + prdWidth / 2 / scale - GetScreenWidth();
+--     end
 
-    xOffset = xOffset * scale;
-    yOffset = yOffset * scale;
+--     xOffset = xOffset * scale;
+--     yOffset = yOffset * scale;
 
-    personalRessourceDisplayFrame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", xOffset, yOffset);
-    personalRessourceDisplayFrame:SetPoint("BOTTOMLEFT", UIParent, "TOPRIGHT", xOffset - prdWidth, yOffset - prdHeight);
-  end
+--     personalRessourceDisplayFrame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", xOffset, yOffset);
+--     personalRessourceDisplayFrame:SetPoint("BOTTOMLEFT", UIParent, "TOPRIGHT", xOffset - prdWidth, yOffset - prdHeight);
+--   end
 
-  personalRessourceDisplayFrame.OptionsClosed = function()
-    personalRessourceDisplayFrame:SetScale(1);
-    local frame = C_NamePlate.GetNamePlateForUnit("player");
-    if (frame) then
-      if (Plater and frame.Plater and frame.unitFrame.Plater) then
-        personalRessourceDisplayFrame:Attach(frame, frame.unitFrame.healthBar, frame.unitFrame.powerBar);
-      elseif (frame.kui and frame.kui.bg and frame.kui:IsShown()) then
-        personalRessourceDisplayFrame:Attach(frame.kui, frame.kui.bg, frame.kui.bg);
-      elseif (ElvUIPlayerNamePlateAnchor) then
-        personalRessourceDisplayFrame:Attach(ElvUIPlayerNamePlateAnchor, ElvUIPlayerNamePlateAnchor, ElvUIPlayerNamePlateAnchor);
-      else
-        personalRessourceDisplayFrame:Attach(frame, frame.UnitFrame.healthBar, NamePlateDriverFrame.classNamePlatePowerBar);
-      end
-    else
-      personalRessourceDisplayFrame:Detach();
-      personalRessourceDisplayFrame:Hide();
-    end
+--   personalRessourceDisplayFrame.OptionsClosed = function()
+--     personalRessourceDisplayFrame:SetScale(1);
+--     local frame = C_NamePlate.GetNamePlateForUnit("player");
+--     if (frame) then
+--       if (Plater and frame.Plater and frame.unitFrame.Plater) then
+--         personalRessourceDisplayFrame:Attach(frame, frame.unitFrame.healthBar, frame.unitFrame.powerBar);
+--       elseif (frame.kui and frame.kui.bg and frame.kui:IsShown()) then
+--         personalRessourceDisplayFrame:Attach(frame.kui, frame.kui.bg, frame.kui.bg);
+--       elseif (ElvUIPlayerNamePlateAnchor) then
+--         personalRessourceDisplayFrame:Attach(ElvUIPlayerNamePlateAnchor, ElvUIPlayerNamePlateAnchor, ElvUIPlayerNamePlateAnchor);
+--       else
+--         personalRessourceDisplayFrame:Attach(frame, frame.UnitFrame.healthBar, NamePlateDriverFrame.classNamePlatePowerBar);
+--       end
+--     else
+--       personalRessourceDisplayFrame:Detach();
+--       personalRessourceDisplayFrame:Hide();
+--     end
 
-    personalRessourceDisplayFrame:SetScript("OnEvent", personalRessourceDisplayFrame.eventHandler);
-    personalRessourceDisplayFrame.texture:Hide();
-    personalRessourceDisplayFrame.moverFrame:Hide();
-    wipe(personalRessourceDisplayFrame.attachedVisibleFrames);
-  end
+--     personalRessourceDisplayFrame:SetScript("OnEvent", personalRessourceDisplayFrame.eventHandler);
+--     personalRessourceDisplayFrame.texture:Hide();
+--     personalRessourceDisplayFrame.moverFrame:Hide();
+--     wipe(personalRessourceDisplayFrame.attachedVisibleFrames);
+--   end
 
-  personalRessourceDisplayFrame.eventHandler = function(self, event, nameplate)
-    Private.StartProfileSystem("prd");
-    if (event == "NAME_PLATE_UNIT_ADDED") then
-      if (UnitIsUnit(nameplate, "player")) then
-        local frame = C_NamePlate.GetNamePlateForUnit("player");
-        if (frame) then
-          if (Plater and frame.Plater and frame.unitFrame.Plater) then
-            personalRessourceDisplayFrame:Attach(frame, frame.unitFrame.healthBar, frame.unitFrame.powerBar);
-          elseif (frame.kui and frame.kui.bg and frame.kui:IsShown()) then
-            personalRessourceDisplayFrame:Attach(frame.kui, KuiNameplatesPlayerAnchor, KuiNameplatesPlayerAnchor);
-          elseif (ElvUIPlayerNamePlateAnchor) then
-            personalRessourceDisplayFrame:Attach(ElvUIPlayerNamePlateAnchor, ElvUIPlayerNamePlateAnchor, ElvUIPlayerNamePlateAnchor);
-          else
-            personalRessourceDisplayFrame:Attach(frame, frame.UnitFrame.healthBar, NamePlateDriverFrame.classNamePlatePowerBar);
-          end
-          personalRessourceDisplayFrame:Show();
-          db.personalRessourceDisplayFrame = db.personalRessourceDisplayFrame or {};
-        else
-          personalRessourceDisplayFrame:Detach();
-          personalRessourceDisplayFrame:Hide();
-        end
-      end
-    elseif (event == "NAME_PLATE_UNIT_REMOVED") then
-      if (UnitIsUnit(nameplate, "player")) then
-        personalRessourceDisplayFrame:Detach();
-        personalRessourceDisplayFrame:Hide();
-      end
-    end
-    Private.StopProfileSystem("prd");
-  end
+--   personalRessourceDisplayFrame.eventHandler = function(self, event, nameplate)
+--     Private.StartProfileSystem("prd");
+--     if (event == "NAME_PLATE_UNIT_ADDED") then
+--       if (UnitIsUnit(nameplate, "player")) then
+--         local frame = C_NamePlate.GetNamePlateForUnit("player");
+--         if (frame) then
+--           if (Plater and frame.Plater and frame.unitFrame.Plater) then
+--             personalRessourceDisplayFrame:Attach(frame, frame.unitFrame.healthBar, frame.unitFrame.powerBar);
+--           elseif (frame.kui and frame.kui.bg and frame.kui:IsShown()) then
+--             personalRessourceDisplayFrame:Attach(frame.kui, KuiNameplatesPlayerAnchor, KuiNameplatesPlayerAnchor);
+--           elseif (ElvUIPlayerNamePlateAnchor) then
+--             personalRessourceDisplayFrame:Attach(ElvUIPlayerNamePlateAnchor, ElvUIPlayerNamePlateAnchor, ElvUIPlayerNamePlateAnchor);
+--           else
+--             personalRessourceDisplayFrame:Attach(frame, frame.UnitFrame.healthBar, NamePlateDriverFrame.classNamePlatePowerBar);
+--           end
+--           personalRessourceDisplayFrame:Show();
+--           db.personalRessourceDisplayFrame = db.personalRessourceDisplayFrame or {};
+--         else
+--           personalRessourceDisplayFrame:Detach();
+--           personalRessourceDisplayFrame:Hide();
+--         end
+--       end
+--     elseif (event == "NAME_PLATE_UNIT_REMOVED") then
+--       if (UnitIsUnit(nameplate, "player")) then
+--         personalRessourceDisplayFrame:Detach();
+--         personalRessourceDisplayFrame:Hide();
+--       end
+--     end
+--     Private.StopProfileSystem("prd");
+--   end
 
-  personalRessourceDisplayFrame.expand = function(self, id)
-    local data = WeakAuras.GetData(id);
-    if (data.anchorFrameType == "PRD") then
-      self.attachedVisibleFrames[id] = true;
-      self:updateVisible();
-    end
-  end
+--   personalRessourceDisplayFrame.expand = function(self, id)
+--     local data = WeakAuras.GetData(id);
+--     if (data.anchorFrameType == "PRD") then
+--       self.attachedVisibleFrames[id] = true;
+--       self:updateVisible();
+--     end
+--   end
 
-  personalRessourceDisplayFrame.collapse = function(self, id)
-    self.attachedVisibleFrames[id] = nil;
-    self:updateVisible();
-  end
+--   personalRessourceDisplayFrame.collapse = function(self, id)
+--     self.attachedVisibleFrames[id] = nil;
+--     self:updateVisible();
+--   end
 
-  personalRessourceDisplayFrame.rename = function(self, oldid, newid)
-    self.attachedVisibleFrames[newid] = self.attachedVisibleFrames[oldid];
-    self.attachedVisibleFrames[oldid] = nil;
-    self:updateVisible();
-  end
+--   personalRessourceDisplayFrame.rename = function(self, oldid, newid)
+--     self.attachedVisibleFrames[newid] = self.attachedVisibleFrames[oldid];
+--     self.attachedVisibleFrames[oldid] = nil;
+--     self:updateVisible();
+--   end
 
-  personalRessourceDisplayFrame.delete = function(self, id)
-    self.attachedVisibleFrames[id] = nil;
-    self:updateVisible();
-  end
+--   personalRessourceDisplayFrame.delete = function(self, id)
+--     self.attachedVisibleFrames[id] = nil;
+--     self:updateVisible();
+--   end
 
-  personalRessourceDisplayFrame.anchorFrame = function(self, id, anchorFrameType)
-    if (anchorFrameType == "PRD" or anchorFrameType == "NAMEPLATE") then
-      self.attachedVisibleFrames[id] = true;
-    else
-      self.attachedVisibleFrames[id] = nil;
-    end
-    self:updateVisible();
-  end
+--   personalRessourceDisplayFrame.anchorFrame = function(self, id, anchorFrameType)
+--     if (anchorFrameType == "PRD" or anchorFrameType == "NAMEPLATE") then
+--       self.attachedVisibleFrames[id] = true;
+--     else
+--       self.attachedVisibleFrames[id] = nil;
+--     end
+--     self:updateVisible();
+--   end
 
-  personalRessourceDisplayFrame.updateVisible = function(self)
-    if (not WeakAuras.IsOptionsOpen()) then
-      return;
-    end
+--   personalRessourceDisplayFrame.updateVisible = function(self)
+--     if (not WeakAuras.IsOptionsOpen()) then
+--       return;
+--     end
 
-    if (next(self.attachedVisibleFrames)) then
-      personalRessourceDisplayFrame.texture:Show();
-      personalRessourceDisplayFrame.moverFrame:Show();
-      personalRessourceDisplayFrame:Show();
-    else
-      personalRessourceDisplayFrame.texture:Hide();
-      personalRessourceDisplayFrame.moverFrame:Hide();
-      personalRessourceDisplayFrame:Hide();
-    end
-  end
+--     if (next(self.attachedVisibleFrames)) then
+--       personalRessourceDisplayFrame.texture:Show();
+--       personalRessourceDisplayFrame.moverFrame:Show();
+--       personalRessourceDisplayFrame:Show();
+--     else
+--       personalRessourceDisplayFrame.texture:Hide();
+--       personalRessourceDisplayFrame.moverFrame:Hide();
+--       personalRessourceDisplayFrame:Hide();
+--     end
+--   end
 
-  if (WeakAuras.IsOptionsOpen()) then
-    personalRessourceDisplayFrame.OptionsOpened();
-  else
-    personalRessourceDisplayFrame.OptionsClosed();
-  end
-  Private.personalRessourceDisplayFrame = personalRessourceDisplayFrame
-end
+--   if (WeakAuras.IsOptionsOpen()) then
+--     personalRessourceDisplayFrame.OptionsOpened();
+--   else
+--     personalRessourceDisplayFrame.OptionsClosed();
+--   end
+--   Private.personalRessourceDisplayFrame = personalRessourceDisplayFrame
+-- end
 
 local postPonedAnchors = {};
 local anchorTimer

@@ -1590,13 +1590,13 @@ local function EventHandler(frame, event, arg1, arg2, ...)
     if not UnitExistsFixed("pet") then
       tinsert(unitsToRemove, "pet")
     end
-  elseif event == "NAME_PLATE_UNIT_ADDED" then
-    nameplateExists[arg1] = true
-    RecheckActiveForUnitType("nameplate", arg1, deactivatedTriggerInfos)
-  elseif event == "NAME_PLATE_UNIT_REMOVED" then
-    nameplateExists[arg1] = false
-    RecheckActiveForUnitType("nameplate", arg1, deactivatedTriggerInfos)
-    tinsert(unitsToRemove, arg1)
+  -- elseif event == "NAME_PLATE_UNIT_ADDED" then
+  --   nameplateExists[arg1] = true
+  --   RecheckActiveForUnitType("nameplate", arg1, deactivatedTriggerInfos)
+  -- elseif event == "NAME_PLATE_UNIT_REMOVED" then
+  --   nameplateExists[arg1] = false
+  --   RecheckActiveForUnitType("nameplate", arg1, deactivatedTriggerInfos)
+  --   tinsert(unitsToRemove, arg1)
   elseif event == "UNIT_FACTION" then
     if arg1:sub(1, 9) == "nameplate" then
       RecheckActiveForUnitType("nameplate", arg1, deactivatedTriggerInfos)
@@ -1682,8 +1682,8 @@ frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 frame:RegisterEvent("ENCOUNTER_START")
 frame:RegisterEvent("ENCOUNTER_END")
 frame:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-frame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-frame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+-- frame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+-- frame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 frame:RegisterEvent("GROUP_ROSTER_UPDATE")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("PARTY_MEMBER_DISABLE")
@@ -3162,8 +3162,8 @@ function BuffTrigger.InitMultiAura()
     if not WeakAuras.IsClassic() then
       multiAuraFrame:RegisterEvent("PLAYER_FOCUS_CHANGED")
     end
-    multiAuraFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-    multiAuraFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+    -- multiAuraFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+    -- multiAuraFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
     multiAuraFrame:RegisterEvent("PLAYER_LEAVING_WORLD")
     multiAuraFrame:SetScript("OnEvent", BuffTrigger.HandleMultiEvent)
     WeakAuras.frames["Multi-target 2 Aura Trigger Handler"] = multiAuraFrame
@@ -3180,13 +3180,13 @@ function BuffTrigger.HandleMultiEvent(frame, event, ...)
     TrackUid("target")
   elseif event == "PLAYER_FOCUS_CHANGED" then
     TrackUid("focus")
-  elseif event == "NAME_PLATE_UNIT_ADDED" then
-    TrackUid(...)
-  elseif event == "NAME_PLATE_UNIT_REMOVED" then
-    local unit = ...
-    ReleaseUID(unit)
-    unit = unit.."target"
-    ReleaseUID(unit)
+  -- elseif event == "NAME_PLATE_UNIT_ADDED" then
+  --   TrackUid(...)
+  -- elseif event == "NAME_PLATE_UNIT_REMOVED" then
+  --   local unit = ...
+  --   ReleaseUID(unit)
+  --   unit = unit.."target"
+  --   ReleaseUID(unit)
   elseif event == "UNIT_AURA" then
     local unit = ...
     local guid = UnitGUID(unit)
