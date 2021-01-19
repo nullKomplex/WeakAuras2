@@ -2166,7 +2166,7 @@ do
     end
 
     local changed = false
-    local spellId = select(7, GetSpellInfo(id))
+    local spellId = WeakAuras.ExtractSpellId(id)
     if spellIds[id] ~= spellId then
       spellIds[id] = spellId
       changed = true
@@ -2386,7 +2386,7 @@ do
       return;
     end
     spells[id] = true;
-    spellIds[id] = select(7, GetSpellInfo(id))
+    spellIds[id] = WeakAuras.ExtractSpellId(id)
     spellKnown[id] = WeakAuras.IsSpellKnownIncludingPet(id);
 
     local charges, maxCharges, startTime, duration, unifiedCooldownBecauseRune,

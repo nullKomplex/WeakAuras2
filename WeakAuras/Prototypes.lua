@@ -813,7 +813,7 @@ function WeakAuras.IsSpellKnownForLoad(spell, exact)
   -- Dance through the spellname to the current spell id
   spell = GetSpellInfo(spell)
   if (spell) then
-    spell = select(7, GetSpellInfo(spell))
+    spell = WeakAuras.ExtractSpellId(spell)
   end
   if spell then
     return WeakAuras.IsSpellKnown(spell)
@@ -7242,7 +7242,7 @@ Private.event_prototypes = {
       else
         local name = type(trigger.spellName) == "number" and GetSpellInfo(trigger.spellName) or trigger.spellName or "";
         local ret = [[
-          local spellName = select(7, GetSpellInfo(%q));
+          local spellName = WeakAuras.ExtractSpellId(%q));
           local usePet = %s;
         ]]
         return ret:format(name, trigger.use_petspell and "true" or "false");
@@ -7395,7 +7395,7 @@ Private.event_prototypes = {
       end
       local ret = [=[
         local spellname = %q
-        local spellid = select(7, GetSpellInfo(spellname))
+        local spellid = WeakAuras.ExtractSpellId(spellname)
         local button
         if spellid then
             local slotList = C_ActionBar.FindSpellActionButtons(spellid)

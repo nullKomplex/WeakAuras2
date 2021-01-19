@@ -4807,9 +4807,9 @@ local function GetAnchorFrame(data, region, parent)
   local anchorFrameType = data.anchorFrameType
   local anchorFrameFrame = data.anchorFrameFrame
   if not id then return end
-  if (personalRessourceDisplayFrame) then
-    personalRessourceDisplayFrame:anchorFrame(id, anchorFrameType);
-  end
+  -- if (personalRessourceDisplayFrame) then
+  --   personalRessourceDisplayFrame:anchorFrame(id, anchorFrameType);
+  -- end
 
   if (mouseFrame) then
     mouseFrame:anchorFrame(id, anchorFrameType);
@@ -4819,11 +4819,11 @@ local function GetAnchorFrame(data, region, parent)
     return parent;
   end
 
-  if (anchorFrameType == "PRD") then
-    -- Private.ensurePRDFrame();
-    personalRessourceDisplayFrame:anchorFrame(id, anchorFrameType);
-    return personalRessourceDisplayFrame;
-  end
+  -- if (anchorFrameType == "PRD") then
+  --   -- Private.ensurePRDFrame();
+  --   personalRessourceDisplayFrame:anchorFrame(id, anchorFrameType);
+  --   return personalRessourceDisplayFrame;
+  -- end
 
   if (anchorFrameType == "MOUSE") then
     ensureMouseFrame();
@@ -4835,11 +4835,11 @@ local function GetAnchorFrame(data, region, parent)
     local unit = region.state.unit
     local frame = unit and WeakAuras.GetUnitNameplate(unit)
     if frame then return frame end
-    if WeakAuras.IsOptionsOpen() then
-      -- Private.ensurePRDFrame()
-      personalRessourceDisplayFrame:anchorFrame(id, anchorFrameType)
-      return personalRessourceDisplayFrame
-    end
+    -- if WeakAuras.IsOptionsOpen() then
+    --   -- Private.ensurePRDFrame()
+    --   personalRessourceDisplayFrame:anchorFrame(id, anchorFrameType)
+    --   return personalRessourceDisplayFrame
+    -- end
   end
 
   if (anchorFrameType == "UNITFRAME") then
@@ -5152,6 +5152,10 @@ end
 
 -- Custom and ported functions
 function WeakAuras.ExtractSpellId(spellName)
+  if type(spellName) == "number" then
+    return number
+  end
+
   local link = GetSpellLink(spellName);
   if link then
     local number = link:match("spell:(%d+)");
