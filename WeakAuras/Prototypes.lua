@@ -133,7 +133,7 @@ function Private.InitializeEncounterAndZoneLists()
   end
 
   EJ_SelectTier(EJ_GetNumTiers())
-  
+
   for _, inRaid in ipairs({false, true}) do
     local instance_index = 1
     local instance_id = EJ_GetInstanceByIndex(instance_index, true)
