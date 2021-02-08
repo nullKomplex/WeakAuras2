@@ -1121,11 +1121,7 @@ function Private.Modernize(data)
           end
 
           -- If the id is potentially a group, assume it is a group
-          if C_Map.GetMapGroupMembersInfo(tonumber(id)) then
-            newstring = newstring .. "g" .. id
-          else
-            newstring = newstring .. id
-          end
+          newstring = newstring .. id
           first = false
         end
         data.load.zoneIds = newstring

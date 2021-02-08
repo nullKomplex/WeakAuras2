@@ -67,7 +67,6 @@ local function ConstructModelPicker(frame)
 
   local filterInput = CreateFrame("editbox", "WeakAurasFilterInput", group.frame, "SearchBoxTemplate")
   filterInput:SetScript("OnTextChanged", function(self)
-    SearchBoxTemplate_OnTextChanged(self)
     local filterText = filterInput:GetText()
     RecurseSetFilter(group.modelTree.tree, filterText)
     group.modelTree.filter = filterText ~= nil and filterText ~= ""
