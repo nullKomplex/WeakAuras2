@@ -2583,7 +2583,7 @@ Private.event_prototypes = {
     automaticrequired = true
   },
   ["Eclipse Direction"] = {
-    type = "status",
+    type = "unit",
     events = {
       ["unit_events"] = {
         ["player"] = { "UNIT_POWER_FREQUENT" }
