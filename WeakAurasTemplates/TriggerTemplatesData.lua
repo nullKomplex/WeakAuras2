@@ -3985,19 +3985,29 @@ tinsert(templates.general.args, {
 tinsert(templates.general.args, {
   title = L["Always Active"],
   icon = "Interface\\Addons\\WeakAuras\\PowerAurasMedia\\Auras\\Aura78",
-  triggers = {[1] = { trigger = { type = "status", event = "Conditions", unevent = "auto", use_alwaystrue = true}}}
+  triggers = {[1] = { trigger = {
+    type = WeakAuras.GetTriggerCategoryFor("Conditions"),
+    event = "Conditions",
+    use_alwaystrue = true}}}
 });
 
 tinsert(templates.general.args, {
   title = L["Pet alive"],
   icon = "Interface\\Icons\\ability_hunter_pet_raptor",
-  triggers = {[1] = { trigger = { type = "status", event = "Conditions", unevent = "auto", use_HasPet = true}}}
+  triggers = {[1] = { trigger = {
+    type = WeakAuras.GetTriggerCategoryFor("Conditions"),
+    event = "Conditions",
+    use_HasPet = true}}}
 });
 
 tinsert(templates.general.args, {
   title = L["Pet Behavior"],
   icon = "Interface\\Icons\\Ability_hunter_pet_assist",
-  triggers = {[1] = { trigger = { type = "status", event = "Pet Behavior", unevent = "auto", use_behavior = true, behavior = "assist"}}}
+  triggers = {[1] = { trigger = {
+    type = WeakAuras.GetTriggerCategoryFor("Pet Behavior"),
+    event = "Pet Behavior",
+    use_behavior = true,
+    behavior = "assist"}}}
 });
 
 tinsert(templates.general.args, {
@@ -4101,7 +4111,9 @@ for i = 1, 4 do
   tinsert(templates.class.DRUID[i][resourceSection].args, {
     title = L["Shapeshift Form"],
     icon = "Interface\\Icons\\Ability_racial_bearform",
-    triggers = {[1] = { trigger = { type = "status", event = "Stance/Form/Aura", unevent = "auto"}}}
+    triggers = {[1] = { trigger = {
+      type = WeakAuras.GetTriggerCategoryFor("Stance/Form/Aura"),
+      event = "Stance/Form/Aura"}}}
   });
 end
 
@@ -4115,9 +4127,8 @@ for j, id in ipairs({5487, 768, 783, 1066, 24858, 40120}) do
         triggers = {
           [1] = {
             trigger = {
-              type = "status",
+              type = WeakAuras.GetTriggerCategoryFor("Stance/Form/Aura"),
               event = "Stance/Form/Aura",
-              unevent = "auto",
               use_form = true,
               form = { single = j }
             }

@@ -1,6 +1,6 @@
 local AddonName, Private = ...
 
-local internalVersion = 40
+local internalVersion = 43
 
 -- Lua APIs
 local insert = table.insert
@@ -582,9 +582,9 @@ local function ConstructFunction(prototype, trigger, skipOptional)
             end
           elseif(arg.type == "tristatestring") then
             if(trigger["use_"..name] == false) then
-              test = "("..name.. "~=".. (number or string.format("%q", trigger[name] or "")) .. ")"
+              test = "("..name.. "~=".. (number or string.format("%s", Private.QuotedString(trigger[name] or ""))) .. ")"
             elseif(trigger["use_"..name]) then
-              test = "("..name.. "==".. (number or string.format("%q", trigger[name] or "")) .. ")"
+              test = "("..name.. "==".. (number or string.format("%s", Private.QuotedString(trigger[name] or ""))) .. ")"
             end
           elseif(arg.type == "multiselect") then
             if(trigger["use_"..name] == false) then -- multi selection
@@ -641,6 +641,10 @@ local function ConstructFunction(prototype, trigger, skipOptional)
               test = "("..name.."==[["..trigger[name].."]])";
             else
               test = "("..name..":"..trigger[name.."_operator"]:format(trigger[name])..")";
+            end
+          elseif(arg.type == "number") then
+            if number then
+              test = "("..name..(trigger[name.."_operator"] or "==").. number ..")";
             end
           else
             if(type(trigger[name]) == "table") then
@@ -1350,6 +1354,8 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
   local player, realm, zone = UnitName("player"), GetRealmName(), GetRealZoneText()
   local spec, specId, role = false, false, false
   local inPetBattle, vehicle, vehicleUi = false, false, false
+  local zoneId = GetCurrentMapAreaID()
+  local zonegroupId = false
   local _, race = UnitRace("player")
   local faction = UnitFactionGroup("player")
   local _, class = UnitClass("player")
@@ -1400,8 +1406,8 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
       local loadFunc = loadFuncs[id];
       local loadOpt = loadFuncsForOptions[id];
 
-      shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, encounter_id, size, difficulty, difficultyIndex, role);
-      couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, encounter_id, size, difficulty, difficultyIndex, role);
+      shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, difficultyIndex, role);
+      couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, difficultyIndex, role);
 
       if(shouldBeLoaded and not loaded[id]) then
         changed = changed + 1;
@@ -5134,6 +5140,41 @@ function WeakAuras.ParseNameCheck(name)
   return matches
 end
 
+function WeakAuras.ParseZoneCheck(input)
+  if not input then return end
+
+  local matcher = {
+    Check = function(self, zoneId, zonegroupId)
+      return self.zoneIds[zoneId] or self.zoneGroupIds[zonegroupId]
+    end,
+    AddId = function(self, input, start, last)
+      local id = tonumber(strtrim(input:sub(start, last)))
+      if id then
+        local prevChar = input:sub(start - 1, start - 1)
+        if prevChar == 'g' or prevChar == 'G' then
+          self.zoneGroupIds[id] = true
+        else
+          self.zoneIds[id] = true
+        end
+      end
+    end,
+    zoneIds = {},
+    zoneGroupIds = {}
+  }
+
+  local start = input:find('%d', 1)
+  local last = input:find('%D', start)
+  while (last) do
+    matcher:AddId(input, start, last - 1)
+    start = input:find('%d', last + 1)
+    last = input:find('%D', start)
+  end
+
+  last = #input
+  matcher:AddId(input, start, last)
+  return matcher
+end
+
 function WeakAuras.IsAuraLoaded(id)
   return Private.loaded[id]
 end
@@ -5148,6 +5189,26 @@ function Private.IconSources(data)
     values[i] = string.format(L["Trigger %i"], i)
   end
   return values
+end
+
+-- This should be used instead of string.format("...%q...", input)
+-- e.g. string.format("...%s...", Private.QuotedString(input))
+-- If the string is passed to loadstring.
+-- It escapes --, which loadstring would otherwise interpret as comment starts
+function Private.QuotedString(input)
+  local str = string.format("%q", input)
+  return (str:gsub("%-%-", "-\\-"))
+end
+
+-- Helper function to make the templates not care, how the generic triggers
+-- are categorized
+function WeakAuras.GetTriggerCategoryFor(triggerType)
+  local prototype = Private.event_prototypes[triggerType]
+  return prototype and prototype.type
+end
+
+function WeakAuras.UnitStagger(unit)
+  return UnitStagger(unit) or 0
 end
 
 -- Custom and ported functions
