@@ -53,11 +53,11 @@ local function changes(property, regionType)
     };
   elseif WeakAuras.regionTypes[regionType].default[property] == nil then
     return nil;
-  elseif property == "cooldownSwipe" then
-    return {
-      value = true,
-      property = "cooldownSwipe",
-    };
+  -- elseif property == "cooldownSwipe" then
+  --   return {
+  --     value = true,
+  --     property = "cooldownSwipe",
+  --   };
   elseif property == "alpha" then
     return {
       value = 0.5,
@@ -169,11 +169,11 @@ local function insufficientResourcesBlue(conditions, trigger, regionType)
 end
 
 local function hasChargesGrey(conditions, trigger, regionType)
-  if regionType == "icon" then
-    tinsert(conditions, buildCondition(trigger, checks.charges, {changes("cooldownSwipe", regionType)}));
-  else
+  -- if regionType == "icon" then
+    -- tinsert(conditions, buildCondition(trigger, checks.charges, {changes("cooldownSwipe", regionType)}));
+  -- else
     tinsert(conditions, buildCondition(trigger, checks.charges, {changes("grey", regionType)}));
-  end
+  -- end
 end
 
 local function isOnCdGrey(conditions, trigger, regionType)
@@ -527,10 +527,10 @@ local function subTypesFor(item, regionType)
       end,
     });
     if (item.charges) then
-      data.cooldownSwipe = false
-      data.cooldownEdge = true
-      dataGlow.cooldownSwipe = false
-      dataGlow.cooldownEdge = true
+      -- data.cooldownSwipe = false
+      -- data.cooldownEdge = true
+      -- dataGlow.cooldownSwipe = false
+      -- dataGlow.cooldownEdge = true
       tinsert(types, {
         icon = icon.charges,
         title = L["Charge Tracking"],
@@ -689,10 +689,10 @@ local function subTypesFor(item, regionType)
         end,
       });
       if (item.duration) then
-        data.cooldownSwipe = false
-        data.cooldownEdge = true
-        dataGlow.cooldownSwipe = false
-        dataGlow.cooldownEdge = true
+        -- data.cooldownSwipe = false
+        -- data.cooldownEdge = true
+        -- dataGlow.cooldownSwipe = false
+        -- dataGlow.cooldownEdge = true
         tinsert(types, {
           icon = icon.glow,
           title = L["Show Cooldown and Duration"],

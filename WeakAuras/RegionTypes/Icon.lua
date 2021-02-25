@@ -72,16 +72,16 @@ local properties = {
     setter = "SetInverse",
     type = "bool"
   },
-  cooldownSwipe = {
-    display = { L["Cooldown"], L["Swipe"], true},
-    setter = "SetCooldownSwipe",
-    type = "bool",
-  },
-  cooldownEdge = {
-    display = { L["Cooldown"], L["Edge"]},
-    setter = "SetCooldownEdge",
-    type = "bool",
-  },
+  -- cooldownSwipe = {
+  --   display = { L["Cooldown"], L["Swipe"], true},
+  --   setter = "SetCooldownSwipe",
+  --   type = "bool",
+  -- },
+  -- cooldownEdge = {
+  --   display = { L["Cooldown"], L["Edge"]},
+  --   setter = "SetCooldownEdge",
+  --   type = "bool",
+  -- },
   zoom = {
     display = L["Zoom"],
     setter = "SetZoom",
@@ -248,8 +248,8 @@ local function create(parent, data)
   region.cooldown = cooldown;
   cooldown:SetAllPoints(icon);
   -- cooldown:SetDrawBling(false)
-  cooldown.SetDrawSwipeOrg = cooldown.SetDrawSwipe
-  cooldown.SetDrawSwipe = function() end
+  -- cooldown.SetDrawSwipeOrg = cooldown.SetDrawSwipe
+  -- cooldown.SetDrawSwipe = function() end
 
   region.values = {};
 
@@ -481,18 +481,18 @@ local function modify(parent, region, data)
     end
   end
 
-  function region:SetCooldownSwipe(cooldownSwipe)
-    region.cooldownSwipe = cooldownSwipe;
-    -- cooldown:SetDrawSwipeOrg(cooldownSwipe);
-  end
+  -- function region:SetCooldownSwipe(cooldownSwipe)
+  --   region.cooldownSwipe = cooldownSwipe;
+  --   cooldown:SetDrawSwipeOrg(cooldownSwipe);
+  -- end
 
-  function region:SetCooldownEdge(cooldownEdge)
-    region.cooldownEdge = cooldownEdge;
-    -- cooldown:SetDrawEdge(cooldownEdge);
-  end
+  -- function region:SetCooldownEdge(cooldownEdge)
+  --   region.cooldownEdge = cooldownEdge;
+  --   cooldown:SetDrawEdge(cooldownEdge);
+  -- end
 
-  region:SetCooldownSwipe(data.cooldownSwipe)
-  region:SetCooldownEdge(data.cooldownEdge)
+  -- region:SetCooldownSwipe(data.cooldownSwipe)
+  -- region:SetCooldownEdge(data.cooldownEdge)
 
   function region:SetZoom(zoom)
     region.zoom = zoom;

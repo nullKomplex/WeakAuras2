@@ -223,7 +223,6 @@ local function createOptions(id, data)
     --   disabled = function() return not OptionsPrivate.Private.CanHaveDuration(data) end,
     --   hidden = function() return not data.cooldown end,
     -- },
-    -- TODO Port retail OmniCC to allow this?
     -- cooldownTextDisabled = {
     --   type = "toggle",
     --   width = WeakAuras.normalWidth,
