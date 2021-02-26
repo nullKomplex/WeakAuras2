@@ -663,8 +663,8 @@ end
 
 function WeakAuras.CheckTalentByIndex(index, extraOption)
   -- There is no "known" flag for MoP which is used by recent WA builds from retail.
-  -- There is selected and available. 
-  -- Talent "known" in retail is used for cases, where you can have multiple talents in same row 
+  -- There is selected and available.
+  -- Talent "known" in retail is used for cases, where you can have multiple talents in same row
   -- (like Legion legendaries, Torghast etc).
 
   return MAX_NUM_TALENTS and select(5, GetTalentInfo(index)) == true
@@ -4960,7 +4960,7 @@ Private.event_prototypes = {
 
           activeName, activeIcon, _, _, selected, available  = GetTalentInfo(index)
         ]]
-                
+
         if trigger.use_onlySelected then
           ret = ret .. [[
           active = selected
@@ -4991,7 +4991,7 @@ Private.event_prototypes = {
                 index = %s
                 local name, icon, _, _, selected, available  = GetTalentInfo(index)
             ]]
-            
+
             if trigger.use_onlySelected then
               ret2 = ret2 .. [[
                 if (selected) then
