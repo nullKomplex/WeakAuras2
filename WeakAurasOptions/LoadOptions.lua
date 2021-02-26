@@ -29,6 +29,7 @@ end
 
 local function CorrectSpellName(input)
   local inputId = tonumber(input);
+
   if(inputId) then
     local name = GetSpellInfo(inputId);
     if(name) then
@@ -51,6 +52,8 @@ local function CorrectSpellName(input)
     if(link) and link ~= "" then
       local itemId = link:match("spell:(%d+)");
       return tonumber(itemId);
+    elseif WeakAuras.overrideSpellMappings[input] then
+      return WeakAuras.overrideSpellMappings[input];
     else
       return nil;
     end

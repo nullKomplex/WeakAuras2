@@ -807,10 +807,15 @@ function WeakAuras.IsSpellKnownForLoad(spell, exact)
   end
   if spell then
     return WeakAuras.IsSpellKnown(spell)
+  else
+    return nil
   end
 end
 
 function WeakAuras.IsSpellKnown(spell, pet)
+  if WeakAuras.overrideKnownSpells[spell] then
+    return true
+  end
   if not spell or spell == 0 then
     return false
   end
@@ -823,10 +828,15 @@ function WeakAuras.IsSpellKnown(spell, pet)
 end
 
 function WeakAuras.IsSpellKnownIncludingPet(spell)
+  local inputSpell = spell
+
   if (not tonumber(spell)) then
     spell = WeakAuras.ExtractSpellId(spell)
   end
   if (not spell) then
+    if WeakAuras.overrideKnownSpells[inputSpell] then
+      return true
+    end
     return false;
   end
   if (WeakAuras.IsSpellKnown(spell) or WeakAuras.IsSpellKnown(spell, true)) then
@@ -7796,3 +7806,61 @@ Private.dynamic_texts = {
     end
   }
 };
+
+WeakAuras.overrideKnownSpells = {};
+WeakAuras.overrideSpellMappings = {};
+
+function WeakAuras.FillSpellKnownSpellBook()
+  for k in pairs (WeakAuras.overrideKnownSpells) do
+    WeakAuras.overrideKnownSpells[k] = nil
+  end
+
+  for k in pairs (WeakAuras.overrideSpellMappings) do
+    WeakAuras.overrideSpellMappings[k] = nil
+  end
+
+  local _, _, offs, numspells = GetSpellTabInfo(3)
+  local max = offs -- The offset of the next tab is the max ID of the previous tab.
+  if numspells == 0 then
+    -- New characters pre level 10 only have 2 tabs.
+    local _, _, offs, numspells = GetSpellTabInfo(2)
+    max = offs + numspells
+  end
+
+  for spellBookID = 1, max do
+    local type, baseSpellID = GetSpellBookItemInfo(spellBookID, BOOKTYPE_SPELL)
+    if type == "SPELL" or type == "PETACTION" then
+      local name = GetSpellBookItemName(spellBookID, BOOKTYPE_SPELL)
+
+      local spellName = GetSpellInfo(baseSpellID)
+
+      -- This part is for talents that replace other spells
+      if spellName ~= name then
+        local link = GetSpellLink(spellName)
+        if link then
+          local number = link:match("spell:(%d+)");
+          local overrideSpellID = tonumber(number)
+
+          WeakAuras.overrideSpellMappings[name] = overrideSpellID
+          WeakAuras.overrideKnownSpells[name] = true
+          WeakAuras.overrideKnownSpells[overrideSpellID] = true
+          -- print("override ", name, overrideSpellID)
+        end
+      else
+        -- For multi-spec same talent but different spell ID
+        local link = GetSpellLink(spellName)
+        if link then
+          local number = link:match("spell:(%d+)");
+          local overrideSpellID = tonumber(number)
+
+          if overrideSpellID ~= baseSpellID then
+            WeakAuras.overrideSpellMappings[name] = overrideSpellID
+            WeakAuras.overrideKnownSpells[name] = true
+            WeakAuras.overrideKnownSpells[overrideSpellID] = true
+            -- print("multi-spec", name, overrideSpellID)
+          end
+        end
+      end
+    end
+  end
+end

@@ -1830,6 +1830,7 @@ do
         or event == "PLAYER_TALENT_UPDATE" or event == "CHARACTER_POINTS_CHANGED") then
         Private.CheckCooldownReady();
       elseif(event == "SPELLS_CHANGED") then
+        WeakAuras.FillSpellKnownSpellBook();
         Private.CheckSpellKnown();
         Private.CheckCooldownReady();
       elseif(event == "UNIT_SPELLCAST_SENT") then

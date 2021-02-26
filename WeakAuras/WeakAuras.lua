@@ -5240,6 +5240,10 @@ function WeakAuras.ExtractSpellId(spellName)
     return tonumber(number);
   end
 
+  if WeakAuras.overrideSpellMappings[spellName] then
+    return WeakAuras.overrideSpellMappings[spellName]
+  end
+
   return nil;
 end
 
