@@ -3,10 +3,7 @@ local AddonName, Private = ...
 
 local SharedMedia = LibStub("LibSharedMedia-3.0");
 local L = WeakAuras.L
-local MSQ, MSQ_Version = LibStub("Masque", true);
-if MSQ then
-  MSQ:AddType("WA_Aura", {"Icon", "Cooldown"})
-end
+local MSQ = LibStub("Masque", true);
 
 -- WoW API
 local _G = _G
@@ -29,8 +26,8 @@ local default = {
   frameStrata = 1,
   cooldown = false,
   cooldownTextDisabled = false,
-  cooldownSwipe = true,
-  cooldownEdge = false,
+  -- cooldownSwipe = true,
+  -- cooldownEdge = false,
   subRegions = {}
 };
 
@@ -287,9 +284,8 @@ local function modify(parent, region, data)
     local masqueId = data.id:lower():gsub(" ", "_");
     if region.masqueId ~= masqueId then
       region.masqueId = masqueId
-      region.MSQGroup = MSQ:Group("WeakAuras", region.masqueId, data.uid);
-      region.MSQGroup:SetName(data.id)
-      region.MSQGroup:AddButton(button, {Icon = icon, Cooldown = cooldown}, "WA_Aura", true);
+      region.MSQGroup = MSQ:Group("WeakAuras", region.masqueId);
+      region.MSQGroup:AddButton(button, {Icon = icon, Cooldown = cooldown});
       button.data = data
     end
   end

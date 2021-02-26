@@ -125,7 +125,7 @@ local function animRotate(object, degrees, anchor)
     rotate:SetDuration(0);
     rotate:SetEndDelay(2147483647);
     group:Play();
-    rotate:SetSmoothProgress(1);
+    -- rotate:SetSmoothProgress(1);
     group:Pause();
   end
 end
