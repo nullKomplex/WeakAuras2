@@ -661,12 +661,19 @@ while(GetClassInfo(classID)) do
   classID = classID + 1;
 end
 
-function WeakAuras.CheckTalentByIndex(index)
+function WeakAuras.CheckTalentByIndex(index, extraOption)
+  -- There is no "known" flag for MoP which is used by recent WA builds from retail.
+  -- There is selected and available. 
+  -- Talent "known" in retail is used for cases, where you can have multiple talents in same row 
+  -- (like Legion legendaries, Torghast etc).
+
   return MAX_NUM_TALENTS and select(5, GetTalentInfo(index)) == true
-  -- local tier = ceil(index / 3)
-  -- local column = (index - 1) % 3 + 1
-  -- local _, _, _, selected, _, _, _, _, _, _, known  = GetTalentInfo(tier, column, 1)
-  -- return selected or known;
+  -- local _, _, _, _, selected, available = GetTalentInfo(index);
+  -- if extraOption == 0 or extraOption == 2 then
+  --   return selected or available
+  -- else
+  --   return selected
+  -- end
 end
 
 function WeakAuras.CheckNumericIds(loadids, currentId)
@@ -741,10 +748,12 @@ end
 
 function WeakAuras.CheckCombatLogFlags(flags, flagToCheck)
   if type(flags) ~= "number" then return end
-  if (flagToCheck == "InGroup") then
-    return bit.band(flags, 7) > 0;
+  if(flagToCheck == "Mine") then
+    return bit.band(flags, COMBATLOG_OBJECT_AFFILIATION_MINE) > 0
+  elseif (flagToCheck == "InGroup") then
+    return bit.band(flags, COMBATLOG_OBJECT_AFFILIATION_OUTSIDER) == 0
   elseif (flagToCheck == "NotInGroup") then
-    return bit.band(flags, 7) == 0;
+    return bit.band(flags, COMBATLOG_OBJECT_AFFILIATION_OUTSIDER) > 0
   end
 end
 
@@ -922,6 +931,15 @@ Private.load_prototype = {
       events = {"ENCOUNTER_START", "ENCOUNTER_END"}
     },
     {
+      name = "alive",
+      display = L["Alive"],
+      type = "tristate",
+      init = "arg",
+      width = WeakAuras.normalWidth,
+      optional = true,
+      events = {"PLAYER_DEAD", "PLAYER_ALIVE", "PLAYER_UNGHOST"}
+    },
+    {
       name = "never",
       display = L["Never"],
       type = "toggle",
@@ -1068,33 +1086,61 @@ Private.load_prototype = {
     },
     {
       name = "talent",
-      display = L["Talent selected"],
+      display = L["Talent"],
       type = "multiselect",
       values = valuesForTalentFunction,
-      test = "WeakAuras.CheckTalentByIndex(%d)",
-      events = {"PLAYER_TALENT_UPDATE"}
+      test = "WeakAuras.CheckTalentByIndex(%d, %d)",
+      events = {"PLAYER_TALENT_UPDATE"},
+      inverse = function(load)
+        -- Check for multi select!
+        return load.talent_extraOption == 2 or load.talent_extraOption == 3
+      end,
+      extraOption = {
+        display = "",
+        values = function()
+          return Private.talent_extra_option_types
+        end
+      },
     },
     {
       name = "talent2",
-      display = L["And Talent selected"],
+      display = L["And Talent"],
       type = "multiselect",
       values = valuesForTalentFunction,
-      test = "WeakAuras.CheckTalentByIndex(%d)",
+      test = "WeakAuras.CheckTalentByIndex(%d, %d)",
       enable = function(trigger)
         return trigger.use_talent ~= nil or trigger.use_talent2 ~= nil;
       end,
-      events = {"PLAYER_TALENT_UPDATE"}
+      events = {"PLAYER_TALENT_UPDATE"},
+      inverse = function(load)
+        return load.talent2_extraOption == 2 or load.talent2_extraOption == 3
+      end,
+      extraOption = {
+        display = "",
+        values = function()
+          return Private.talent_extra_option_types
+        end,
+      }
     },
     {
       name = "talent3",
-      display = L["And Talent selected"],
+      display = L["And Talent"],
       type = "multiselect",
       values = valuesForTalentFunction,
-      test = "WeakAuras.CheckTalentByIndex(%d)",
+      test = "WeakAuras.CheckTalentByIndex(%d, %d)",
       enable = function(trigger)
         return (trigger.use_talent ~= nil and trigger.use_talent2 ~= nil) or trigger.use_talent3 ~= nil;
       end,
-      events = {"PLAYER_TALENT_UPDATE"}
+      events = {"PLAYER_TALENT_UPDATE"},
+      inverse = function(load)
+        return load.talent3_extraOption == 2 or load.talent3_extraOption == 3
+      end,
+      extraOption = {
+        display = "",
+        values = function()
+          return Private.talent_extra_option_types
+        end,
+      },
     },
     {
       name = "spellknown",
@@ -2664,7 +2710,7 @@ Private.event_prototypes = {
       },
       {
         name = "sourceFlags",
-        display = L["Source In Group"],
+        display = L["Source Affiliation"],
         type = "select",
         values = "combatlog_flags_check_type",
         init = "arg",
@@ -2760,7 +2806,7 @@ Private.event_prototypes = {
       },
       {
         name = "destFlags",
-        display = L["Destination In Group"],
+        display = L["Destination Affiliation"],
         type = "select",
         values = "combatlog_flags_check_type",
         init = "arg",
@@ -3331,7 +3377,7 @@ Private.event_prototypes = {
 
             if trigger.use_ignoreSpellKnown then
               if text ~= "" then text = text .. "; " end
-              text = text .. L["Ignore Unknown Spell"]
+              text = text .. L["Disabled Spell Known Check"]
             end
 
             if trigger.genericShowOn ~= "showOnReady" and trigger.track ~= "cooldown" then
@@ -4893,7 +4939,7 @@ Private.event_prototypes = {
     hasSpellID = true,
     automaticrequired = true
   },
-  ["Talent Known"] = {
+  ["Talent Available"] = {
     type = "unit",
     events = {
       ["events"] = {
@@ -4901,7 +4947,7 @@ Private.event_prototypes = {
       }
     },
     force_events = "PLAYER_TALENT_UPDATE",
-    name = L["Talent Selected"],
+    name = L["Talent Available"],
     init = function(trigger)
       local inverse = trigger.use_inverse;
       if (trigger.use_talent) then
@@ -4910,11 +4956,21 @@ Private.event_prototypes = {
 
         local ret = [[
           local index = %s;
-          local active, _, activeName, activeIcon, selected, known
+          local active, activeName, activeIcon, selected, available
 
-          activeName, activeIcon, _, _, selected, known  = GetTalentInfo(index)
-          active = selected or known;
+          activeName, activeIcon, _, _, selected, available  = GetTalentInfo(index)
         ]]
+                
+        if trigger.use_onlySelected then
+          ret = ret .. [[
+          active = selected
+          ]]
+        else
+          ret = ret .. [[
+          active = selected or available
+          ]]
+        end
+
         if (inverse) then
           ret = ret .. [[
           active = not (active);
@@ -4933,12 +4989,28 @@ Private.event_prototypes = {
             local ret2 = [[
               if (not active) then
                 index = %s
-                local name, icon, _, _, selected, known  = GetTalentInfo(index)
-                if (selected or known) then
+                local name, icon, _, _, selected, available  = GetTalentInfo(index)
+            ]]
+            
+            if trigger.use_onlySelected then
+              ret2 = ret2 .. [[
+                if (selected) then
                   active = true;
                   activeName = name;
                   activeIcon = icon;
                 end
+              ]]
+            else
+              ret2 = ret2 .. [[
+                if (selected or available) then
+                  active = true;
+                  activeName = name;
+                  activeIcon = icon;
+                end
+              ]]
+            end
+
+            ret2 = ret2 .. [[
               end
             ]]
             ret = ret .. ret2:format(index);
@@ -4956,7 +5028,7 @@ Private.event_prototypes = {
     args = {
       {
         name = "talent",
-        display = L["Talent selected"],
+        display = L["Talent"],
         type = "multiselect",
         values = function()
           local class = select(2, UnitClass("player"));
@@ -4967,6 +5039,14 @@ Private.event_prototypes = {
           end
         end,
         test = "active",
+      },
+      {
+        name = "onlySelected",
+        display = L["Only if selected"],
+        type = "boolean",
+        test = "true",
+        enable = not WeakAuras.IsClassic(),
+        hidden = WeakAuras.IsClassic(),
       },
       {
         name = "inverse",
@@ -6380,7 +6460,7 @@ Private.event_prototypes = {
     end,
     internal_events = function(trigger)
       local unit = trigger.unit
-      local result = {"CAST_REMAINING_CHECK"}
+      local result = {"CAST_REMAINING_CHECK_" .. string.lower(unit)}
       if WeakAuras.IsClassic() and unit ~= "player" then
         tinsert(result, "UNIT_SPELLCAST_START")
         tinsert(result, "UNIT_SPELLCAST_DELAYED")
@@ -6837,7 +6917,7 @@ Private.event_prototypes = {
         name = "criticalrating",
         display = L["Critical Rating"],
         type = "number",
-        init = "GetCombatRating(CR_CRIT_SPELL)",
+        init = "max(GetCombatRating(CR_CRIT_MELEE), GetCombatRating(CR_CRIT_RANGED), GetCombatRating(CR_CRIT_SPELL))",
         store = true,
         -- enable = not WeakAuras.IsClassic(),
         conditionType = "number",

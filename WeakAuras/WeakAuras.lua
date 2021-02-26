@@ -595,7 +595,11 @@ local function ConstructFunction(prototype, trigger, skipOptional)
                   if not arg.test then
                     test = test..name.."=="..(tonumber(value) or "[["..value.."]]").." or ";
                   else
-                    test = test..arg.test:format(tonumber(value) or "[["..value.."]]").." or ";
+                    if arg.extraOption then
+                      test = test..arg.test:format(tonumber(value) or "[["..value.."]]", trigger[name .. "_extraOption"] or 0).." or ";
+                    else
+                      test = test..arg.test:format(tonumber(value) or "[["..value.."]]").." or ";
+                    end
                   end
                   any = true;
                 end
@@ -604,7 +608,16 @@ local function ConstructFunction(prototype, trigger, skipOptional)
                 else
                   test = "(false";
                 end
-                test = test..")";
+                test = test..")"
+                if arg.inverse then
+                  if type(arg.inverse) == "boolean" then
+                    test = "not " .. test
+                  elseif type(arg.inverse) == "function" then
+                    if arg.inverse(trigger) then
+                      test = "not " .. test
+                    end
+                  end
+                end
               end
             elseif(trigger["use_"..name]) then -- single selection
               -- Old WA compatibility check
@@ -1361,6 +1374,7 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
   local _, class = UnitClass("player")
   local inCombat = UnitAffectingCombat("player")
   local inEncounter = encounter_id ~= 0;
+  local alive = not UnitIsDeadOrGhost('player')
 
   if WeakAuras.IsClassic() then
     -- local raidID = UnitInRaid("player")
@@ -1406,8 +1420,8 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
       local loadFunc = loadFuncs[id];
       local loadOpt = loadFuncsForOptions[id];
 
-      shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, difficultyIndex, role);
-      couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, difficultyIndex, role);
+      shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", inCombat, inEncounter, alive, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, difficultyIndex, role);
+      couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   inCombat, inEncounter, alive, inPetBattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, difficultyIndex, role);
 
       if(shouldBeLoaded and not loaded[id]) then
         changed = changed + 1;
@@ -1495,6 +1509,9 @@ loadFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");
 loadFrame:RegisterEvent("SPELLS_CHANGED");
 loadFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
 loadFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+loadFrame:RegisterEvent("PLAYER_DEAD")
+loadFrame:RegisterEvent("PLAYER_ALIVE")
+loadFrame:RegisterEvent("PLAYER_UNGHOST")
 
 local unitLoadFrame = CreateFrame("FRAME");
 WeakAuras.unitLoadFrame = unitLoadFrame;

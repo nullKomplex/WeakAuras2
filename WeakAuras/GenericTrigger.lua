@@ -3226,7 +3226,7 @@ do
 
   local function doCastScan(firetime, unit)
     scheduled_scans[unit][firetime] = nil;
-    WeakAuras.ScanEvents("CAST_REMAINING_CHECK", unit);
+    WeakAuras.ScanEvents("CAST_REMAINING_CHECK_" .. string.lower(unit), unit);
   end
   function WeakAuras.ScheduleCastCheck(fireTime, unit)
     scheduled_scans[unit] = scheduled_scans[unit] or {}
@@ -3806,6 +3806,21 @@ WeakAuras.GetItemSubClassInfo = function(i)
   local subClassId = i % 256
   local classId = (i - subClassId) / 256
   return select(subClassId, GetAuctionItemSubClasses(classId))
+end
+
+if WeakAuras.IsClassic() then
+  WeakAuras.GetCritChance = function()
+    return max(GetRangedCritChance(), GetCritChance())
+  end
+else
+  WeakAuras.GetCritChance = function()
+    -- Based on what the wow paper doll does
+    local spellCrit = GetSpellCritChance(2)
+    for i = 3, MAX_SPELL_SCHOOLS do
+      spellCrit = min(spellCrit, GetSpellCritChance(i))
+    end
+    return max(spellCrit, GetRangedCritChance(), GetCritChance())
+  end
 end
 
 local types = {}
