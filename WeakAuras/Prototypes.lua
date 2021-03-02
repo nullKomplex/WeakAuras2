@@ -5513,10 +5513,12 @@ Private.event_prototypes = {
         end
       ]];
 
+      local showOnActive = trigger.showOn == 'showOnActive' or not trigger.showOn
+
       return ret:format(trigger.weapon or "main",
       trigger.use_enchant and trigger.enchant or "",
-      trigger.use_stack and tonumber(trigger.stack or 0) or "nil",
-      trigger.use_remaining and tonumber(trigger.remaining or 0) or "nil",
+      showOnActive and trigger.use_stack and tonumber(trigger.stack or 0) or "nil",
+      showOnActive and trigger.use_remaining and tonumber(trigger.remaining or 0) or "nil",
       trigger.showOn or "showOnActive",
       trigger.stack_operator or "<",
       trigger.remaining_operator or "<")
@@ -5536,6 +5538,17 @@ Private.event_prototypes = {
         display = L["Weapon Enchant"],
         type = "string",
         test = "true"
+      },
+      {
+        name = "stacks",
+        display = L["Stack Count"],
+        type = "number",
+        test = "true",
+        enable = function(trigger)
+          return WeakAuras.IsClassic() and (not trigger.showOn or trigger.showOn == "showOnActive")
+        end,
+        hidden = not WeakAuras.IsClassic(),
+        store = true
       },
       {
         name = "duration",
@@ -5588,7 +5601,10 @@ Private.event_prototypes = {
         name = "remaining",
         display = L["Remaining Time"],
         type = "number",
-        test = "true"
+        test = "true",
+        enable = function(trigger)
+          return not trigger.showOn or trigger.showOn == "showOnActive"
+        end
       },
       {
         name = "showOn",
@@ -7695,12 +7711,13 @@ Private.dynamic_texts = {
         if not state.expirationTime or not state.duration then
           return nil
         end
-        local remaining  = state.expirationTime - GetTime();
+        local remaining = state.expirationTime - GetTime();
         return remaining >= 0 and remaining or nil
       end
     end,
     func = function(remaining, state, progressPrecision)
       progressPrecision = progressPrecision or 1
+
       if not state or state.progressType ~= "timed" then
         return remaining
       end

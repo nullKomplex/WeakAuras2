@@ -1,5 +1,5 @@
 local MAJOR_VERSION = "LibRetail"
-local MINOR_VERSION = 1
+local MINOR_VERSION = 2
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
@@ -21,7 +21,7 @@ if tbl then
 	end
 
 	setfenv(1, tbl);
-	
+
 	function lib.Mixin(object, ...)
 		for i = 1, select("#", ...) do
 			local mixin = select(i, ...);
@@ -36,7 +36,7 @@ if tbl then
 	function lib.CreateFromMixins(...)
 		return lib.Mixin({}, ...)
 	end
-	
+
 	Import("math");
 	Import("GetTickTime");
 end
@@ -339,7 +339,7 @@ function lib.FixedSizeFramePoolCollectionMixin:CreatePool(frameType, parent, tem
 	return pool;
 end
 
-function lib.FixedSizeFramePoolCollectionMixin:Acquire(template)	
+function lib.FixedSizeFramePoolCollectionMixin:Acquire(template)
 	local pool = self:GetPool(template);
 	assert(pool);
 

@@ -764,6 +764,8 @@ function WeakAuras.regionPrototype.AddExpandFunction(data, region, cloneId, pare
       Private.RunConditions(region, uid, true)
       region.subRegionEvents:Notify("PreHide")
       region:Hide();
+      region.states = nil
+      region.state = nil
       if (cloneId) then
         Private.ReleaseClone(region.id, cloneId, data.regionType);
         parent:RemoveChild(id, cloneId)
@@ -779,6 +781,8 @@ function WeakAuras.regionPrototype.AddExpandFunction(data, region, cloneId, pare
       Private.RunConditions(region, uid, true)
       region.subRegionEvents:Notify("PreHide")
       region:Hide();
+      region.states = nil
+      region.state = nil
       if (cloneId) then
         Private.ReleaseClone(region.id, cloneId, data.regionType);
       end
@@ -815,7 +819,6 @@ function WeakAuras.regionPrototype.AddExpandFunction(data, region, cloneId, pare
 
       region.subRegionEvents:Notify("PreShow")
 
-      region.justCreated = nil;
       Private.ApplyFrameLevel(region)
       region:Show();
       Private.PerformActions(data, "start", region);
@@ -833,6 +836,8 @@ function WeakAuras.regionPrototype.AddExpandFunction(data, region, cloneId, pare
         return;
       end
       region.toShow = false;
+      region.states = nil
+      region.state = nil
       region:SetScript("OnUpdate", nil)
 
       Private.PerformActions(data, "finish", region);
@@ -864,7 +869,6 @@ function WeakAuras.regionPrototype.AddExpandFunction(data, region, cloneId, pare
       end
       region.toShow = true;
 
-      region.justCreated = nil;
       if(region.PreShow) then
         region:PreShow();
       end
