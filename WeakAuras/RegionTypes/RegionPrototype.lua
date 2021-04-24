@@ -836,8 +836,6 @@ function WeakAuras.regionPrototype.AddExpandFunction(data, region, cloneId, pare
         return;
       end
       region.toShow = false;
-      region.states = nil
-      region.state = nil
       region:SetScript("OnUpdate", nil)
 
       Private.PerformActions(data, "finish", region);

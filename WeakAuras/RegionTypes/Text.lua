@@ -80,7 +80,6 @@ local function modify(parent, region, data)
   if not text:GetFont() then -- Font invalid, set the font but keep the setting
     text:SetFont(STANDARD_TEXT_FONT, data.fontSize, data.outline);
   end
-  text.displayText = data.displayText;
   text:SetJustifyH(data.justify);
 
   text:ClearAllPoints();
@@ -135,8 +134,8 @@ local function modify(parent, region, data)
       local height = text:GetStringHeight();
 
       if(region.height ~= height) then
-        region.height = text:GetStringHeight();
-        region:SetHeight(region.height);
+        region.height = height
+        region:SetHeight(height)
         if(data.parent and WeakAuras.regions[data.parent].region.PositionChildren) then
           WeakAuras.regions[data.parent].region:PositionChildren();
         end
