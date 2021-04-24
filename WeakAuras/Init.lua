@@ -31,8 +31,8 @@ function WeakAuras.IsCorrectVersion()
   return true
 end
 
-WeakAuras.prettyPrint = function(msg)
-  print("|cff9900ffWeakAuras:|r " .. msg)
+WeakAuras.prettyPrint = function(...)
+  print("|cff9900ffWeakAuras:|r ", ...)
 end
 
 -- Force enable WeakAurasCompanion and Archive because some addon managers interfere with it

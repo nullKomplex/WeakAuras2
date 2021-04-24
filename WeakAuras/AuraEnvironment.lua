@@ -3,7 +3,6 @@ local AddonName, Private = ...
 
 local WeakAuras = WeakAuras
 local L = WeakAuras.L
-local prettyPrint = WeakAuras.prettyPrint
 
 local Retail = LibStub("LibRetail")
 

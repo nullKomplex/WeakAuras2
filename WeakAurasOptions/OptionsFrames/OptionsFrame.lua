@@ -20,7 +20,6 @@ local L = WeakAuras.L
 local displayButtons = WeakAuras.displayButtons
 local regionOptions = WeakAuras.regionOptions
 local tempGroup = OptionsPrivate.tempGroup
-local prettyPrint = WeakAuras.prettyPrint
 local aceOptions = {}
 
 local function CreateDecoration(frame)
@@ -853,10 +852,8 @@ function OptionsPrivate.CreateFrame()
         data = tempGroup
       end
 
-      if data.controlledChildren then
-        for _, id in ipairs(data.controlledChildren) do
-          frame:ClearOptions(id)
-        end
+      for child in OptionsPrivate.Private.TraverseAllChildren(data) do
+        frame:ClearOptions(child.id)
       end
     end
     if (type(self.pickedDisplay) == "string" and self.pickedDisplay == id)
