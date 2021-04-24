@@ -1803,7 +1803,7 @@ Private.event_prototypes = {
         name = "percentXP",
         display = L["Experience (%)"],
         type = "number",
-        init = "total ~= 0 and (value / total) * 100",
+        init = "total ~= 0 and (value / total) * 100 or nil",
         store = true,
         conditionType = "number"
       },
@@ -1825,7 +1825,7 @@ Private.event_prototypes = {
       {
         name = "percentrested",
         display = L["Rested Experience (%)"],
-        init = "total ~= 0 and (restedXP / total) * 100",
+        init = "total ~= 0 and (restedXP / total) * 100 or nil",
         type = "number",
         store = true,
         conditionType = "number",
@@ -1931,7 +1931,7 @@ Private.event_prototypes = {
         name = "percenthealth",
         display = L["Health (%)"],
         type = "number",
-        init = "total ~= 0 and (value / total) * 100",
+        init = "total ~= 0 and (value / total) * 100 or nil",
         store = true,
         conditionType = "number"
       },
@@ -2311,7 +2311,7 @@ Private.event_prototypes = {
         name = "percentpower",
         display = L["Power (%)"],
         type = "number",
-        init = "total ~= 0 and (value / total) * 100",
+        init = "total ~= 0 and (value / total) * 100 or nil",
         store = true,
         conditionType = "number"
       },
