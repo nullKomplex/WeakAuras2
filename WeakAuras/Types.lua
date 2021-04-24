@@ -2045,16 +2045,8 @@ Private.instance_types = {
   fortyman = L["40 Man Raid"],
   flexible = L["Flex Raid"],
   pvp = L["Battleground"],
-  arena = L["Arena"],
-  ratedpvp = L["Rated Battleground"],
-  ratedarena = L["Rated Arena"]
+  arena = L["Arena"]
 }
-
-if WeakAuras.IsClassic() then
-  Private.instance_types["ratedpvp"] = nil
-  Private.instance_types["arena"] = nil
-  Private.instance_types["ratedarena"] = nil
-end
 
 Private.instance_difficulty_types = {
 
