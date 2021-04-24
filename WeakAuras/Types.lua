@@ -2584,6 +2584,7 @@ Private.internal_fields = {
   uid = true,
   internalVersion = true,
   sortHybridTable = true,
+  tocversion = true,
 }
 
 -- fields that are not included in exported data

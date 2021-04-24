@@ -58,6 +58,7 @@ globals = {
 	"BigWigs",
 	"BigWigsLoader",
 	"DBM",
+	"DBT",
 	"ElvUIPlayerNamePlateAnchor",
 	"GTFO",
 	"IndentationLib",

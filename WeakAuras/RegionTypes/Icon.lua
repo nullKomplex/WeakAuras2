@@ -534,7 +534,21 @@ local function modify(parent, region, data)
     function region:Update()
       local state = region.state
       if state.progressType == "timed" then
-        local expirationTime = state.expirationTime and state.expirationTime > 0 and state.expirationTime or math.huge;
+        local expirationTime
+        if state.paused == true then
+          if not region.paused then
+            region:Pause()
+            cooldown:Pause()
+          end
+          expirationTime = GetTime() + (state.remaining or 0)
+        else
+          if region.paused then
+            region:Resume()
+            cooldown:Resume()
+          end
+          expirationTime = state.expirationTime and state.expirationTime > 0 and state.expirationTime or math.huge;
+        end
+
         local duration = state.duration or 0
         if region.adjustedMinRelPercent then
           region.adjustedMinRel = region.adjustedMinRelPercent * duration
@@ -554,7 +568,6 @@ local function modify(parent, region, data)
         end
 
         region:SetTime(max - adjustMin, expirationTime - adjustMin, state.inverse);
-        -- cooldown:Resume()
       elseif state.progressType == "static" then
         local value = state.value or 0;
         local total = state.total or 0;
@@ -564,7 +577,7 @@ local function modify(parent, region, data)
         local adjustMin = region.adjustedMin or region.adjustedMinRel or 0;
         local max = region.adjustedMax or region.adjustedMaxRel or total;
         region:SetValue(value - adjustMin, max - adjustMin);
-        -- cooldown:Pause()
+        cooldown:Pause()
       else
         region:SetTime(0, math.huge)
       end
