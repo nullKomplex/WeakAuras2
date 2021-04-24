@@ -3432,7 +3432,7 @@ function WeakAuras.GetAuraTooltipInfo(unit, index, filter)
   local tooltip = WeakAuras.GetHiddenTooltip();
   tooltip:ClearLines();
   tooltip:SetUnitAura(unit, index, filter);
-  local tooltipTextLine = select(5, tooltip:GetRegions())
+  local debuffTypeLine, tooltipTextLine = select(11, tooltip:GetRegions())
 
   local tooltipText = tooltipTextLine and tooltipTextLine:GetObjectType() == "FontString" and tooltipTextLine:GetText() or "";
   local debuffType = "none";
