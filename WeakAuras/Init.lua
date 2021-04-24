@@ -27,6 +27,10 @@ function WeakAuras.IsClassic()
   return false
 end
 
+function WeakAuras.IsBC()
+  return false
+end
+
 function WeakAuras.IsCorrectVersion()
   return true
 end
