@@ -7721,10 +7721,6 @@ Private.dynamic_texts = {
         return state.value or nil
       end
       if state.progressType == "timed" then
-        if state.paused then
-          return state.remaining and state.remaining >= 0 and state.remaining or nil
-        end
-
         if not state.expirationTime or not state.duration then
           return nil
         end

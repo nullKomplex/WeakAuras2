@@ -1236,33 +1236,15 @@ local function modify(parent, region, data)
     local state = region.state
     region:UpdateMinMax()
     if state.progressType == "timed" then
-      local expirationTime
-      if state.paused == true then
-        if not region.paused then
-          region:Pause()
-        end
-        if region.TimerTick then
-          region.TimerTick = nil
-          region:UpdateRegionHasTimerTick()
-        end
-        expirationTime = GetTime() + (state.remaining or 0)
-      else
-        if region.paused then
-          region:Resume()
-        end
-        if not region.TimerTick then
-          region.TimerTick = TimerTick
-          region:UpdateRegionHasTimerTick()
-        end
-        expirationTime = state.expirationTime and state.expirationTime > 0 and state.expirationTime or math.huge;
-      end
+      local expirationTime = state.expirationTime and state.expirationTime > 0 and state.expirationTime or math.huge;
       local duration = state.duration or 0
 
       region:SetTime(region.currentMax - region.currentMin, expirationTime - region.currentMin, state.inverse);
-    elseif state.progressType == "static" then
-      if region.paused then
-        region:Resume()
+      if not region.TimerTick then
+        region.TimerTick = TimerTick
+        region:UpdateRegionHasTimerTick()
       end
+    elseif state.progressType == "static" then
       local value = state.value or 0;
       local total = state.total or 0;
 
@@ -1272,9 +1254,6 @@ local function modify(parent, region, data)
         region:UpdateRegionHasTimerTick()
       end
     else
-      if region.paused then
-        region:Resume()
-      end
       region:SetTime(0, math.huge)
       if region.TimerTick then
         region.TimerTick = nil
