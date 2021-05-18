@@ -15,6 +15,7 @@ local wipe, tinsert = wipe, tinsert
 local GetNumShapeshiftForms, GetShapeshiftFormInfo = GetNumShapeshiftForms, GetShapeshiftFormInfo
 local GetNumSpecializationsForClassID, GetSpecializationInfoForClassID = GetNumSpecializationsForClassID, GetSpecializationInfoForClassID
 local WrapTextInColorCode = WrapTextInColorCode
+local MAX_NUM_TALENTS = MAX_NUM_TALENTS or 20
 
 local function WA_GetClassColor(classFilename)
   local color = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[classFilename]
@@ -1082,6 +1083,7 @@ Private.subevent_suffix_types = {
   _DAMAGE = L["Damage"],
   _MISSED = L["Missed"],
   _HEAL = L["Heal"],
+  _HEAL_ABSORBED = L["Heal Absorbed"],
   _ENERGIZE = L["Energize"],
   _DRAIN = L["Drain"],
   _INTERRUPT = L["Interrupt"],
@@ -1272,9 +1274,9 @@ if WeakAuras.IsRetail() then
     tier = 1
   end
 else
-  for tab = 1, 5 do
-    for num_talent = 1, 20 do
-      local talentId = (tab - 1)*20+num_talent
+  for tab = 1, GetNumTalentTabs() do
+    for num_talent = 1, GetNumTalents(tab) do
+      local talentId = (tab - 1) * MAX_NUM_TALENTS + num_talent
       Private.talent_types[talentId] = L["Tab "]..tab.." - "..num_talent
     end
   end

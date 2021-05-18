@@ -592,7 +592,7 @@ local function replaceNameDescFuncs(intable, data, subOption)
         end
       end
     end
-    return combinedName;
+    return combinedName or "";
   end
 
   local function descAll(info)
