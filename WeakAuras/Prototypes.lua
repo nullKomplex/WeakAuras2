@@ -1852,7 +1852,7 @@ Private.event_prototypes = {
       local result = {}
       AddUnitEventForEvents(result, unit, "UNIT_HEALTH")
       AddUnitEventForEvents(result, unit, "UNIT_NAME_UPDATE")
-      if not WeakAuras.IsClassic() then
+      if WeakAuras.IsRetail() then
         if trigger.use_showAbsorb then
           AddUnitEventForEvents(result, unit, "UNIT_ABSORB_AMOUNT_CHANGED")
         end
@@ -6110,7 +6110,7 @@ Private.event_prototypes = {
         required = true,
         validate = WeakAuras.ValidateNumeric,
         desc = function()
-          if not WeakAuras.IsClassic() then
+          if WeakAuras.IsRetail() then
             return L["Set IDs can be found on websites such as wowhead.com/item-sets"]
           else
             return L["Set IDs can be found on websites such as classic.wowhead.com/item-sets"]

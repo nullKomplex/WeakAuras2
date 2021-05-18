@@ -1434,7 +1434,7 @@ do
       local name, _, _, _, _, _, _, _, _, icon = GetItemInfo(itemId or 0);
       if(lastSwingMain) then
         return swingDurationMain, lastSwingMain + swingDurationMain - mainSwingOffset, name, icon;
-      elseif not WeakAuras.IsClassic() and lastSwingRange then
+      elseif WeakAuras.IsRetail() and lastSwingRange then
         return swingDurationRange, lastSwingRange + swingDurationRange, name, icon;
       else
         return 0, math.huge, name, icon;
@@ -1673,7 +1673,7 @@ do
   local function CheckGCD()
     local event;
     local startTime, duration
-    if WeakAuras.IsClassic() then
+    if WeakAuras.IsClassic() or WeakAuras.IsBC() then
       startTime, duration = GetSpellCooldown(29515);
       shootStart, shootDuration = GetSpellCooldown(5019)
     else
@@ -1815,7 +1815,7 @@ do
   function WeakAuras.InitCooldownReady()
     cdReadyFrame = CreateFrame("FRAME");
     WeakAuras.frames["Cooldown Trigger Handler"] = cdReadyFrame
-    if not WeakAuras.IsClassic() then
+    if WeakAuras.IsRetail() then
       cdReadyFrame:RegisterEvent("RUNE_POWER_UPDATE");
       cdReadyFrame:RegisterEvent("PLAYER_TALENT_UPDATE");
     else
@@ -2489,7 +2489,7 @@ function WeakAuras.WatchUnitChange(unit)
 
     WeakAuras.frames["Unit Change Frame"] = watchUnitChange;
     watchUnitChange:RegisterEvent("PLAYER_TARGET_CHANGED")
-    if not WeakAuras.IsClassic() then
+    if WeakAuras.IsRetail() then
       watchUnitChange:RegisterEvent("PLAYER_FOCUS_CHANGED");
     else
       watchUnitChange:RegisterEvent("PLAYER_ROLES_ASSIGNED")

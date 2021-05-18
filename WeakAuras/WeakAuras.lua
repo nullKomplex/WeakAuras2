@@ -1034,7 +1034,7 @@ loadedFrame:RegisterEvent("PLAYER_LOGIN");
 loadedFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 loadedFrame:RegisterEvent("LOADING_SCREEN_ENABLED");
 loadedFrame:RegisterEvent("LOADING_SCREEN_DISABLED");
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   loadedFrame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
 else
   loadedFrame:RegisterEvent("CHARACTER_POINTS_CHANGED");
@@ -1472,7 +1472,7 @@ WeakAuras.frames["Display Load Handling"] = loadFrame;
 loadFrame:RegisterEvent("ENCOUNTER_START");
 loadFrame:RegisterEvent("ENCOUNTER_END");
 
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   loadFrame:RegisterEvent("PLAYER_TALENT_UPDATE");
   loadFrame:RegisterEvent("PLAYER_DIFFICULTY_CHANGED");
   loadFrame:RegisterEvent("PET_BATTLE_OPENING_START");
@@ -1505,7 +1505,7 @@ WeakAuras.unitLoadFrame = unitLoadFrame;
 WeakAuras.frames["Display Load Handling 2"] = unitLoadFrame;
 
 unitLoadFrame:RegisterUnitEvent("UNIT_FLAGS", "player");
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   unitLoadFrame:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player");
   unitLoadFrame:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player");
 end

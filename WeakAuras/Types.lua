@@ -132,7 +132,7 @@ Private.unit_realm_name_types = {
 }
 
 local timeFormatter = {}
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   Retail.Mixin(timeFormatter, Retail.SecondsFormatterMixin)
   timeFormatter:Init(0, Retail.SecondsFormatter.Abbreviation.OneLetter)
 
@@ -1253,7 +1253,7 @@ end
 
 
 Private.talent_types = {}
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   local spec_frame = CreateFrame("frame");
   spec_frame:RegisterEvent("PLAYER_LOGIN")
   spec_frame:SetScript("OnEvent", update_specs);
@@ -1281,7 +1281,7 @@ else
 end
 
 Private.pvp_talent_types = {}
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   for i = 1,10 do
     tinsert(Private.pvp_talent_types, string.format(L["PvP Talent %i"], i));
   end
@@ -2052,7 +2052,7 @@ Private.instance_difficulty_types = {
 
 }
 
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   -- Fill out instance_difficulty_types automatically.
   -- Unfourtunately the names BLizzard gives are not entirely unique,
   -- so try hard to disambiguate them via the type, and if nothing works by
@@ -2376,7 +2376,7 @@ if WeakAuras.IsClassic() then
   Private.pet_behavior_types.assist = nil
 end
 
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   Private.pet_spec_types = {
     [1] = select(2, GetSpecializationInfoByID(74)), -- Ferocity
     [2] = select(2, GetSpecializationInfoByID(81)), -- Tenacity
@@ -2915,7 +2915,7 @@ for i = 1, 4 do
   Private.multiUnitUnits.party["party"..i] = true
 end
 
-if not WeakAuras.IsClassic() then
+if WeakAuras.IsRetail() then
   for i = 1, MAX_BOSS_FRAMES do
     Private.baseUnitId["arena"..i] = true
     Private.baseUnitId["boss"..i] = true
