@@ -90,27 +90,9 @@ if WeakAuras.IsClassic() then
   LibClassicCasterino = LibStub("LibClassicCasterino")
 end
 
--- if not WeakAuras.IsClassic() then
-  WeakAuras.UnitCastingInfo = UnitCastingInfo
--- else
---   WeakAuras.UnitCastingInfo = function(unit)
---     if UnitIsUnit(unit, "player") then
---       return CastingInfo()
---     else
---       return LibClassicCasterino:UnitCastingInfo(unit)
---     end
---   end
--- end
+WeakAuras.UnitCastingInfo = UnitCastingInfo
 
-function WeakAuras.UnitChannelInfo(unit)
-  -- if not WeakAuras.IsClassic() then
-    return UnitChannelInfo(unit)
-  -- elseif UnitIsUnit(unit, "player") then
-  --   return ChannelInfo()
-  -- else
-  --   return LibClassicCasterino:UnitChannelInfo(unit)
-  -- end
-end
+WeakAuras.UnitChannelInfo = UnitChannelInfo
 
 local constants = {
   nameRealmFilterDesc = L[" Filter formats: 'Name', 'Name-Realm', '-Realm'. \n\nSupports multiple entries, separated by commas\n"],
@@ -969,12 +951,12 @@ Private.load_prototype = {
     },
     {
       name = "vehicle",
-      display = WeakAuras.IsClassic() or WeakAuras.IsBC() and L["On Taxi"] or L["In Vehicle"],
+      display = (WeakAuras.IsClassic() or WeakAuras.IsBC()) and L["On Taxi"] or L["In Vehicle"],
       type = "tristate",
       init = "arg",
       width = WeakAuras.normalWidth,
       optional = true,
-      events = WeakAuras.IsClassic() or WeakAuras.IsBC() and {"UNIT_FLAGS"}
+      events = (WeakAuras.IsClassic() or WeakAuras.IsBC()) and {"UNIT_FLAGS"}
                or {"VEHICLE_UPDATE", "UNIT_ENTERED_VEHICLE", "UNIT_EXITED_VEHICLE", "UPDATE_OVERRIDE_ACTIONBAR", "UNIT_FLAGS"}
     },
     {
@@ -2892,7 +2874,7 @@ Private.event_prototypes = {
         enable = function(trigger)
           return trigger.subeventPrefix and (trigger.subeventPrefix:find("SPELL") or trigger.subeventPrefix == "RANGE" or trigger.subeventPrefix:find("DAMAGE"))
         end,
-        test = not WeakAuras.IsRetail() and "GetSpellInfo(%q) == spellName" or nil,
+        test = WeakAuras.IsClassic() and "GetSpellInfo(%q) == spellName" or nil,
         store = true,
         conditionType = "number"
       },

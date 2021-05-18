@@ -1418,7 +1418,7 @@ local oldPowerTriggers = {
 do
   local mh = GetInventorySlotInfo("MainHandSlot")
   local oh = GetInventorySlotInfo("SecondaryHandSlot")
-  local ranged = WeakAuras.IsClassic() or WeakAuras.IsBC() and GetInventorySlotInfo("RangedSlot")
+  local ranged = (WeakAuras.IsClassic() or WeakAuras.IsBC()) and GetInventorySlotInfo("RangedSlot")
 
   local swingTimerFrame;
   local lastSwingMain, lastSwingOff, lastSwingRange;
@@ -1587,11 +1587,13 @@ do
         WeakAuras.ScanEvents(event);
       end
     elseif event == "UNIT_SPELLCAST_START" then
-      -- pause swing timer
-      casting = true
-      lastSwingMain, swingDurationMain, mainSwingOffset = nil, nil, nil
-      lastSwingOff, swingDurationOff = nil, nil
-      WeakAuras.ScanEvents("SWING_TIMER_END")
+      if not Private.noreset_swing_spells[spell] then
+        -- pause swing timer
+        casting = true
+        lastSwingMain, swingDurationMain, mainSwingOffset = nil, nil, nil
+        lastSwingOff, swingDurationOff = nil, nil
+        WeakAuras.ScanEvents("SWING_TIMER_END")
+      end
     end
     Private.StopProfileSystem("generictrigger swing");
   end
@@ -1756,7 +1758,7 @@ do
 
     if duration > 0 then
       if (startTime == gcdStart and duration == gcdDuration)
-          or (WeakAuras.IsClassic() or WeakAuras.IsBC() and duration == shootDuration and startTime == shootStart)
+          or ((WeakAuras.IsClassic() or WeakAuras.IsBC()) and duration == shootDuration and startTime == shootStart)
       then
         -- GCD cooldown, this could mean that the spell reset!
         if self.expirationTime[id] and self.expirationTime[id] > endTime and self.expirationTime[id] ~= 0 then

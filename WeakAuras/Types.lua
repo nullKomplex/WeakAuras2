@@ -189,7 +189,7 @@ local simpleFormatters = {
       return fmt:gsub(" ", ""):format(time)
     end,
     -- Modern Blizzard
-    [2] = not WeakAuras.IsClassic() and function(value)
+    [2] = WeakAuras.IsRetail() and function(value)
       return timeFormatter:Format(value)
     end
   }
@@ -1877,7 +1877,7 @@ Private.swing_types = {
   ["off"] = SECONDARYHANDSLOT
 }
 
-if WeakAuras.IsClassic() then
+if WeakAuras.IsClassic() or WeakAuras.IsBC() then
   Private.swing_types["ranged"] = RANGEDSLOT
 end
 
@@ -2975,6 +2975,35 @@ Private.reset_ranged_swing_spells = {
   [75] = true, -- Auto Shot
 }
 
+Private.noreset_swing_spells = {
+  [23063] = true, -- Dense Dynamite
+  [4054] = true, -- Rough Dynamite
+  [4064] = true, -- Rough Copper Bomb
+  [4061] = true, -- Coarse Dynamite
+  [8331] = true, -- Ez-Thro Dynamite
+  [4065] = true, -- Large Copper Bomb
+  [4066] = true, -- Small Bronze Bomb
+  [4062] = true, -- Heavy Dynamite
+  [4067] = true, -- Big Bronze Bomb
+  [4068] = true, -- Iron Grenade
+  [23000] = true, -- Ez-Thro Dynamite II
+  [12421] = true, -- Mithril Frag Bomb
+  [4069] = true, -- Big Iron Bomb
+  [12562] = true, -- The Big One
+  [12543] = true, -- Hi-Explosive Bomb
+  [19769] = true, -- Thorium Grenade
+  [19784] = true, -- Dark Iron Bomb
+  [30216] = true, -- Fel Iron Bomb
+  [19821] = true, -- Arcane Bomb
+  [39965] = true, -- Frost Grenade
+  [30461] = true, -- The Bigger One
+  [30217] = true, -- Adamantite Grenade
+  [35476] = true, -- Drums of Battle
+  [35475] = true, -- Drums of War
+  [35477] = true, -- Drums of Speed
+  [35478] = true, -- Drums of Restoration
+  --35474 Drums of Panic DO reset the swing timer, do not add
+}
 
 Private.item_weapon_types = {}
 
@@ -3166,6 +3195,7 @@ if WeakAuras.IsClassic() then
     2973, 14260, 14261, 14262, 14263, 14264, 14265, 14266, -- Raptor Strike
     6807, 6808, 6809, 8972, 9745, 9880, 9881, -- Maul
     20549, -- War Stomp
+    2480, 7919, 7918, 2764, 5019, -- Shoots
   }
   for i, spellid in ipairs(reset_swing_spell_list) do
     Private.reset_swing_spells[spellid] = true

@@ -31,6 +31,10 @@ function WeakAuras.IsBC()
   return false
 end
 
+function WeakAuras.IsRetail()
+  return true
+end
+
 function WeakAuras.IsCorrectVersion()
   return true
 end

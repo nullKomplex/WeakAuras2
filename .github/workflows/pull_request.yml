@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         with:
-          fetch-depth: 500
+          fetch-depth: 200
 
       - name: Install and run Luacheck
         uses: nebularg/actions-luacheck@v1
@@ -43,7 +43,7 @@ jobs:
       - name: Create BC Package
         uses: BigWigsMods/packager@master
         with:
-          args: -d -z -g bc -m .pkgmeta-classic
+          args: -d -z -g bc -m .pkgmeta-bc
 
       - uses: actions/upload-artifact@v2
         with:
