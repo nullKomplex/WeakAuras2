@@ -99,7 +99,7 @@ local constants = {
   nameRealmFilterDesc = L[" Filter formats: 'Name', 'Name-Realm', '-Realm'. \n\nSupports multiple entries, separated by commas\n"],
 }
 
-if WeakAuras.IsClassic() or WeakAuras.IsBC() then
+if WeakAuras.IsClassic() or WeakAuras.IsBCC() then
   WeakAuras.UnitRaidRole = function(unit)
     local raidID = UnitInRaid(unit)
     if raidID then
@@ -838,6 +838,14 @@ function WeakAuras.IsSpellKnownIncludingPet(spell)
   -- end
 end
 
+function WeakAuras.CompareSpellIds(a, b, exactCheck)
+  if exactCheck then
+    return tonumber(a) == tonumber(b)
+  else
+    return GetSpellInfo(a) == GetSpellInfo(b)
+  end
+end
+
 function WeakAuras.UnitPowerDisplayMod(powerType)
   if (powerType == 7 or powerType == 14) then
     return 10;
@@ -952,12 +960,12 @@ Private.load_prototype = {
     },
     {
       name = "vehicle",
-      display = (WeakAuras.IsClassic() or WeakAuras.IsBC()) and L["On Taxi"] or L["In Vehicle"],
+      display = (WeakAuras.IsClassic() or WeakAuras.IsBCC()) and L["On Taxi"] or L["In Vehicle"],
       type = "tristate",
       init = "arg",
       width = WeakAuras.normalWidth,
       optional = true,
-      events = (WeakAuras.IsClassic() or WeakAuras.IsBC()) and {"UNIT_FLAGS"}
+      events = (WeakAuras.IsClassic() or WeakAuras.IsBCC()) and {"UNIT_FLAGS"}
                or {"VEHICLE_UPDATE", "UNIT_ENTERED_VEHICLE", "UNIT_EXITED_VEHICLE", "UPDATE_OVERRIDE_ACTIONBAR", "UNIT_FLAGS"}
     },
     {
@@ -1324,6 +1332,20 @@ local function AddUnitRoleChangeInternalEvents(triggerUnit, t)
     end
   else
     tinsert(t, "UNIT_ROLE_CHANGED_" .. string.lower(triggerUnit))
+  end
+end
+
+local function AddRemainingCastInternalEvents(triggerUnit, t)
+  if (triggerUnit == nil) then
+    return
+  end
+
+  if Private.multiUnitUnits[triggerUnit] then
+    for unit in pairs(Private.multiUnitUnits[triggerUnit]) do
+      tinsert(t, "CAST_REMAINING_CHECK_" .. string.lower(unit))
+    end
+  else
+    tinsert(t, "CAST_REMAINING_CHECK_" .. string.lower(triggerUnit))
   end
 end
 
@@ -3234,7 +3256,7 @@ Private.event_prototypes = {
         local stacks = maxCharges and maxCharges ~= 1 and charges or (spellCount and spellCount > 0 and spellCount) or nil;
         if (charges == nil) then
           -- Use fake charges for spells that use GetSpellCooldown
-          charges = (duration == 0) and 1 or 0;
+          charges = (duration == 0 or gcdCooldown) and 1 or 0;
         end
         local genericShowOn = %s
         local expirationTime = startTime and duration and startTime + duration
@@ -4811,10 +4833,10 @@ Private.event_prototypes = {
       trigger.realSpellName = spellName; -- Cache
       local ret = [=[
         local spellName = %s
-        local startTime, duration, _, readyTime = WeakAuras.GetSpellCooldown(spellName);
+        local startTime, duration, gcdCooldown, readyTime = WeakAuras.GetSpellCooldown(spellName);
         local charges, _, spellCount, chargeGainTime, chargeLostTime = WeakAuras.GetSpellCharges(spellName);
         if (charges == nil) then
-          charges = (duration == 0) and 1 or 0;
+          charges = (duration == 0 or gcdCooldown) and 1 or 0;
         end
         local ready = startTime == 0 or charges > 0
         local active = IsUsableSpell(spellName) and ready
@@ -6097,7 +6119,7 @@ Private.event_prototypes = {
             return L["Set IDs can be found on websites such as wowhead.com/item-sets"]
           elseif WeakAuras.IsClassic() then
             return L["Set IDs can be found on websites such as classic.wowhead.com/item-sets"]
-          elseif WeakAuras.IsBC() then
+          elseif WeakAuras.IsBCC() then
             return L["Set IDs can be found on websites such as tbc.wowhead.com/item-sets"]
           end
         end
@@ -6484,12 +6506,13 @@ Private.event_prototypes = {
     end,
     internal_events = function(trigger)
       local unit = trigger.unit
-      local result = {"CAST_REMAINING_CHECK_" .. string.lower(unit)}
+      local result = {}
       if WeakAuras.IsClassic() and unit ~= "player" then
         tinsert(result, "UNIT_SPELLCAST_START")
         tinsert(result, "UNIT_SPELLCAST_DELAYED")
         tinsert(result, "UNIT_SPELLCAST_CHANNEL_START")
       end
+      AddRemainingCastInternalEvents(unit, result)
       AddUnitChangeInternalEvents(unit, result)
       AddUnitRoleChangeInternalEvents(unit, result)
       return result
@@ -6585,8 +6608,8 @@ Private.event_prototypes = {
         type = "spell",
         enable = function(trigger) return not trigger.use_inverse end,
         conditionType = "number",
-        forceExactOption = true,
-        test = "GetSpellInfo(%s) == spell",
+        showExactOption = true,
+        test = "WeakAuras.CompareSpellIds(spellId, %s, %s)",
         store = true,
       },
       {
@@ -6602,10 +6625,10 @@ Private.event_prototypes = {
         name = "interruptible",
         display = L["Interruptible"],
         type = "tristate",
-        enable = function(trigger) return not WeakAuras.IsBC() and not trigger.use_inverse end,
+        enable = function(trigger) return not WeakAuras.IsBCC() and not trigger.use_inverse end,
         store = true,
         conditionType = "bool",
-        hidden = WeakAuras.IsBC()
+        hidden = WeakAuras.IsBCC()
       },
       {
         name = "remaining",
@@ -7008,7 +7031,7 @@ Private.event_prototypes = {
         type = "number",
         init = "select(2, UnitResistance('player', 1))",
         store = true,
-        enable = WeakAuras.IsClassic() or WeakAuras.IsBC(),
+        enable = WeakAuras.IsClassic() or WeakAuras.IsBCC(),
         conditionType = "number",
         hidden = WeakAuras.IsRetail()
       },
@@ -7018,7 +7041,7 @@ Private.event_prototypes = {
         type = "number",
         init = "select(2, UnitResistance('player', 2))",
         store = true,
-        enable = WeakAuras.IsClassic() or WeakAuras.IsBC(),
+        enable = WeakAuras.IsClassic() or WeakAuras.IsBCC(),
         conditionType = "number",
         hidden = WeakAuras.IsRetail()
       },
@@ -7028,7 +7051,7 @@ Private.event_prototypes = {
         type = "number",
         init = "select(2, UnitResistance('player', 3))",
         store = true,
-        enable = WeakAuras.IsClassic() or WeakAuras.IsBC(),
+        enable = WeakAuras.IsClassic() or WeakAuras.IsBCC(),
         conditionType = "number",
         hidden = WeakAuras.IsRetail()
       },
@@ -7038,7 +7061,7 @@ Private.event_prototypes = {
         type = "number",
         init = "select(2, UnitResistance('player', 4))",
         store = true,
-        enable = WeakAuras.IsClassic() or WeakAuras.IsBC(),
+        enable = WeakAuras.IsClassic() or WeakAuras.IsBCC(),
         conditionType = "number",
         hidden = WeakAuras.IsRetail()
       },
@@ -7048,7 +7071,7 @@ Private.event_prototypes = {
         type = "number",
         init = "select(2, UnitResistance('player', 5))",
         store = true,
-        enable = WeakAuras.IsClassic() or WeakAuras.IsBC(),
+        enable = WeakAuras.IsClassic() or WeakAuras.IsBCC(),
         conditionType = "number",
         hidden = WeakAuras.IsRetail()
       },
@@ -7058,7 +7081,7 @@ Private.event_prototypes = {
         type = "number",
         init = "select(2, UnitResistance('player', 6))",
         store = true,
-        enable = WeakAuras.IsClassic() or WeakAuras.IsBC(),
+        enable = WeakAuras.IsClassic() or WeakAuras.IsBCC(),
         conditionType = "number",
         hidden = WeakAuras.IsRetail()
       },
@@ -7232,7 +7255,7 @@ Private.event_prototypes = {
       local unit_events = {}
       local pet_unit_events = {}
       if trigger.use_vehicle ~= nil then
-        if WeakAuras.IsClassic() or WeakAuras.IsBC() then
+        if WeakAuras.IsClassic() or WeakAuras.IsBCC() then
           tinsert(unit_events, "UNIT_FLAGS")
         else
           tinsert(unit_events, "UNIT_ENTERED_VEHICLE")
@@ -7684,7 +7707,7 @@ Private.event_prototypes = {
 };
 
 Private.event_prototypes["Item Set"] = nil
-if WeakAuras.IsClassic() then
+if WeakAuras.IsClassic() or WeakAuras.IsBCC() then
   if not UnitDetailedThreatSituation then
     Private.event_prototypes["Threat Situation"] = nil
   end

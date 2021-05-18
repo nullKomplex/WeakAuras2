@@ -772,11 +772,7 @@ function WeakAuras.CountWagoUpdates()
       end
       if slug and version then
         local wago = CompanionData.slugs and CompanionData.slugs[slug]
-        if wago and wago.wagoVersion
-        and tonumber(wago.wagoVersion) > (
-          aura.skipWagoUpdate and tonumber(aura.skipWagoUpdate) or tonumber(version)
-        )
-        then
+        if wago and wago.wagoVersion and tonumber(wago.wagoVersion) > tonumber(version) then
           if not updatedSlugs[slug] then
             updatedSlugs[slug] = true
             updatedSlugsCount = updatedSlugsCount + 1
@@ -1365,7 +1361,7 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
   local inEncounter = encounter_id ~= 0;
   local alive = not UnitIsDeadOrGhost('player')
 
-  if WeakAuras.IsClassic() or WeakAuras.IsBC() then
+  if WeakAuras.IsClassic() or WeakAuras.IsBCC() then
     -- local raidID = UnitInRaid("player")
     -- if raidID then
     --   raidRole = select(10, GetRaidRosterInfo(raidID))
@@ -2620,6 +2616,9 @@ local function pAdd(data, simpleChange)
   if simpleChange then
     db.displays[id] = data
     WeakAuras.SetRegion(data)
+    for cloneId, region in pairs(clones[id]) do
+      WeakAuras.SetRegion(data, cloneId)
+    end
     Private.UpdatedTriggerState(id)
   else
     if (data.controlledChildren) then

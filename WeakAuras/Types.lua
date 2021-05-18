@@ -1274,7 +1274,7 @@ if WeakAuras.IsRetail() then
     tier = 1
   end
 else
-  for tab = 1, GetNumTalentTabs() do
+  for tab = 1, GetNumSpecializations() do
     for num_talent = 1, GetNumTalents(tab) do
       local talentId = (tab - 1) * MAX_NUM_TALENTS + num_talent
       Private.talent_types[talentId] = L["Tab "]..tab.." - "..num_talent
@@ -1879,7 +1879,7 @@ Private.swing_types = {
   ["off"] = SECONDARYHANDSLOT
 }
 
-if WeakAuras.IsClassic() or WeakAuras.IsBC() then
+if WeakAuras.IsClassic() or WeakAuras.IsBCC() then
   Private.swing_types["ranged"] = RANGEDSLOT
 end
 
@@ -3004,6 +3004,8 @@ Private.noreset_swing_spells = {
   [35475] = true, -- Drums of War
   [35477] = true, -- Drums of Speed
   [35478] = true, -- Drums of Restoration
+  [34120] = true, -- Steady Shot (rank 1)
+  [19434] = true, -- Aimed Shot (rank 1)
   --35474 Drums of Panic DO reset the swing timer, do not add
 }
 

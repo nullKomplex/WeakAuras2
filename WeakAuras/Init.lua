@@ -27,7 +27,7 @@ function WeakAuras.IsClassic()
   return false
 end
 
-function WeakAuras.IsBC()
+function WeakAuras.IsBCC()
   return false
 end
 
