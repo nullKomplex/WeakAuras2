@@ -1363,7 +1363,7 @@ local function scanForLoadsImpl(toCheck, event, arg1, ...)
   local inEncounter = encounter_id ~= 0;
   local alive = not UnitIsDeadOrGhost('player')
 
-  if WeakAuras.IsClassic() then
+  if WeakAuras.IsClassic() or WeakAuras.IsBC() then
     -- local raidID = UnitInRaid("player")
     -- if raidID then
     --   raidRole = select(10, GetRaidRosterInfo(raidID))
