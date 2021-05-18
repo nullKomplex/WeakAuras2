@@ -155,6 +155,7 @@ local blockedFunctions = {
   GuildDisband = true,
   GuildUninvite = true,
   securecall = true,
+  DeleteCursorItem = true,
 }
 
 local blockedTables = {
