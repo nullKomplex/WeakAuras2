@@ -1090,6 +1090,8 @@ function Private.Modernize(data)
       ["Crowd Controlled"] = "unit",
       ["Cooldown Progress (Equipment Slot)"] = "item",
       ["Combat Events"] = "event",
+      ["Eclipse Direction"] = "unit",
+      ["Item Slot Equipped"] = "item",
     }
 
     for triggerId, triggerData in ipairs(data.triggers) do

@@ -5965,6 +5965,70 @@ Private.event_prototypes = {
     hasItemID = true,
     automaticrequired = true
   },
+  ["Item Slot Equipped"] = {
+    type = "item",
+    events = {
+      ["events"] = {
+        "UNIT_INVENTORY_CHANGED",
+        "PLAYER_EQUIPMENT_CHANGED",
+      }
+    },
+    internal_events = { "WA_DELAYED_PLAYER_ENTERING_WORLD", },
+    force_events = "UNIT_INVENTORY_CHANGED",
+    name = L["Item Slot Equipped"],
+    init = function(trigger)
+      trigger.itemSlot = trigger.itemSlot or 17;
+      local itemSlot = type(trigger.itemSlot) == "number" and trigger.itemSlot;
+
+      local ret = [[
+        local inverse = %s;
+        local slotId = %d;
+
+        local equipped = GetInventoryItemID("player", slotId) ~= nil;
+      ]];
+
+      return ret:format(trigger.use_inverse and "true" or "false", itemSlot);
+    end,
+    args = {
+      {
+        name = "itemSlot",
+        required = true,
+        display = L["Equipment Slot"],
+        type = "select",
+        values = "item_slot_types",
+        test = "true"
+      },
+      {
+        name = "inverse",
+        display = L["Inverse"],
+        type = "toggle",
+        test = "true"
+      },
+      {
+        hidden = true,
+        test = "(inverse and not equipped) or (equipped and not inverse)"
+      }
+    },
+    nameFunc = function(trigger)
+      if trigger.itemSlot then
+        local id = GetInventoryItemID("player", trigger.itemSlot);
+        local name = GetItemInfo(id or 0);
+        return name;
+      else
+        return nil;
+      end
+    end,
+    iconFunc = function(trigger)
+      if trigger.itemSlot then
+        local id = GetInventoryItemID("player", trigger.itemSlot);
+        local _, _, _, _, _, _, _, _, _, icon = GetItemInfo(id or 0);
+        return icon;
+      else
+        return nil;
+      end
+    end,
+    automaticrequired = true
+  },
   ["Item Type Equipped"] = {
     type = "item",
     events = {
