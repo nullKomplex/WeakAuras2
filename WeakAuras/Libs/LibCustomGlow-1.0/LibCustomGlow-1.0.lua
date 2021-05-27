@@ -620,13 +620,13 @@ function lib.ButtonGlow_Start(r,color,frequency)
         f:SetSize(width*1.4 , height*1.4)
         f:SetPoint("TOPLEFT", r, "TOPLEFT", -width * 0.2, height * 0.2)
         f:SetPoint("BOTTOMRIGHT", r, "BOTTOMRIGHT", width * 0.2, -height * 0.2)
-        f.ants:SetSize(width*1.4*0.85, height*1.4*0.85)		
+        f.ants:SetSize(width*1.4*0.85, height*1.4*0.85)
 		AnimIn_OnFinished(f.animIn)
 		if f.animOut:IsPlaying() then
             f.animOut:Stop()
             f.animIn:Play()
         end
-		
+
         if not(color) then
             for texture in pairs(ButtonGlowTextures) do
                 f[texture]:SetDesaturated(nil)

@@ -1,3 +1,4 @@
+local AddonName, TemplatePrivate = ...
 local WeakAuras = WeakAuras
 local L = WeakAuras.L
 local GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription = GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription
