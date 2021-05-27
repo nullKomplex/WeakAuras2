@@ -442,7 +442,7 @@ local function modify(parent, region, data)
 
     iconPath = iconPath or self.displayIcon or "Interface\\Icons\\INV_Misc_QuestionMark"
     WeakAuras.SetTextureOrAtlas(self.icon, iconPath)
-    self.icon:SetDesaturated(data.desaturate)
+    -- self.icon:SetDesaturated(data.desaturate)
   end
 
   function region:Scale(scalex, scaley)
@@ -500,9 +500,14 @@ local function modify(parent, region, data)
   cooldown:Hide()
   if(data.cooldown) then
     function region:SetValue(value, total)
-      cooldown.duration = 0
-      cooldown.expirationTime = math.huge
-      cooldown:Hide();
+      cooldown.value = value
+      cooldown.total = total
+      if (value >= 0 and value <= total) then
+        cooldown:Show()
+        cooldown:SetCooldown(GetTime() - (total - value), total)
+      else
+        cooldown:Hide();
+      end
     end
 
     function region:SetTime(duration, expirationTime)

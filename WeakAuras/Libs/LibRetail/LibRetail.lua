@@ -7,7 +7,7 @@ if not lib then return end
 LibStub("AceTimer-3.0"):Embed(lib)
 
 -- Lua APIs
-local pairs, ipairs, next, select, CreateFrame, pcall = pairs, ipairs, next, select, CreateFrame, pcall
+local pairs, ipairs, next, select, CreateFrame, pcall, print = pairs, ipairs, next, select, CreateFrame, pcall, print
 
 local math_abs, math_ceil, math_floor = math.abs, math.ceil, math.floor
 
@@ -369,98 +369,10 @@ function lib.xpcall(func, errorHandler, ...)
 	-- errorHandler();
 	return pcall(func, ...)
 end
--------------------------------------
-local g_updatingBars = {};
-
-local function IsCloseEnough(bar, newValue, targetValue)
-	local min, max = bar:GetMinMaxValues();
-	local range = max - min;
-	if range > 0.0 then
-		return math_abs((newValue - targetValue) / range) < .00001;
-	end
-
-	return true;
-end
-
-local function ProcessSmoothStatusBars()
-	for bar, targetValue in pairs(g_updatingBars) do
-		local effectiveTargetValue = lib.Clamp(targetValue, bar:GetMinMaxValues());
-		local newValue = lib.FrameDeltaLerp(bar:GetValue(), effectiveTargetValue, .25);
-
-		if IsCloseEnough(bar, newValue, effectiveTargetValue) then
-			g_updatingBars[bar] = nil;
-			bar:SetValue(effectiveTargetValue);
-		else
-			bar:SetValue(newValue);
-		end
-	end
-end
-
-lib:ScheduleRepeatingTimer(ProcessSmoothStatusBars, 0)
--- C_Timer.NewTicker(0, ProcessSmoothStatusBars);
-
-lib.SmoothStatusBarMixin = {};
-
-function lib.SmoothStatusBarMixin:ResetSmoothedValue(value) --If nil, tries to set to the last target value
-	local targetValue = g_updatingBars[self];
-	if targetValue then
-		g_updatingBars[self] = nil;
-		self:SetValue(value or targetValue);
-	elseif value then
-		self:SetValue(value);
-	end
-end
-
-function lib.SmoothStatusBarMixin:SetSmoothedValue(value)
-	g_updatingBars[self] = value;
-end
-
-function lib.SmoothStatusBarMixin:SetMinMaxSmoothedValue(min, max)
-	self:SetMinMaxValues(min, max);
-
-	local targetValue = g_updatingBars[self];
-	if targetValue then
-		local ratio = 1;
-		if max ~= 0 and self.lastSmoothedMax and self.lastSmoothedMax ~= 0 then
-			ratio = max / self.lastSmoothedMax;
-		end
-
-		g_updatingBars[self] = targetValue * ratio;
-	end
-
-	self.lastSmoothedMin = min;
-	self.lastSmoothedMax = max;
-end
 
 function lib.Round(value)
 	if value < 0.0 then
 		return math_ceil(value - .5);
 	end
 	return math_floor(value + .5);
-end
-
-function lib.Clamp(value, min, max)
-	if value > max then
-		return max;
-	elseif value < min then
-		return min;
-	end
-	return value;
-end
-
-function lib.Saturate(value)
-	return lib.Clamp(value, 0.0, 1.0);
-end
-
-function lib.Lerp(startValue, endValue, amount)
-	return (1 - amount) * startValue + amount * endValue;
-end
-
-local TARGET_FRAME_PER_SEC = 60.0;
-function lib.DeltaLerp(startValue, endValue, amount, timeSec)
-	return lib.Lerp(startValue, endValue, lib.Saturate(amount * timeSec * TARGET_FRAME_PER_SEC));
-end
-
-function lib.FrameDeltaLerp(startValue, endValue, amount)
-	return lib.DeltaLerp(startValue, endValue, amount, 0.1);
 end
