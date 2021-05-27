@@ -3557,7 +3557,10 @@ Private.event_prototypes = {
         test = "true",
         conditionType = "bool",
         conditionTest = function(state, needle)
-          return state and state.show and (select(2, IsUsableSpell(state.spellname)) == (needle == 1));
+          local _, _, _, powerCost, _, powerIndex = GetSpellInfo(state.spellname)
+          local power = UnitPower("player" , powerIndex);
+
+          return state and state.show and ((power < powerCost) == (needle == 1));
         end,
         conditionEvents = {
           "SPELL_UPDATE_USABLE",
