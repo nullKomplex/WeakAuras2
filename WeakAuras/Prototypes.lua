@@ -5815,7 +5815,7 @@ Private.event_prototypes = {
       local numDeathRunes  = 0;
 
       for index = 1, 6 do
-        local startTime = select(1, GetRuneCooldown(index));
+        local startTime = WeakAuras.GetRuneCooldown(index);
         if startTime == 0 then
           if GetRuneType(index) == 1 then
             numBloodRunes  = numBloodRunes  + 1;
@@ -8064,15 +8064,5 @@ function WeakAuras.FillSpellKnownSpellBook()
         end
       end
     end
-  end
-end
-
-function WeakAuras.DebugTable(tbl)
-  for key, value in pairs(tbl) do
-    if not key or not value then
-      return
-    end
-    print("KEY: " .. key)
-    print("VALUE: ", value)
   end
 end
