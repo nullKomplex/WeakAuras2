@@ -85,11 +85,10 @@ clipboard.pasteMenuEntry = {
   func = function()
     if (not IsRegionAGroup(clipboard.source) and IsRegionAGroup(clipboard.current)) then
       -- Copy from a single aura to a group => paste it to each individual aura
-      for index, childId in pairs(clipboard.current.controlledChildren) do
-        local childData = WeakAuras.GetData(childId);
-        copyAuraPart(clipboard.source, childData, clipboard.part);
-        WeakAuras.Add(childData)
-        WeakAuras.ClearAndUpdateOptions(childData.id)
+      for child in OptionsPrivate.Private.TraverseLeafs(clipboard.current) do
+        copyAuraPart(clipboard.source, child, clipboard.part);
+        WeakAuras.Add(child)
+        WeakAuras.ClearAndUpdateOptions(child.id)
       end
     else
       copyAuraPart(clipboard.source, clipboard.current, clipboard.part);
@@ -99,7 +98,7 @@ clipboard.pasteMenuEntry = {
 
     WeakAuras.FillOptions()
     OptionsPrivate.Private.ScanForLoads({[clipboard.current.id] = true});
-    WeakAuras.SortDisplayButtons(nil, true);
+    OptionsPrivate.SortDisplayButtons(nil, true);
     WeakAuras.PickDisplay(clipboard.current.id);
     WeakAuras.UpdateDisplayButton(clipboard.current.id);
     WeakAuras.ClearAndUpdateOptions(clipboard.current.id);
@@ -627,7 +626,7 @@ local methods = {
       WeakAuras.ClearAndUpdateOptions(data.id);
       WeakAuras.FillOptions();
       WeakAuras.UpdateGroupOrders(data);
-      WeakAuras.SortDisplayButtons();
+      OptionsPrivate.SortDisplayButtons();
       self:ReloadTooltip();
       OptionsPrivate.ResetMoverSizer();
     end
@@ -660,29 +659,60 @@ local methods = {
       OptionsPrivate.ConfirmDelete(toDelete, parents)
     end
 
+    local function DuplicateGroups(sourceParent, targetParent, mapping)
+      for index, childId in pairs(sourceParent.controlledChildren) do
+        local childData = WeakAuras.GetData(childId)
+        if childData.controlledChildren then
+          local newChildGroup = OptionsPrivate.DuplicateAura(childData, targetParent.id)
+          mapping[childData] = newChildGroup
+          DuplicateGroups(childData, newChildGroup, mapping)
+        end
+      end
+    end
+
+    local function DuplicateAuras(sourceParent, targetParent, mapping)
+      print("DuplicateAuras", sourceParent.id, targetParent.id)
+      for index, childId in pairs(sourceParent.controlledChildren) do
+        local childData = WeakAuras.GetData(childId)
+        if childData.controlledChildren then
+          DuplicateAuras(childData, mapping[childData], mapping)
+        else
+          OptionsPrivate.DuplicateAura(childData, targetParent.id, true)
+        end
+      end
+    end
+
     function self.callbacks.OnDuplicateClick()
       if (WeakAuras.IsImporting()) then return end;
       if data.controlledChildren then
-        local new_idGroup = OptionsPrivate.DuplicateAura(data)
-        -- Do this after duplicating the parent!
+        local newGroup = OptionsPrivate.DuplicateAura(data) -- TODO check that this sets the correct parent even if data has controlledChildren!
+
+        local mapping = {}
+        -- This builds the group skeleton
+        DuplicateGroups(data, newGroup, mapping)
+        -- Do this after duplicating all groups
         OptionsPrivate.Private.PauseAllDynamicGroups()
-        for index, childId in pairs(data.controlledChildren) do
-          local childData = WeakAuras.GetData(childId)
-          OptionsPrivate.DuplicateAura(childData, new_idGroup, true)
+        -- And this fills in the leafs
+        DuplicateAuras(data, newGroup, mapping)
+
+        local button = WeakAuras.GetDisplayButton(newGroup.id)
+        button.callbacks.UpdateExpandButton()
+        WeakAuras.UpdateDisplayButton(newGroup)
+
+        for old, new in pairs(mapping) do
+          local button = WeakAuras.GetDisplayButton(new.id)
+          button.callbacks.UpdateExpandButton()
+          WeakAuras.UpdateDisplayButton(new)
         end
 
-        local button = WeakAuras.GetDisplayButton(new_idGroup)
-        button.callbacks.UpdateExpandButton()
-        WeakAuras.UpdateDisplayButton(WeakAuras.GetData(new_idGroup))
-
-        WeakAuras.SortDisplayButtons(nil, true)
-        OptionsPrivate.PickAndEditDisplay(new_idGroup)
+        OptionsPrivate.SortDisplayButtons(nil, true)
+        OptionsPrivate.PickAndEditDisplay(newGroup.id)
 
         OptionsPrivate.Private.ResumeAllDynamicGroups()
       else
-        local new_id = OptionsPrivate.DuplicateAura(data)
-        WeakAuras.SortDisplayButtons(nil, true)
-        OptionsPrivate.PickAndEditDisplay(new_id)
+        local new = OptionsPrivate.DuplicateAura(data)
+        OptionsPrivate.SortDisplayButtons(nil, true)
+        OptionsPrivate.PickAndEditDisplay(new.id)
       end
     end
 
@@ -695,8 +725,8 @@ local methods = {
           region:Suspend();
         end
 
-        for _, id in pairs(data.controlledChildren) do
-          tinsert(toDelete, WeakAuras.GetData(id));
+        for child in OptionsPrivate.Private.TraverseAllChildren(data) do
+          tinsert(toDelete, child);
         end
       end
       tinsert(toDelete, data)
@@ -733,11 +763,11 @@ local methods = {
             self:SetGroupOrder(index - 1, #parentData.controlledChildren);
             local otherbutton = WeakAuras.GetDisplayButton(parentData.controlledChildren[index]);
             otherbutton:SetGroupOrder(index, #parentData.controlledChildren);
-            WeakAuras.SortDisplayButtons();
+            OptionsPrivate.SortDisplayButtons();
             local updata = {duration = 0.15, type = "custom", use_translate = true, x = 0, y = -32};
             local downdata = {duration = 0.15, type = "custom", use_translate = true, x = 0, y = 32};
-            OptionsPrivate.Private.Animate("button", WeakAuras.GetData(parentData.controlledChildren[index-1]).uid, "main", updata, self.frame, true, function() WeakAuras.SortDisplayButtons() end);
-            OptionsPrivate.Private.Animate("button", WeakAuras.GetData(parentData.controlledChildren[index]).uid, "main", downdata, otherbutton.frame, true, function() WeakAuras.SortDisplayButtons() end);
+            OptionsPrivate.Private.Animate("button", WeakAuras.GetData(parentData.controlledChildren[index-1]).uid, "main", updata, self.frame, true, function() OptionsPrivate.SortDisplayButtons() end);
+            OptionsPrivate.Private.Animate("button", WeakAuras.GetData(parentData.controlledChildren[index]).uid, "main", downdata, otherbutton.frame, true, function() OptionsPrivate.SortDisplayButtons() end);
             WeakAuras.UpdateDisplayButton(parentData);
             WeakAuras.FillOptions()
           end
@@ -773,11 +803,11 @@ local methods = {
             self:SetGroupOrder(index + 1, #parentData.controlledChildren);
             local otherbutton = WeakAuras.GetDisplayButton(parentData.controlledChildren[index]);
             otherbutton:SetGroupOrder(index, #parentData.controlledChildren);
-            WeakAuras.SortDisplayButtons()
+            OptionsPrivate.SortDisplayButtons()
             local updata = {duration = 0.15, type = "custom", use_translate = true, x = 0, y = -32};
             local downdata = {duration = 0.15, type = "custom", use_translate = true, x = 0, y = 32};
-            OptionsPrivate.Private.Animate("button", WeakAuras.GetData(parentData.controlledChildren[index+1]).uid, "main", downdata, self.frame, true, function() WeakAuras.SortDisplayButtons() end);
-            OptionsPrivate.Private.Animate("button", WeakAuras.GetData(parentData.controlledChildren[index]).uid, "main", updata, otherbutton.frame, true, function() WeakAuras.SortDisplayButtons() end);
+            OptionsPrivate.Private.Animate("button", WeakAuras.GetData(parentData.controlledChildren[index+1]).uid, "main", downdata, self.frame, true, function() OptionsPrivate.SortDisplayButtons() end);
+            OptionsPrivate.Private.Animate("button", WeakAuras.GetData(parentData.controlledChildren[index]).uid, "main", updata, otherbutton.frame, true, function() OptionsPrivate.SortDisplayButtons() end);
             WeakAuras.UpdateDisplayButton(parentData);
             WeakAuras.FillOptions()
           end
@@ -981,7 +1011,7 @@ local methods = {
       self:SetViewTest(self.callbacks.ViewTest);
       self:DisableGroup();
       self.callbacks.UpdateExpandButton();
-      self:SetOnExpandCollapse(function() WeakAuras.SortDisplayButtons(nil, true) end);
+      self:SetOnExpandCollapse(function() OptionsPrivate.SortDisplayButtons(nil, true) end);
     else
       if WeakAuras.regions[data.id] then
         self:SetViewRegion(WeakAuras.regions[data.id].region);
@@ -1147,7 +1177,7 @@ local methods = {
     WeakAuras.ClearAndUpdateOptions(self.data.id);
     WeakAuras.UpdateGroupOrders(parentData);
     WeakAuras.UpdateDisplayButton(parentData);
-    WeakAuras.SortDisplayButtons();
+    OptionsPrivate.SortDisplayButtons();
   end,
   ["SetDragging"] = function(self, data, drop, size)
     if (size) then
@@ -1282,7 +1312,7 @@ local methods = {
     if action then
       action(self, target)
     end
-    WeakAuras.SortDisplayButtons()
+    OptionsPrivate.SortDisplayButtons()
   end,
   ["GetGroupOrCopying"] = function(self)
     return self.group;

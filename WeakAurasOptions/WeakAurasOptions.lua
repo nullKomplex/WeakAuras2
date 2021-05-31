@@ -104,7 +104,7 @@ function OptionsPrivate.DuplicateAura(data, newParent, massEdit)
       OptionsPrivate.ClearOptions(parentData.id)
     end
   end
-  return newData.id
+  return newData
 end
 
 AceGUI:RegisterLayout("AbsoluteList", function(content, children)
@@ -271,7 +271,7 @@ function OptionsPrivate.MultipleDisplayTooltipMenu()
         local button = WeakAuras.GetDisplayButton(data.id);
         button.callbacks.UpdateExpandButton();
         WeakAuras.UpdateDisplayButton(data);
-        WeakAuras.SortDisplayButtons();
+        OptionsPrivate.SortDisplayButtons();
         button:Expand();
       end
     },
@@ -308,7 +308,7 @@ function OptionsPrivate.MultipleDisplayTooltipMenu()
         local button = WeakAuras.GetDisplayButton(data.id);
         button.callbacks.UpdateExpandButton();
         WeakAuras.UpdateDisplayButton(data);
-        WeakAuras.SortDisplayButtons();
+        OptionsPrivate.SortDisplayButtons();
         button:Expand();
         WeakAuras.PickDisplay(data.id);
       end
@@ -317,16 +317,10 @@ function OptionsPrivate.MultipleDisplayTooltipMenu()
       text = L["Duplicate All"],
       notCheckable = 1,
       func = function()
-        local toDuplicate = {};
-        for index, id in pairs(tempGroup.controlledChildren) do
-          toDuplicate[index] = id;
-        end
-
         local duplicated = {};
-
-        for index, id in ipairs(toDuplicate) do
-          local childData = WeakAuras.GetData(id);
-          duplicated[index] = OptionsPrivate.DuplicateAura(childData);
+        for child in OptionsPrivate.Private.TraverseAllChildren(tempGroup) do
+          local newData = OptionsPrivate.DuplicateAura(child)
+          tinsert(duplicated, newData.id);
         end
 
         OptionsPrivate.ClearPicks();
@@ -409,7 +403,7 @@ StaticPopupDialogs["WEAKAURAS_CONFIRM_DELETE"] = {
         end
       end
       OptionsPrivate.Private.ResumeAllDynamicGroups()
-      WeakAuras.SortDisplayButtons(nil, true)
+      OptionsPrivate.SortDisplayButtons(nil, true)
     end
   end,
   OnCancel = function(self)
@@ -440,7 +434,7 @@ StaticPopupDialogs["WEAKAURAS_CONFIRM_IGNORE_UPDATES"] = {
           child.ignoreWagoUpdate = true
         end
       end
-      WeakAuras.SortDisplayButtons(nil, true)
+      OptionsPrivate.SortDisplayButtons(nil, true)
     end
   end,
   OnCancel = function(self) end,
@@ -467,7 +461,7 @@ end
 local function AfterScanForLoads()
   if(frame) then
     if (frame:IsVisible()) then
-      WeakAuras.SortDisplayButtons(nil, true);
+      OptionsPrivate.SortDisplayButtons(nil, true);
     else
       frame.needsSort = true;
     end
@@ -536,7 +530,7 @@ local function OnRename(event, uid, oldid, newid)
   end
 
   OptionsPrivate.SetGrouping()
-  WeakAuras.SortDisplayButtons()
+  OptionsPrivate.SortDisplayButtons()
   WeakAuras.PickDisplay(newid)
 end
 
@@ -679,7 +673,7 @@ local function LayoutDisplayButtons(msg)
 
     frame.buttonsScroll:ResumeLayout()
     frame.buttonsScroll:PerformLayout()
-    WeakAuras.SortDisplayButtons(msg);
+    OptionsPrivate.SortDisplayButtons(msg);
 
     OptionsPrivate.Private.PauseAllDynamicGroups();
     if (WeakAuras.IsOptionsOpen()) then
@@ -752,7 +746,7 @@ function WeakAuras.ShowOptions(msg)
   frame.buttonsScroll.frame:Show();
 
   if (frame.needsSort) then
-    WeakAuras.SortDisplayButtons();
+    OptionsPrivate.SortDisplayButtons();
     frame.needsSort = nil;
   end
 
@@ -862,7 +856,7 @@ function OptionsPrivate.ConvertDisplay(data, newType)
   WeakAuras.UpdateDisplayButton(data);
   WeakAuras.SetMoverSizer(id)
   OptionsPrivate.ResetMoverSizer();
-  WeakAuras.SortDisplayButtons()
+  OptionsPrivate.SortDisplayButtons()
 end
 
 function WeakAuras.NewDisplayButton(data, massEdit)
@@ -872,7 +866,7 @@ function WeakAuras.NewDisplayButton(data, massEdit)
   WeakAuras.UpdateDisplayButton(db.displays[id]);
   frame.buttonsScroll:AddChild(displayButtons[id]);
   if not massEdit then
-    WeakAuras.SortDisplayButtons()
+    OptionsPrivate.SortDisplayButtons()
   end
 end
 
@@ -926,7 +920,7 @@ end
 local previousFilter;
 local pendingUpdateButtons = {}
 local pendingInstallButtons = {}
-function WeakAuras.SortDisplayButtons(filter, overrideReset, id)
+function OptionsPrivate.SortDisplayButtons(filter, overrideReset, id)
   if (OptionsPrivate.Private.IsOptionsProcessingPaused()) then
     return;
   end
