@@ -5779,14 +5779,14 @@ Private.event_prototypes = {
   ["Death Knight Rune"] = {
     type = "unit",
     events = {
-      ["events"] = {"RUNE_POWER_UPDATE"}
-    },
-    internal_events = {
-      "RUNE_COOLDOWN_READY",
-      "RUNE_COOLDOWN_CHANGED",
-      "RUNE_COOLDOWN_STARTED",
-      "COOLDOWN_REMAINING_CHECK",
-      "WA_DELAYED_PLAYER_ENTERING_WORLD"
+      ["events"] = {
+        "RUNE_POWER_UPDATE",
+        "RUNE_TYPE_UPDATE",
+        "RUNE_COOLDOWN_READY",
+        "RUNE_COOLDOWN_CHANGED",
+        "RUNE_COOLDOWN_STARTED",
+        "COOLDOWN_REMAINING_CHECK"
+      }
     },
     force_events = "RUNE_COOLDOWN_FORCE",
     name = L["Death Knight Rune"],
