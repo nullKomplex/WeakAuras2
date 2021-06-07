@@ -2,16 +2,16 @@
 if not lib then return end
 
 -- Backport variables
-SHORTDATENOYEAR_EU = "%1$d/%2$d/%3$02d"
+local SHORTDATENOYEAR_EU = "%1$d/%2$d/%3$02d"
 
 -- Set to false in some locale specific files.
-TIME_UTIL_WHITE_SPACE_STRIPPABLE = true;
+local TIME_UTIL_WHITE_SPACE_STRIPPABLE = true;
 
-SECONDS_PER_MIN = 60;
-SECONDS_PER_HOUR = 60 * SECONDS_PER_MIN;
-SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR;
-SECONDS_PER_MONTH = 30 * SECONDS_PER_DAY;
-SECONDS_PER_YEAR = 12 * SECONDS_PER_MONTH;
+local SECONDS_PER_MIN = 60;
+local SECONDS_PER_HOUR = 60 * SECONDS_PER_MIN;
+local SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR;
+local SECONDS_PER_MONTH = 30 * SECONDS_PER_DAY;
+local SECONDS_PER_YEAR = 12 * SECONDS_PER_MONTH;
 
 function lib.SecondsToMinutes(seconds)
 	return seconds / SECONDS_PER_MIN;
@@ -202,7 +202,7 @@ function lib.SecondsFormatterMixin:Format(seconds, abbreviation)
 	return output;
 end
 
-function SecondsToClock(seconds, displayZeroHours)
+function lib.SecondsToClock(seconds, displayZeroHours)
 	seconds = math.max(seconds, 0);
 	local hours = math.floor(seconds / 3600);
 	seconds = seconds - (hours * 3600);
@@ -215,74 +215,7 @@ function SecondsToClock(seconds, displayZeroHours)
 	end
 end
 
-function SecondsToTime(seconds, noSeconds, notAbbreviated, maxCount, roundUp)
-	local time = "";
-	local count = 0;
-	local tempTime;
-	seconds = roundUp and ceil(seconds) or floor(seconds);
-	maxCount = maxCount or 2;
-	if ( seconds >= 86400  ) then
-		count = count + 1;
-		if ( count == maxCount and roundUp ) then
-			tempTime = ceil(seconds / 86400);
-		else
-			tempTime = floor(seconds / 86400);
-		end
-		if ( notAbbreviated ) then
-			time = D_DAYS:format(tempTime);
-		else
-			time = DAYS_ABBR:format(tempTime);
-		end
-		seconds = mod(seconds, 86400);
-	end
-	if ( count < maxCount and seconds >= 3600  ) then
-		count = count + 1;
-		if ( time ~= "" ) then
-			time = time..TIME_UNIT_DELIMITER;
-		end
-		if ( count == maxCount and roundUp ) then
-			tempTime = ceil(seconds / 3600);
-		else
-			tempTime = floor(seconds / 3600);
-		end
-		if ( notAbbreviated ) then
-			time = time..D_HOURS:format(tempTime);
-		else
-			time = time..HOURS_ABBR:format(tempTime);
-		end
-		seconds = mod(seconds, 3600);
-	end
-	if ( count < maxCount and seconds >= 60  ) then
-		count = count + 1;
-		if ( time ~= "" ) then
-			time = time..TIME_UNIT_DELIMITER;
-		end
-		if ( count == maxCount and roundUp ) then
-			tempTime = ceil(seconds / 60);
-		else
-			tempTime = floor(seconds / 60);
-		end
-		if ( notAbbreviated ) then
-			time = time..D_MINUTES:format(tempTime);
-		else
-			time = time..MINUTES_ABBR:format(tempTime);
-		end
-		seconds = mod(seconds, 60);
-	end
-	if ( count < maxCount and seconds > 0 and not noSeconds ) then
-		if ( time ~= "" ) then
-			time = time..TIME_UNIT_DELIMITER;
-		end
-		if ( notAbbreviated ) then
-			time = time..D_SECONDS:format(seconds);
-		else
-			time = time..SECONDS_ABBR:format(seconds);
-		end
-	end
-	return time;
-end
-
-function MinutesToTime(mins, hideDays)
+function lib.MinutesToTime(mins, hideDays)
 	local time = "";
 	local count = 0;
 	local tempTime;
@@ -307,24 +240,7 @@ function MinutesToTime(mins, hideDays)
 	return time;
 end
 
-function SecondsToTimeAbbrev(seconds)
-	local tempTime;
-	if ( seconds >= 86400  ) then
-		tempTime = ceil(seconds / 86400);
-		return DAY_ONELETTER_ABBR, tempTime;
-	end
-	if ( seconds >= 3600  ) then
-		tempTime = ceil(seconds / 3600);
-		return HOUR_ONELETTER_ABBR, tempTime;
-	end
-	if ( seconds >= 60  ) then
-		tempTime = ceil(seconds / 60);
-		return MINUTE_ONELETTER_ABBR, tempTime;
-	end
-	return SECOND_ONELETTER_ABBR, seconds;
-end
-
-function FormatShortDate(day, month, year)
+function lib.FormatShortDate(day, month, year)
 	if (year) then
 		if (LOCALE_enGB) then
 			return SHORTDATE_EU:format(day, month, year);
