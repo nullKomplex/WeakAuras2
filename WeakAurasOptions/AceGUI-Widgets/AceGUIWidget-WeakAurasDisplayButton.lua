@@ -9,6 +9,8 @@ local Type, Version = "WeakAurasDisplayButton", 57
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
+local Retail = LibStub("LibRetail")
+
 local L = WeakAuras.L;
 local fullName;
 local clipboard = {};
@@ -1091,7 +1093,7 @@ local methods = {
     if (WeakAuras.IsImporting()) then return end;
     local parentData = WeakAuras.GetData(self.data.parent);
     if not parentData then return end;
-    local index = tIndexOf(parentData.controlledChildren, self.data.id);
+    local index = Retail.tIndexOf(parentData.controlledChildren, self.data.id);
     if(index) then
       tremove(parentData.controlledChildren, index);
       WeakAuras.Add(parentData);
@@ -1103,7 +1105,7 @@ local methods = {
 
     local newParent = parentData.parent and WeakAuras.GetData(parentData.parent)
     if newParent then
-      local insertIndex = tIndexOf(newParent.controlledChildren, parentData.id)
+      local insertIndex = Retail.tIndexOf(newParent.controlledChildren, parentData.id)
       if not insertIndex then
         error("Parent Display thinks it is a member of a group which does not control it");
       end
