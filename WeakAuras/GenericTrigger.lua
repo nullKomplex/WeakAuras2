@@ -3107,7 +3107,7 @@ function WeakAuras.GetSpellCost(powerTypeToCheck)
   if spellName then
 		local _, _, _, cost, _, powerType = GetSpellInfo(spellName);
     if powerType == powerTypeToCheck then
-      return cost;
+      return cost * WeakAuras.UnitPowerDisplayMod(powerTypeToCheck);
     end
   end
 end
