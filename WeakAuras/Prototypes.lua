@@ -5836,8 +5836,6 @@ Private.event_prototypes = {
       end
 
       numRunes = numBloodRunes + numUnholyRunes + numFrostRunes + numDeathRunes;
-
-      -- print(rune, numBloodRunes, numUnholyRunes, numFrostRunes, numDeathRunes, death, numRunes)
     ]];
       if(trigger.use_remaining and not trigger.use_inverse) then
         local ret2 = [[
@@ -5931,6 +5929,13 @@ Private.event_prototypes = {
         display = L["Frost Runes"],
         type = "number",
         init = "numFrostRunes",
+        enable = function(trigger) return not trigger.use_rune end
+      },
+      {
+        name = "deathRunes",
+        display = L["Death Runes"],
+        type = "number",
+        init = "numDeathRunes",
         enable = function(trigger) return not trigger.use_rune end
       },
       {
