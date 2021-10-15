@@ -673,6 +673,14 @@ hooksecurefunc("SetItemRef", function(link, text)
   end
 end);
 
+local OriginalSetHyperlink = ItemRefTooltip.SetHyperlink
+function ItemRefTooltip:SetHyperlink(link, ...)
+    if(link and link:sub(0, 11) == "garrmission") then
+        return;
+    end
+    return OriginalSetHyperlink(self, link, ...);
+end
+
 local compressedTablesCache = {}
 
 function TableToString(inTable, forChat)
@@ -1676,7 +1684,7 @@ function RequestDisplay(characterName, displayName)
     d = displayName
   };
   local transmitString = TableToString(transmit);
-  crossRealmSendCommMessage("WeakAuras", transmitString, characterName);
+  crossRealmSendCommMessage("WeakAuras", transmitString, Ambiguate(characterName, "none"));
 end
 
 function TransmitError(errorMsg, characterName)
@@ -1684,14 +1692,14 @@ function TransmitError(errorMsg, characterName)
     m = "dE",
     eM = errorMsg
   };
-  crossRealmSendCommMessage("WeakAuras", TableToString(transmit), characterName);
+  crossRealmSendCommMessage("WeakAuras", TableToString(transmit), Ambiguate(characterName, "none"));
 end
 
 function TransmitDisplay(id, characterName)
   local encoded = Private.DisplayToString(id);
   if(encoded ~= "") then
-    crossRealmSendCommMessage("WeakAuras", encoded, characterName, "BULK", function(displayName, done, total)
-      crossRealmSendCommMessage("WeakAurasProg", done.." "..total.." "..displayName, characterName, "ALERT");
+    crossRealmSendCommMessage("WeakAuras", encoded, Ambiguate(characterName, "none"), "BULK", function(displayName, done, total)
+      crossRealmSendCommMessage("WeakAurasProg", done.." "..total.." "..displayName, Ambiguate(characterName, "none"), "ALERT");
     end, id);
   else
     TransmitError("dne", characterName);
