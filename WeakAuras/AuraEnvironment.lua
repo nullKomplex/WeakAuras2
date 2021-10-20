@@ -386,6 +386,12 @@ local FakeWeakAurasMixin = {
 
 local FakeWeakAuras = MakeReadOnly(WeakAuras, FakeWeakAurasMixin)
 
+local FakeC_Timer = {
+  After = Retail.After,
+  NewTicker = Retail.NewTicker,
+  NewTimer = Retail.NewTimer,
+}
+
 local overridden = {
   WA_GetUnitAura = WA_GetUnitAura,
   WA_GetUnitBuff = WA_GetUnitBuff,
@@ -395,7 +401,8 @@ local overridden = {
   WA_Utf8Sub = WA_Utf8Sub,
   ActionButton_ShowOverlayGlow = WeakAuras.ShowOverlayGlow,
   ActionButton_HideOverlayGlow = WeakAuras.HideOverlayGlow,
-  WeakAuras = FakeWeakAuras
+  WeakAuras = FakeWeakAuras,
+  C_Timer = FakeC_Timer,
 }
 
 local env_getglobal
