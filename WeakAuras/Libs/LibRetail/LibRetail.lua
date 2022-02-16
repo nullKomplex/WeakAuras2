@@ -7,7 +7,7 @@ if not lib then return end
 LibStub("AceTimer-3.0"):Embed(lib)
 
 -- Lua APIs
-local pairs, ipairs, next, select, CreateFrame, pcall, print = pairs, ipairs, next, select, CreateFrame, pcall, print
+local pairs, ipairs, next, select, CreateFrame, pcall, print, tostring = pairs, ipairs, next, select, CreateFrame, pcall, print, tostring
 
 local math_abs, math_ceil, math_floor = math.abs, math.ceil, math.floor
 
@@ -375,4 +375,35 @@ function lib.Round(value)
 		return math_ceil(value - .5);
 	end
 	return math_floor(value + .5);
+end
+
+-- TODO: Localize?
+local FIRST_NUMBER_CAP_NO_SPACE = "K";
+local SECOND_NUMBER_CAP_NO_SPACE = "M";
+local THIRD_NUMBER_CAP_NO_SPACE = "B";
+local FOURTH_NUMBER_CAP_NO_SPACE = "T";
+lib.FIRST_NUMBER_CAP_NO_SPACE, lib.SECOND_NUMBER_CAP_NO_SPACE, lib.THIRD_NUMBER_CAP_NO_SPACE, lib.FOURTH_NUMBER_CAP_NO_SPACE = FIRST_NUMBER_CAP_NO_SPACE, SECOND_NUMBER_CAP_NO_SPACE, THIRD_NUMBER_CAP_NO_SPACE, FOURTH_NUMBER_CAP_NO_SPACE
+
+local NUMBER_ABBREVIATION_DATA = {
+	-- Order these from largest to smallest
+	-- (significandDivisor and fractionDivisor should multiply to be equal to breakpoint)
+	{ breakpoint = 10000000000000,	abbreviation = FOURTH_NUMBER_CAP_NO_SPACE,		significandDivisor = 1000000000000,	fractionDivisor = 1 },
+	{ breakpoint = 1000000000000,	abbreviation = FOURTH_NUMBER_CAP_NO_SPACE,		significandDivisor = 100000000000,	fractionDivisor = 10 },
+	{ breakpoint = 10000000000,		abbreviation = THIRD_NUMBER_CAP_NO_SPACE,		significandDivisor = 1000000000,	fractionDivisor = 1 },
+	{ breakpoint = 1000000000,		abbreviation = THIRD_NUMBER_CAP_NO_SPACE,		significandDivisor = 100000000,	fractionDivisor = 10 },
+	{ breakpoint = 10000000,		abbreviation = SECOND_NUMBER_CAP_NO_SPACE,		significandDivisor = 1000000,	fractionDivisor = 1 },
+	{ breakpoint = 1000000,			abbreviation = SECOND_NUMBER_CAP_NO_SPACE,		significandDivisor = 100000,		fractionDivisor = 10 },
+	{ breakpoint = 10000,			abbreviation = FIRST_NUMBER_CAP_NO_SPACE,		significandDivisor = 1000,		fractionDivisor = 1 },
+	{ breakpoint = 1000,			abbreviation = FIRST_NUMBER_CAP_NO_SPACE,		significandDivisor = 100,		fractionDivisor = 10 },
+}
+lib.NUMBER_ABBREVIATION_DATA = NUMBER_ABBREVIATION_DATA
+
+function lib.AbbreviateNumbers(value)
+	for i, data in ipairs(NUMBER_ABBREVIATION_DATA) do
+		if value >= data.breakpoint then
+			local finalValue = math_floor(value / data.significandDivisor) / data.fractionDivisor;
+			return finalValue .. data.abbreviation;
+		end
+	end
+	return tostring(value);
 end

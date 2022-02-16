@@ -10,6 +10,7 @@ local LBR_Locale = LibBabbleRace:GetUnstrictLookupTable()
 local LBR_Base = LibBabbleRace:GetBaseLookupTable();
 
 local Retail = LibStub("LibRetail")
+local AbbreviateNumbers = Retail.AbbreviateNumbers
 
 local wipe, tinsert = wipe, tinsert
 local GetNumShapeshiftForms, GetShapeshiftFormInfo = GetNumShapeshiftForms, GetShapeshiftFormInfo
