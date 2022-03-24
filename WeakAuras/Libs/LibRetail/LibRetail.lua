@@ -407,3 +407,7 @@ function lib.AbbreviateNumbers(value)
 	end
 	return tostring(value);
 end
+
+function lib.WrapTextInColorCode(text, colorHexString)
+	return ("|c%s%s|r"):format(colorHexString, text);
+end

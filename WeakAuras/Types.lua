@@ -10,12 +10,12 @@ local LBR_Locale = LibBabbleRace:GetUnstrictLookupTable()
 local LBR_Base = LibBabbleRace:GetBaseLookupTable();
 
 local Retail = LibStub("LibRetail")
-local AbbreviateNumbers = Retail.AbbreviateNumbers
+local AbbreviateNumbers, WrapTextInColorCode = Retail.AbbreviateNumbers, Retail.WrapTextInColorCode
 
 local wipe, tinsert = wipe, tinsert
 local GetNumShapeshiftForms, GetShapeshiftFormInfo = GetNumShapeshiftForms, GetShapeshiftFormInfo
 local GetNumSpecializationsForClassID, GetSpecializationInfoForClassID = GetNumSpecializationsForClassID, GetSpecializationInfoForClassID
-local WrapTextInColorCode = WrapTextInColorCode
+--local WrapTextInColorCode = WrapTextInColorCode
 local MAX_NUM_TALENTS = MAX_NUM_TALENTS or 20
 
 local function WA_GetClassColor(classFilename)
