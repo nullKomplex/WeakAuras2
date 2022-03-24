@@ -352,7 +352,7 @@ local function modify(parent, region, data)
   region.zoom = data.zoom;
   region:UpdateSize()
 
-  icon:SetDesaturated(data.desaturate);
+  icon:SetDesaturated(data.desaturate and 1 or nil);
 
   local tooltipType = Private.CanHaveTooltip(data);
   if(tooltipType and data.useTooltip) then
@@ -442,7 +442,7 @@ local function modify(parent, region, data)
 
     iconPath = iconPath or self.displayIcon or "Interface\\Icons\\INV_Misc_QuestionMark"
     WeakAuras.SetTextureOrAtlas(self.icon, iconPath)
-    self.icon:SetDesaturated(data.desaturate)
+    self.icon:SetDesaturated(self.desaturate and 1 or nil)
   end
 
   function region:Scale(scalex, scaley)
@@ -455,7 +455,7 @@ local function modify(parent, region, data)
   end
 
   function region:SetDesaturated(b)
-    icon:SetDesaturated(b);
+    icon:SetDesaturated(b and 1 or nil);
   end
 
   function region:SetRegionWidth(width)
